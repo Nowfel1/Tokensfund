@@ -28,7 +28,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
 export default function SwapTerminal() {
   const [fromId, setFromId] = useState("BTC");
   const [toId, setToId] = useState("ETH");
-  const [amount, setAmount] = useState("");
+  const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
 
