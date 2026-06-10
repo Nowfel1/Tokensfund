@@ -43,7 +43,12 @@ export default function SwapTerminal() {
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
 
-  const canQuote = amount && Number(amount) > 0 && fromId !== toId && eligible.length > 0;
+  const canQuote =
+    amount &&
+    Number(amount) > 0 &&
+    fromId !== toId &&
+    eligible.length > 0 &&
+    destination.trim().length > 0;
 
   function flip() {
     setFromId(toId);
@@ -179,19 +184,33 @@ export default function SwapTerminal() {
         <div className="fields">
           <div className="field">
             <label htmlFor="dest">Destination address ({toSym})</label>
-            <input id="dest" value={destination} placeholder={`Where you receive ${toSym}`}
-              onChange={(e) => { setDestination(e.target.value); }} />
+            <input
+              id="dest"
+              value={destination}
+              placeholder={`Where you receive ${toSym}`}
+              onChange={(e) => { setDestination(e.target.value); reset(); }}
+            />
           </div>
           <div className="field">
             <label htmlFor="refund">Refund address (optional)</label>
-            <input id="refund" value={refund} placeholder="Where to refund if the swap fails"
-              onChange={(e) => setRefund(e.target.value)} />
+            <input
+              id="refund"
+              value={refund}
+              placeholder="Where to refund if the swap fails"
+              onChange={(e) => setRefund(e.target.value)}
+            />
             <div className="hint">Defaults to your destination address if left blank.</div>
           </div>
         </div>
 
         <button className="btn-primary" disabled={!canQuote || loading} onClick={getQuotes}>
-          {loading ? "Comparing routes…" : eligible.length === 0 ? "No route for this pair" : "Compare routes"}
+          {loading
+            ? "Comparing routes…"
+            : eligible.length === 0
+            ? "No route for this pair"
+            : !destination.trim()
+            ? "Enter destination address"
+            : "Compare routes"}
         </button>
 
         {error && <div className="error">{error}</div>}
@@ -203,7 +222,9 @@ export default function SwapTerminal() {
           <div className="race-head">
             <h2>Routes</h2>
             <span className="count">
-              {loading ? `${eligible.length} networks quoting…` : `${result?.quotes.filter((q) => !q.error).length}/${result?.quotes.length} routed`}
+              {loading
+                ? `${eligible.length} networks quoting…`
+                : `${result?.quotes.filter((q) => !q.error).length}/${result?.quotes.length} routed`}
             </span>
           </div>
 
@@ -211,7 +232,10 @@ export default function SwapTerminal() {
             ? eligible.map((p) => (
                 <div className="quote" key={p}>
                   <div className="pmark">{PROVIDER_INITIAL[p]}</div>
-                  <div><div className="pname">{label(p)}</div><div className="pmeta">requesting quote</div></div>
+                  <div>
+                    <div className="pname">{label(p)}</div>
+                    <div className="pmeta">requesting quote</div>
+                  </div>
                   <div className="shimmer" />
                 </div>
               ))
@@ -237,7 +261,9 @@ export default function SwapTerminal() {
       {/* DEPOSIT INSTRUCTIONS */}
       {deposit && (
         <div className="deposit">
-          <h3>Send {deposit.depositAmount} {ASSETS.find((a) => a.id === fromId)?.symbol} to complete your swap</h3>
+          <h3>
+            Send {deposit.depositAmount} {ASSETS.find((a) => a.id === fromId)?.symbol} to complete your swap
+          </h3>
           <p className="sub">
             This is a one-time address from {label(deposit.provider)}. The swap starts automatically
             once your deposit confirms.
@@ -262,7 +288,9 @@ export default function SwapTerminal() {
           )}
           {deposit.notes && <p className="warn">{deposit.notes}</p>}
           {deposit.expiresAt && (
-            <p className="warn">Quote valid until {new Date(deposit.expiresAt * 1000).toLocaleTimeString()}.</p>
+            <p className="warn">
+              Quote valid until {new Date(deposit.expiresAt * 1000).toLocaleTimeString()}.
+            </p>
           )}
         </div>
       )}
@@ -276,14 +304,25 @@ function label(p: ProviderId) {
 
 function QuoteCard({
   q, best, selected, sym, onSelect,
-}: { q: NormalizedQuote; best: boolean; selected: boolean; sym: string; onSelect: () => void }) {
+}: {
+  q: NormalizedQuote;
+  best: boolean;
+  selected: boolean;
+  sym: string;
+  onSelect: () => void;
+}) {
   return (
     <div
       className={`quote ${best ? "best" : ""} ${q.error ? "failed" : "selectable"} ${selected ? "selected" : ""}`}
       onClick={onSelect}
       role={q.error ? undefined : "button"}
       tabIndex={q.error ? undefined : 0}
-      onKeyDown={(e) => { if (!q.error && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onSelect(); } }}
+      onKeyDown={(e) => {
+        if (!q.error && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
     >
       {best && <span className="tag-best">Best route</span>}
       <div className="pmark">{PROVIDER_INITIAL[q.provider]}</div>
@@ -293,8 +332,9 @@ function QuoteCard({
           {q.error
             ? q.error.slice(0, 60)
             : q.estimatedSeconds
-              ? `~${Math.round(q.estimatedSeconds / 60)} min` + (q.feeOut ? ` · fee ${fmt(q.feeOut)} ${sym}` : "")
-              : "intent-based"}
+            ? `~${Math.round(q.estimatedSeconds / 60)} min` +
+              (q.feeOut ? ` · fee ${fmt(q.feeOut)} ${sym}` : "")
+            : "intent-based"}
         </div>
       </div>
       <div className="out">
