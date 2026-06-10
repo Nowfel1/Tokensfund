@@ -48,7 +48,8 @@ export default function SwapTerminal() {
     Number(amount) > 0 &&
     fromId !== toId &&
     eligible.length > 0 &&
-    destination.trim().length > 0;
+    destination.trim().length > 0 &&
+    refund.trim().length > 0;
 
   function flip() {
     setFromId(toId);
@@ -192,14 +193,14 @@ export default function SwapTerminal() {
             />
           </div>
           <div className="field">
-            <label htmlFor="refund">Refund address (optional)</label>
+            <label htmlFor="refund">Refund address (required)</label>
             <input
               id="refund"
               value={refund}
-              placeholder="Where to refund if the swap fails"
+              placeholder="Your source chain address for refunds"
               onChange={(e) => setRefund(e.target.value)}
             />
-            <div className="hint">Defaults to your destination address if left blank.</div>
+            <div className="hint">Enter your address on the source chain. Used if the swap fails.</div>
           </div>
         </div>
 
@@ -210,6 +211,8 @@ export default function SwapTerminal() {
             ? "No route for this pair"
             : !destination.trim()
             ? "Enter destination address"
+            : !refund.trim()
+            ? "Enter refund address"
             : "Compare routes"}
         </button>
 
