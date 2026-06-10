@@ -5,7 +5,7 @@ import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapSta
 // Everything on THORChain is quoted in 1e8 base units regardless of the asset's
 // real decimals, so we scale to/from 1e8 here.
 
-const THORNODE = process.env.THORNODE_URL || "https://thornode.ninerealms.com";
+const THORNODE = process.env.THORNODE_URL || "https://gateway.liquify.com/chain/thorchain_api";
 const THOR_BASE = 1e8;
 
 // Optional: earn revenue by setting an affiliate THORName + bps in env.
