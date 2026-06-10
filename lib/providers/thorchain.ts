@@ -6,17 +6,19 @@ import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapSta
 // real decimals, so we scale to/from 1e8 here.
 
 const THORNODE = process.env.THORNODE_URL || "https://gateway.liquify.com/chain/thorchain_api";
-const THOR_BASE = 1e8;
 
 // Optional: earn revenue by setting an affiliate THORName + bps in env.
-const AFFILIATE = process.env.THOR_AFFILIATE;          // e.g. "tokensfund"
-const AFFILIATE_BPS = process.env.THOR_AFFILIATE_BPS;  // e.g. "30" (0.30%)
+const AFFILIATE = process.env.THOR_AFFILIATE; // e.g. "TKF"
+const AFFILIATE_BPS = process.env.THOR_AFFILIATE_BPS; // e.g. "200" (2%)
 
 function toThorBase(humanAmount: string): string {
-  return Math.round(parseFloat(humanAmount) * THOR_BASE).toString();
+  const [whole, frac = ""] = humanAmount.split(".");
+  const fracPadded = (frac + "0".repeat(8)).slice(0, 8);
+  return (BigInt(whole || "0") * 100_000_000n + BigInt(fracPadded || "0")).toString();
 }
+
 function fromThorBase(base: string | number): number {
-  return Number(base) / THOR_BASE;
+  return Number(base) / 100_000_000;
 }
 
 export async function getQuote(
@@ -27,11 +29,12 @@ export async function getQuote(
   const fromRef = from.providerIds.thorchain!;
   const toRef = to.providerIds.thorchain!;
 
-const params = new URLSearchParams({
-  from_asset: fromRef.asset,
-  to_asset: toRef.asset,
-  amount: toThorBase(req.amount),
-});
+  const params = new URLSearchParams({
+    from_asset: fromRef.asset,
+    to_asset: toRef.asset,
+    amount: toThorBase(req.amount),
+  });
+
   if (req.destinationAddress) params.set("destination", req.destinationAddress);
   if (req.slippageBps) params.set("tolerance_bps", String(req.slippageBps));
   if (AFFILIATE && AFFILIATE_BPS) {
@@ -41,14 +44,18 @@ const params = new URLSearchParams({
 
   const url = `${THORNODE}/thorchain/quote/swap?${params.toString()}`;
   const res = await fetch(url, { headers: { accept: "application/json" } });
+
   if (!res.ok) {
     const body = await res.text();
     throw new Error(`THORChain quote failed (${res.status}): ${body.slice(0, 200)}`);
   }
+
   const data = await res.json();
   if (data.error) throw new Error(`THORChain: ${data.error}`);
 
   const expectedOut = fromThorBase(data.expected_amount_out ?? data.expected_amount_out_streaming ?? 0);
+  if (!expectedOut) throw new Error("THORChain quote returned no expected_amount_out");
+
   const feeOut = data.fees?.total ? fromThorBase(data.fees.total) : undefined;
 
   return {
@@ -69,18 +76,18 @@ export async function buildSwap(
   req: QuoteRequest
 ): Promise<SwapInstruction> {
   const data = quote.raw as any;
+
   if (!data.inbound_address) {
     throw new Error("THORChain quote did not include an inbound_address. Re-quote with a destination address.");
   }
+
   return {
     provider: "thorchain",
     depositAddress: data.inbound_address,
-    // The memo encodes the swap intent; without it THORChain refunds the deposit.
-    // For BTC this goes in an OP_RETURN output. THORNode returns it in `memo`.
     memo: data.memo,
     depositAmount: req.amount,
     expiresAt: data.expiry,
-    trackingId: data.inbound_address, // track by deposit/inbound address
+    trackingId: data.inbound_address,
     notes: data.router
       ? `EVM router contract: ${data.router}. Send via the router's depositWithExpiry for ERC20s.`
       : undefined,
@@ -88,8 +95,6 @@ export async function buildSwap(
 }
 
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
-  // Track via the tx tracker. For a production build, store the user's inbound
-  // tx hash at submit time and query /thorchain/tx/status/{hash}.
   return {
     provider: "thorchain",
     state: "unknown",
