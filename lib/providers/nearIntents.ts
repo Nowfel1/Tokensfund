@@ -49,8 +49,10 @@ async function requestQuote(
     amount: toBase(req.amount, fromDecimals),
     recipient: req.destinationAddress,
     recipientType: "DESTINATION_CHAIN",
-    refundTo: req.refundAddress || req.destinationAddress,
-    refundType: req.refundAddress ? "ORIGIN_CHAIN" : "DESTINATION_CHAIN",
+    refundTo: req.refundAddress || req.destinationAddress || "",
+    refundType: "ORIGIN_CHAIN",
+    recipient: req.destinationAddress || "",
+    recipientType: "DESTINATION_CHAIN",
     deadline: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     ...(FEE_BPS && FEE_RECIPIENT
       ? { appFees: [{ recipient: FEE_RECIPIENT, fee: FEE_BPS }] }
