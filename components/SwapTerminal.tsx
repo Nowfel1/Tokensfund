@@ -43,7 +43,7 @@ export default function SwapTerminal() {
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
 
-  const canQuote = amount && Number(amount) > 0 && fromId !== toId && eligible.length > 0;
+  const canQuote = amount && Number(amount) > 0 && fromId !== toId && eligible.length > 0 && destination.trim().length > 0;
 
   function flip() {
     setFromId(toId);
