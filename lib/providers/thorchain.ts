@@ -27,14 +27,11 @@ export async function getQuote(
   const fromRef = from.providerIds.thorchain!;
   const toRef = to.providerIds.thorchain!;
 
-  const params = new URLSearchParams({
-    from_asset: fromRef.asset,
-    to_asset: toRef.asset,
-    amount: toThorBase(req.amount),
-    // streaming swaps get better prices on larger trades; let the node optimize
-    streaming_interval: "1",
-    streaming_quantity: "0",
-  });
+const params = new URLSearchParams({
+  from_asset: fromRef.asset,
+  to_asset: toRef.asset,
+  amount: toThorBase(req.amount),
+});
   if (req.destinationAddress) params.set("destination", req.destinationAddress);
   if (req.slippageBps) params.set("tolerance_bps", String(req.slippageBps));
   if (AFFILIATE && AFFILIATE_BPS) {
