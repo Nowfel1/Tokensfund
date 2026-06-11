@@ -41,7 +41,6 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
     };
   });
 
-  // Rank: highest expectedOut wins. Failed quotes sink to the bottom.
   quotes.sort((a, b) => (b.error ? -1 : 0) - (a.error ? -1 : 0) || b.expectedOut - a.expectedOut);
 
   const bestIndex = quotes.findIndex((q) => !q.error && q.expectedOut > 0);
