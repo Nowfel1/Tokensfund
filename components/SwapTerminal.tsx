@@ -9,6 +9,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   chainflip: "CF",
   near_intents: "NI",
   exolix: "EX",
+  exolix: "EX",
 };
 
 function fmt(n: number) {
@@ -21,7 +22,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "exolix"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -346,7 +347,7 @@ export default function SwapTerminal() {
 }
 
 function label(p: ProviderId) {
-  return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : "NEAR Intents";
+  return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : p === "exolix" ? "Exolix" : "NEAR Intents";
 }
 
 function QuoteCard({
