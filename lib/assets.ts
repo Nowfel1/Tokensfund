@@ -1,14 +1,5 @@
 import { CanonicalAsset } from "./types";
 
-// SEED registry. This is the piece you expand as you add pairs. Each canonical
-// asset carries the identifier every protocol expects:
-// - THORChain uses "CHAIN.TICKER" (or "CHAIN.TICKER-ADDR" for ERC20s).
-// - Chainflip uses separate chain + asset enums ("Ethereum" / "ETH").
-// - NEAR Intents (1Click) uses assetId strings from GET /v0/tokens.
-//
-// The NEAR assetIds below are examples and MUST be verified/refreshed against
-// https://1click.chaindefuser.com/v0/tokens before going live — they change.
-
 export const ASSETS: CanonicalAsset[] = [
   {
     id: "BTC",
@@ -20,6 +11,7 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "BTC.BTC", decimals: 8 },
       chainflip: { asset: "BTC", chain: "Bitcoin" },
       near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
+      exolix: { coin: "BTC", network: "BTC" },
     },
   },
   {
@@ -32,6 +24,7 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "ETH.ETH", decimals: 8 },
       chainflip: { asset: "ETH", chain: "Ethereum" },
       near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
+      exolix: { coin: "ETH", network: "ETH" },
     },
   },
   {
@@ -50,6 +43,7 @@ export const ASSETS: CanonicalAsset[] = [
         asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
         decimals: 6,
       },
+      exolix: { coin: "USDC", network: "ETH" },
     },
   },
   {
@@ -67,8 +61,7 @@ export const ASSETS: CanonicalAsset[] = [
         asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
         decimals: 6,
       },
-      // Chainflip USDT on Ethereum — confirm support before enabling:
-      // chainflip: { asset: "USDT", chain: "Ethereum" },
+      exolix: { coin: "USDT", network: "ETH" },
     },
   },
   {
@@ -80,6 +73,7 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       chainflip: { asset: "SOL", chain: "Solana" },
       near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
+      exolix: { coin: "SOL", network: "SOL" },
     },
   },
   {
@@ -90,6 +84,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 24,
     providerIds: {
       near_intents: { asset: "nep141:wrap.near", decimals: 24 },
+      exolix: { coin: "NEAR", network: "NEAR" },
     },
   },
   {
@@ -100,6 +95,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 12,
     providerIds: {
       thorchain: { asset: "XMR.XMR", decimals: 8 },
+      exolix: { coin: "XMR", network: "XMR" },
     },
   },
 ];
@@ -110,15 +106,15 @@ export function getAsset(id: string): CanonicalAsset | undefined {
   return ASSET_BY_ID.get(id);
 }
 
-/** Providers that can route a given from/to pair (both sides supported). */
 export function providersForPair(fromId: string, toId: string) {
   const from = getAsset(fromId);
   const to = getAsset(toId);
   if (!from || !to) return [];
-  const ids: ("thorchain" | "chainflip" | "near_intents")[] = [
+  const ids: ("thorchain" | "chainflip" | "near_intents" | "exolix")[] = [
     "thorchain",
     "chainflip",
     "near_intents",
+    "exolix",
   ];
   return ids.filter((p) => from.providerIds[p] && to.providerIds[p]);
 }
