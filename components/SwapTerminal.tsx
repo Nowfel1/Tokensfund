@@ -21,7 +21,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "exolix"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -47,7 +47,7 @@ export default function SwapTerminal() {
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
 
-  // Debounced live estimate — fires 600ms after user stops typing
+  // Debounced live estimate
   useEffect(() => {
     setLiveOut(null);
     if (!amount || Number(amount) <= 0 || fromId === toId || eligible.length === 0) return;
@@ -71,7 +71,7 @@ export default function SwapTerminal() {
           if (best?.expectedOut) setLiveOut(best.expectedOut);
         }
       } catch {
-        // silent fail — live estimate is best-effort
+        // silent fail
       } finally {
         setLiveLoading(false);
       }
@@ -160,7 +160,6 @@ export default function SwapTerminal() {
     }
   }
 
-  // Determine what to show in the receive readout
   const receiveValue = result && selected
     ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
     : liveLoading
@@ -346,7 +345,7 @@ export default function SwapTerminal() {
 }
 
 function label(p: ProviderId) {
-  return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : "NEAR Intents";
+  return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : p === "exolix" ? "Exolix" : "NEAR Intents";
 }
 
 function QuoteCard({
