@@ -48,7 +48,7 @@ export default function SwapTerminal() {
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
 
-  // Debounced live estimate — fires 600ms after user stops typing
+  // Debounced live estimate
   useEffect(() => {
     setLiveOut(null);
     if (!amount || Number(amount) <= 0 || fromId === toId || eligible.length === 0) return;
@@ -72,7 +72,7 @@ export default function SwapTerminal() {
           if (best?.expectedOut) setLiveOut(best.expectedOut);
         }
       } catch {
-        // silent fail — live estimate is best-effort
+        // silent fail
       } finally {
         setLiveLoading(false);
       }
@@ -161,7 +161,6 @@ export default function SwapTerminal() {
     }
   }
 
-  // Determine what to show in the receive readout
   const receiveValue = result && selected
     ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
     : liveLoading
