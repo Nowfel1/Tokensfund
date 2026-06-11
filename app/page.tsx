@@ -21,7 +21,6 @@ export default function Home() {
         Non-custodial. You send to a one-time deposit address and receive at your own wallet,
         or get refunded. <strong>tokensfund never takes custody of your assets.</strong>
       </p>
-
       <section className="hiw">
         <div className="hiw-head">
           <span className="hiw-label">PROCESS</span>
