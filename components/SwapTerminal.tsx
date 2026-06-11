@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect, useRef } from "react";
 import { ASSETS } from "@/lib/assets";
 import { AggregatedQuotes, NormalizedQuote, ProviderId, SwapInstruction } from "@/lib/types";
 
@@ -31,17 +31,51 @@ export default function SwapTerminal() {
   const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
-
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AggregatedQuotes | null>(null);
   const [selected, setSelected] = useState<ProviderId | null>(null);
   const [error, setError] = useState<string | null>(null);
-
   const [opening, setOpening] = useState(false);
   const [deposit, setDeposit] = useState<SwapInstruction | null>(null);
 
+  // Live estimate state
+  const [liveOut, setLiveOut] = useState<number | null>(null);
+  const [liveLoading, setLiveLoading] = useState(false);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
+
+  // Debounced live estimate — fires 600ms after user stops typing
+  useEffect(() => {
+    setLiveOut(null);
+    if (!amount || Number(amount) <= 0 || fromId === toId || eligible.length === 0) return;
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(async () => {
+      setLiveLoading(true);
+      try {
+        const res = await fetch("/api/quote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            fromAssetId: fromId,
+            toAssetId: toId,
+            amount,
+            slippageBps: 100,
+          }),
+        });
+        const data = await res.json();
+        if (res.ok && data.quotes?.length) {
+          const best = data.quotes[data.bestIndex];
+          if (best?.expectedOut) setLiveOut(best.expectedOut);
+        }
+      } catch {
+        // silent fail — live estimate is best-effort
+      } finally {
+        setLiveLoading(false);
+      }
+    }, 600);
+  }, [amount, fromId, toId]);
 
   const canQuote =
     amount &&
@@ -56,11 +90,13 @@ export default function SwapTerminal() {
     setToId(fromId);
     reset();
   }
+
   function reset() {
     setResult(null);
     setSelected(null);
     setDeposit(null);
     setError(null);
+    setLiveOut(null);
   }
 
   async function getQuotes() {
@@ -123,6 +159,17 @@ export default function SwapTerminal() {
     }
   }
 
+  // Determine what to show in the receive readout
+  const receiveValue = result && selected
+    ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
+    : liveLoading
+    ? "..."
+    : liveOut
+    ? fmt(liveOut)
+    : "0.0";
+
+  const receiveEmpty = !result && !liveOut && !liveLoading;
+
   return (
     <div>
       <div className="card">
@@ -164,10 +211,8 @@ export default function SwapTerminal() {
         {/* TO */}
         <div className="leg">
           <span className="label">You receive (estimated)</span>
-          <div className={`amount-readout ${selected && result ? "" : "empty"}`}>
-            {result && selected
-              ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
-              : "0.0"}
+          <div className={`amount-readout ${receiveEmpty ? "empty" : ""}`}>
+            {receiveValue}
           </div>
           <select
             className="token-select"
@@ -230,7 +275,6 @@ export default function SwapTerminal() {
                 : `${result?.quotes.filter((q) => !q.error).length}/${result?.quotes.length} routed`}
             </span>
           </div>
-
           {loading
             ? eligible.map((p) => (
                 <div className="quote" key={p}>
@@ -252,7 +296,6 @@ export default function SwapTerminal() {
                   onSelect={() => !q.error && setSelected(q.provider)}
                 />
               ))}
-
           {result && selected && !deposit && (
             <button className="btn-primary" disabled={opening} onClick={openDeposit}>
               {opening ? "Opening deposit address…" : `Swap via ${label(selected)}`}
