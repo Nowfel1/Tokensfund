@@ -8,6 +8,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   thorchain: "TC",
   chainflip: "CF",
   near_intents: "NI",
+  exolix: "EX",
 };
 
 function fmt(n: number) {
