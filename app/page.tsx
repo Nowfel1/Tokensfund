@@ -17,11 +17,23 @@ export default function Home() {
 
       <SwapTerminal />
 
-      <p className="foot">
-        Non-custodial. You send to a one-time deposit address and receive at your own wallet,
-        or get refunded. <strong>tokensfund never takes custody of your assets.</strong>
-      </p>
-
+    <footer className="foot">
+  <p>
+    Non-custodial. You send to a one-time deposit address and receive at your own wallet,
+    or get refunded. <strong>tokensfund never takes custody of your assets.</strong>
+  </p>
+  <div className="social-row">
+    <a className="social-btn" href="https://x.com/Tokensfund" target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.261 5.638 5.903-5.638zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+      Follow on X
+    </a>
+    <a className="social-btn" href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.248-1.97 9.289c-.145.658-.537.818-1.084.508l-3-2.21-1.447 1.394c-.16.16-.295.295-.605.295l.213-3.053 5.56-5.023c.242-.213-.054-.333-.373-.12L8.048 14.6l-2.948-.924c-.64-.203-.654-.64.136-.95l11.527-4.448c.535-.194 1.003.131.8.97z"/></svg>
+      Join Telegram
+    </a>
+  </div>
+</footer>
+      
       {/* HOW IT WORKS */}
       <section className="hiw">
         <div className="hiw-head">
