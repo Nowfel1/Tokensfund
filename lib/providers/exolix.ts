@@ -25,6 +25,7 @@ export async function getQuote(
     coinTo: toRef.coin!,
     amount: req.amount,
     rateType: "float",
+    affiliateId: process.env.EXOLIX_AFFILIATE_ID ?? "",
   });
 
   if (fromRef.network) params.set("networkFrom", fromRef.network);
@@ -70,6 +71,7 @@ export async function buildSwap(
     refundAddress: req.refundAddress ?? "",
     refundExtraId: "",
     rateType: "float",
+    affiliateId: process.env.EXOLIX_AFFILIATE_ID ?? "",
   };
 
   const res = await fetch(`${BASE}/transactions`, {
