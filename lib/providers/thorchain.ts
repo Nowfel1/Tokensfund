@@ -30,8 +30,8 @@ export async function getQuote(
   const toRef = to.providerIds.thorchain!;
 
   const params = new URLSearchParams({
-    from_asset: fromRef.asset,
-    to_asset: toRef.asset,
+    from_asset: fromRef.asset!,
+    to_asset: toRef.asset!,
     amount: toThorBase(req.amount),
   });
 

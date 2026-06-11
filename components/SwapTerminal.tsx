@@ -9,7 +9,6 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   chainflip: "CF",
   near_intents: "NI",
   exolix: "EX",
-  exolix: "EX",
 };
 
 function fmt(n: number) {
