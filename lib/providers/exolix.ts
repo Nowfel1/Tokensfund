@@ -21,8 +21,8 @@ export async function getQuote(
   const toRef = to.providerIds.exolix!;
 
   const params = new URLSearchParams({
-    coinFrom: fromRef.coin,
-    coinTo: toRef.coin,
+    coinFrom: fromRef.coin!,
+    coinTo: toRef.coin!,
     amount: req.amount,
     rateType: "float",
   });
