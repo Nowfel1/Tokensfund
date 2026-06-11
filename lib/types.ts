@@ -1,30 +1,34 @@
 // Shared, provider-agnostic types. Every provider normalizes into these so the
 // aggregator and UI never have to know which protocol produced a quote.
 
-export type ProviderId = "thorchain" | "chainflip" | "near_intents";
+export type ProviderId = "thorchain" | "chainflip" | "near_intents" | "exolix";
 
 export interface CanonicalAsset {
   /** Internal id used by the UI, e.g. "BTC", "ETH", "USDC". */
   id: string;
   symbol: string;
   name: string;
-  chain: string; // human chain label, e.g. "Bitcoin", "Ethereum"
-  decimals: number; // decimals of the native unit on its origin chain
+  chain: string;
+  decimals: number;
   /** Per-provider identifiers. A missing entry means the provider can't route it. */
   providerIds: Partial<Record<ProviderId, ProviderAssetRef>>;
 }
 
 export interface ProviderAssetRef {
-  /** The string/enum the provider expects. */
-  asset: string;
-  /** Optional chain hint some providers need separately (e.g. Chainflip). */
+  /** The string/enum the provider expects (THORChain/Chainflip/NEAR). */
+  asset?: string;
+  /** Optional chain hint (Chainflip). */
   chain?: string;
-  /** Decimals the provider quotes in, if it differs from the canonical decimals. */
+  /** Decimals the provider quotes in, if different from canonical. */
   decimals?: number;
+  /** Exolix coin ticker, e.g. "BTC", "XMR". */
+  coin?: string;
+  /** Exolix network, e.g. "BTC", "ETH", "XMR". */
+  network?: string;
 }
 
 export interface QuoteRequest {
-  fromAssetId: string; // CanonicalAsset.id
+  fromAssetId: string;
   toAssetId: string;
   /** Human-readable amount of the source asset, e.g. "0.1". */
   amount: string;
@@ -83,8 +87,10 @@ export interface SwapStatus {
     | "awaiting_deposit"
     | "deposit_detected"
     | "processing"
+    | "completed"
     | "success"
     | "refunded"
+    | "pending"
     | "failed"
     | "unknown";
   detail?: string;
