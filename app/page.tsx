@@ -5,19 +5,21 @@ export default function Home() {
   return (
     <main className="wrap">
       <header className="masthead">
-        <div className="brand">
-          <Logo size={34} />
-          <span>tokensfund<span className="tld">.xyz</span></span>
-        </div>
-        <nav className="main-nav">
-        <a href="/" className="nav-link">Swap</a>
-        <a href="/blog" className="nav-link">Blog</a>
-      </nav>
-      <p className="tagline">
-          One intent, three liquidity networks. We quote THORChain, Chainflip and NEAR Intents
-          at once and route your swap to the best price — without ever holding your funds.
-        </p>
-      </header>
+  <div className="header-inner">
+    <div className="brand">
+      <Logo size={34} />
+      <span>tokensfund<span className="tld">.xyz</span></span>
+    </div>
+    <nav className="main-nav">
+      <a href="/" className="nav-link">Swap</a>
+      <a href="/blog" className="nav-link">Blog</a>
+    </nav>
+  </div>
+  <p className="tagline">
+    One intent, three liquidity networks. We quote THORChain, Chainflip and NEAR Intents
+    at once and route your swap to the best price — without ever holding your funds.
+  </p>
+</header>
 
       <SwapTerminal />
 
