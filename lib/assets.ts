@@ -108,6 +108,17 @@ export const ASSETS: CanonicalAsset[] = [
       exolix: { coin: "ZEC", network: "ZEC" },
     },
   },
+  {
+    id: "TON",
+    symbol: "TON",
+    name: "Toncoin",
+    chain: "TON",
+    decimals: 9,
+    providerIds: {
+      near_intents: { asset: "nep141:ton.omft.near", decimals: 9 },
+      exolix: { coin: "TON", network: "TON" },
+    },
+  },
 ];
 
 export const ASSET_BY_ID = new Map(ASSETS.map((a) => [a.id, a]));
