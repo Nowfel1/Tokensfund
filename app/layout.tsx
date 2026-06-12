@@ -69,6 +69,9 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://tokensfund.xyz",
   },
+  verification: {
+    google: "dkCQwdhLf8UawPA0TTEZgCZ3ia8BxBitcvXoTD5cVXo" />,
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
