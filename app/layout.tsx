@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     canonical: "https://tokensfund.xyz",
   },
   verification: {
-    google: "dkCQwdhLf8UawPA0TTEZgCZ3ia8BxBitcvXoTD5cVXo" />,
+    google: "dkCQwdhLf8UawPA0TTEZgCZ3ia8BxBitcvXoTD5cVXo",
   },
 };
 
