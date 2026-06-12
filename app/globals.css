@@ -344,3 +344,18 @@ a { color: inherit; }
 .blog-banner { width: 100%; height: auto; border-radius: var(--radius); margin-bottom: 2rem; }
 .blog-cta { background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 2rem; text-align: center; margin-top: 3rem; }
 .blog-cta p { color: var(--text); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; }
+
+/* NAV */
+.main-nav {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+.nav-link {
+  color: var(--muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--gold); }
