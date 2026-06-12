@@ -345,17 +345,32 @@ a { color: inherit; }
 .blog-cta { background: var(--surface); border: 1px solid var(--border-soft); border-radius: var(--radius); padding: 2rem; text-align: center; margin-top: 3rem; }
 .blog-cta p { color: var(--text); font-weight: 700; font-size: 1.1rem; margin-bottom: 1rem; }
 
-/* NAV */
+/* HEADER */
+.header-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--border-soft);
+  margin-bottom: 1rem;
+}
 .main-nav {
   display: flex;
-  gap: 1.5rem;
-  margin-top: 1rem;
+  gap: 0.5rem;
+  align-items: center;
 }
 .nav-link {
   color: var(--muted);
   text-decoration: none;
   font-size: 0.9rem;
   font-weight: 600;
-  transition: color 0.2s;
+  padding: 6px 16px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
 }
-.nav-link:hover { color: var(--gold); }
+.nav-link:hover {
+  color: var(--gold);
+  border-color: var(--border-soft);
+}
