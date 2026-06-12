@@ -31,7 +31,7 @@ export default function Post() {
         <h1>How to Swap XMR to BTC Without KYC in 2026</h1>
 
         <img
-  src="/blog_banner_xmr_btc.png"
+  src="/blog/banner_xmr_btc.png"
   alt="How to swap XMR to BTC without KYC"
   className="blog-banner"
   style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
