@@ -95,7 +95,7 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to swap?</p>
-          <a href="/" className="btn-primary" style={{ display: "inline-block", textDecoration: "none" }}>Swap XMR to BTC now →</a>
+          <a href="/" style={{ display: "inline-block", textDecoration: "none", background: "var(--gold)", color: "#000", fontWeight: "700", padding: "12px 28px", borderRadius: "8px", fontSize: "1rem" }}>Swap XMR to BTC now →</a>
         </div>
       </article>
     </main>
