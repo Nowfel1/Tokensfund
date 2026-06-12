@@ -98,6 +98,16 @@ export const ASSETS: CanonicalAsset[] = [
       exolix: { coin: "XMR", network: "XMR" },
     },
   },
+  {
+    id: "ZEC",
+    symbol: "ZEC",
+    name: "Zcash",
+    chain: "Zcash",
+    decimals: 8,
+    providerIds: {
+      exolix: { coin: "ZEC", network: "ZEC" },
+    },
+  },
 ];
 
 export const ASSET_BY_ID = new Map(ASSETS.map((a) => [a.id, a]));
