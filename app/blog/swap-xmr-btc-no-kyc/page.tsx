@@ -1,6 +1,5 @@
 import Logo from "@/components/Logo";
 import Link from "next/link";
-import Image from "next/image";
 
 export const metadata = {
   title: "How to Swap XMR to BTC Without KYC in 2026 | TokensFund",
@@ -31,15 +30,12 @@ export default function Post() {
 
         <h1>How to Swap XMR to BTC Without KYC in 2026</h1>
 
-        <Image
-          src="/blog_banner_xmr_btc.png"
-          alt="How to swap XMR to BTC without KYC"
-          width={1200}
-          height={400}
-          className="blog-banner"
-          priority
-        />
-
+        <img
+  src="/blog_banner_xmr_btc.png"
+  alt="How to swap XMR to BTC without KYC"
+  className="blog-banner"
+  style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
+/>
         <p>
           Monero (XMR) is the leading privacy coin — but swapping it to Bitcoin (BTC)
           without handing over your identity can be tricky. Most centralized exchanges
