@@ -72,11 +72,6 @@ export async function buildSwap(
   const fromRef = from.providerIds.chainflip!;
   const toRef = to.providerIds.chainflip!;
 
-  const slippage = raw.recommendedSlippageTolerancePercent > 0
-    ? raw.recommendedSlippageTolerancePercent
-    : req.slippageBps ? (req.slippageBps as number) / 100 : 1.5;
-
-  // Call broker JSON-RPC directly instead of via SDK
   const brokerUrl = process.env.CHAINFLIP_BROKER_URL!;
   const commissionBps = process.env.CHAINFLIP_COMMISSION_BPS
     ? Number(process.env.CHAINFLIP_COMMISSION_BPS)
@@ -89,17 +84,12 @@ export async function buildSwap(
     params: [
       { asset: fromRef.asset, chain: fromRef.chain },
       { asset: toRef.asset, chain: toRef.chain },
-      req.destinationAddress,
+      [req.destinationAddress, null],
       commissionBps,
-      null, // message_metadata
-      Math.round(slippage * 100), // max_boost_fee_bps
-      req.refundAddress || req.destinationAddress,
-      100, // retry_duration_blocks
-      Math.round(slippage * 10000), // min_price_x128 placeholder
     ],
   };
 
-let rpcRes: any;
+  let rpcRes: any;
   let debugText = "no response";
   try {
     const res = await fetch(brokerUrl, {
@@ -119,15 +109,17 @@ let rpcRes: any;
 
   const result = rpcRes.result;
   throw new Error(`BROKER RESULT: ${JSON.stringify(result)}`);
+
   return {
     provider: "chainflip",
     depositAddress: result.address,
     depositAmount: req.amount,
-    expiresAt: result.expiry_block ? undefined : undefined,
+    expiresAt: undefined,
     trackingId: result.channel_id?.toString(),
     notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
   };
 }
+
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
     const status: any = await getSdk().getStatusV2({ id: trackingId } as any);
