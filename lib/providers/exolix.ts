@@ -56,15 +56,18 @@ export async function getQuote(
 
 export async function buildSwap(
   quote: NormalizedQuote,
-  req: QuoteRequest
+  req: QuoteRequest,
+  from: CanonicalAsset,
+  to: CanonicalAsset
 ): Promise<SwapInstruction> {
-  const from = quote.raw as any;
+  const fromRef = from.providerIds.exolix!;
+  const toRef = to.providerIds.exolix!;
 
   const body = {
-    coinFrom: from.coinFrom,
-    networkFrom: from.networkFrom ?? undefined,
-    coinTo: from.coinTo,
-    networkTo: from.networkTo ?? undefined,
+    coinFrom: fromRef.coin,
+    networkFrom: fromRef.network ?? undefined,
+    coinTo: toRef.coin,
+    networkTo: toRef.network ?? undefined,
     amount: req.amount,
     withdrawalAddress: req.destinationAddress,
     withdrawalExtraId: "",
@@ -79,16 +82,12 @@ export async function buildSwap(
     headers,
     body: JSON.stringify(body),
   });
-
   if (!res.ok) {
     const err = await res.text();
     throw new Error(`Exolix swap failed (${res.status}): ${err.slice(0, 200)}`);
   }
-
   const data = await res.json();
-
   if (data.message) throw new Error(`Exolix: ${data.message}`);
-
   return {
     provider: "exolix",
     depositAddress: data.depositAddress,
