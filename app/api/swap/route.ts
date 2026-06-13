@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
 
     if (body.provider === "exolix") {
       const quote = await exolix.getQuote(from, to, body);
-      return NextResponse.json(await exolix.buildSwap(quote, body));
+      return NextResponse.json(await chainflip.buildSwap(quote, body, from, to));
     }
 
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
