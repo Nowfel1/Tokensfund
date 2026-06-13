@@ -65,18 +65,25 @@ export async function getQuote(
 }
 
 export async function buildSwap(
-  quote: NormalizedQuote,
-  req: QuoteRequest
+  _quote: NormalizedQuote,
+  req: QuoteRequest,
+  from: CanonicalAsset,
+  to: CanonicalAsset
 ): Promise<SwapInstruction> {
   if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
-  const raw = quote.raw as any;
+
+  // Re-quote fresh — Chainflip quotes expire in ~10s
+  const freshQuote = await getQuote(from, to, req);
+  const raw = freshQuote.raw as any;
 
   const channel = await getSdk().requestDepositAddressV2({
     quote: raw,
     destAddress: req.destinationAddress,
     fillOrKillParams: {
       slippageTolerancePercent:
-        raw.recommendedSlippageTolerancePercent ?? (req.slippageBps ? req.slippageBps / 100 : 1),
+        raw.recommendedSlippageTolerancePercent > 0
+          ? raw.recommendedSlippageTolerancePercent
+          : req.slippageBps ? req.slippageBps / 100 : 1.5,
       refundAddress: req.refundAddress || req.destinationAddress,
       retryDurationBlocks: 100, // ~10 minutes before refund
     },
