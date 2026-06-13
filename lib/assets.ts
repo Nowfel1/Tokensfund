@@ -13,6 +13,17 @@ export const ASSETS: CanonicalAsset[] = [
       near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
       exolix: { coin: "BTC", network: "BTC" },
     },
+    {
+  id: "LTC",
+  symbol: "LTC",
+  name: "Litecoin",
+  chain: "Litecoin",
+  decimals: 8,
+  providerIds: {
+    thorchain: { asset: "LTC.LTC", decimals: 8 },
+    chainflip: { asset: "LTC", chain: "Litecoin" },
+    near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
+  },
   },
   {
     id: "ETH",
