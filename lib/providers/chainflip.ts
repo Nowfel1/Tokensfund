@@ -84,7 +84,7 @@ export async function buildSwap(
     params: [
       { asset: fromRef.asset, chain: fromRef.chain },
       { asset: toRef.asset, chain: toRef.chain },
-      [req.destinationAddress, null],
+      req.destinationAddress,
       commissionBps,
     ],
   };
