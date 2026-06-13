@@ -106,9 +106,11 @@ export async function buildSwap(
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rpcBody),
     });
-    rpcRes = await res.json();
+    const text = await res.text();
+    throw new Error(`BROKER RAW: ${text}`);
+    rpcRes = JSON.parse(text);
   } catch (e: any) {
-    throw new Error(`Broker unreachable: ${e.message}`);
+    throw new Error(`Broker error: ${e.message}`);
   }
 
   if (rpcRes.error) {
