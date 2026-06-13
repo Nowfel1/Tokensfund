@@ -8,17 +8,17 @@ export const metadata = {
 
 const posts = [
   {
-    slug: "swap-xmr-btc-no-kyc",
-    title: "How to Swap XMR to BTC Without KYC in 2026",
-    date: "June 12, 2026",
-    description: "Compare THORChain, Chainflip and Exolix — get the best Monero to Bitcoin rate in seconds, no account required.",
-    tag: "Guide",
-  },
-  {
     slug: "cross-chain-swap-without-kyc-2026",
     title: "Cross Chain Swap Without KYC in 2026",
     date: "June 13, 2026",
     description: "Learn how to swap between any chains (BTC, ETH, SOL, etc.) without KYC using THORChain, Chainflip, and NEAR Intents.",
+    tag: "Guide",
+  },
+    {
+    slug: "swap-xmr-btc-no-kyc",
+    title: "How to Swap XMR to BTC Without KYC in 2026",
+    date: "June 12, 2026",
+    description: "Compare THORChain, Chainflip and Exolix — get the best Monero to Bitcoin rate in seconds, no account required.",
     tag: "Guide",
   },
 ];
