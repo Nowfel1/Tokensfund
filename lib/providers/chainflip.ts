@@ -99,22 +99,22 @@ export async function buildSwap(
     ],
   };
 
-  let rpcRes: any;
+let rpcRes: any;
+  let debugText = "no response";
   try {
     const res = await fetch(brokerUrl, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rpcBody),
     });
-    const text = await res.text();
-    throw new Error(`BROKER RAW: ${text}`);
-    rpcRes = JSON.parse(text);
+    debugText = await res.text();
+    rpcRes = JSON.parse(debugText);
   } catch (e: any) {
-    throw new Error(`Broker error: ${e.message}`);
+    throw new Error(`Broker fetch failed: ${e.message} | response was: ${debugText}`);
   }
 
   if (rpcRes.error) {
-    throw new Error(`Broker error: ${JSON.stringify(rpcRes.error)}`);
+    throw new Error(`Broker RPC error: ${JSON.stringify(rpcRes.error)}`);
   }
 
   const result = rpcRes.result;
