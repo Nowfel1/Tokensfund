@@ -1,14 +1,9 @@
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
-// Chainflip integration via the official JS SDK (@chainflip/sdk).
-// Docs: https://docs.chainflip.io/swapping/integrations/javascript-sdk/quick-start
-// In "direct API mode" (no broker) you can quote and open deposit channels with
-// no key. To collect a commission, run a broker and pass brokerUrl/commission.
-
 import { SwapSDK } from "@chainflip/sdk/swap";
 
 const NETWORK = (process.env.CHAINFLIP_NETWORK as "mainnet" | "perseverance") || "mainnet";
-const BROKER_URL = process.env.CHAINFLIP_BROKER_URL; // optional, for commission
+const BROKER_URL = process.env.CHAINFLIP_BROKER_URL;
 const BROKER_COMMISSION_BPS = process.env.CHAINFLIP_COMMISSION_BPS
   ? Number(process.env.CHAINFLIP_COMMISSION_BPS)
   : undefined;
@@ -49,7 +44,6 @@ export async function getQuote(
     amount: toBase(req.amount, from.decimals),
   } as any);
 
-  // Prefer a plain REGULAR quote; fall back to whatever came back.
   const quote = (quotes as any[]).find((q) => q.type === "REGULAR") ?? (quotes as any[])[0];
   if (!quote) throw new Error("Chainflip returned no quotes for this pair.");
 
@@ -72,7 +66,7 @@ export async function buildSwap(
 ): Promise<SwapInstruction> {
   if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
 
-  // Re-quote fresh — Chainflip quotes expire in ~10s
+  // Re-quote fresh right before opening — Chainflip quotes expire in ~10s
   const freshQuote = await getQuote(from, to, req);
   const raw = freshQuote.raw as any;
 
@@ -83,9 +77,11 @@ export async function buildSwap(
       slippageTolerancePercent:
         raw.recommendedSlippageTolerancePercent > 0
           ? raw.recommendedSlippageTolerancePercent
-          : req.slippageBps ? req.slippageBps / 100 : 1.5,
+          : req.slippageBps
+          ? req.slippageBps / 100
+          : 1.5,
       refundAddress: req.refundAddress || req.destinationAddress,
-      retryDurationBlocks: 100, // ~10 minutes before refund
+      retryDurationBlocks: 100,
     },
   } as any);
 
