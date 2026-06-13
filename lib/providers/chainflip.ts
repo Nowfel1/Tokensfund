@@ -116,6 +116,7 @@ export async function buildSwap(
   }
 
   const result = rpcRes.result;
+  throw new Error(`BROKER RESULT: ${JSON.stringify(result)}`);
   return {
     provider: "chainflip",
     depositAddress: result.address,
