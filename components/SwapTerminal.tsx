@@ -31,7 +31,6 @@ export default function SwapTerminal() {
   const [toId, setToId] = useState("ETH");
   const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
-  const [refund, setRefund] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AggregatedQuotes | null>(null);
   const [selected, setSelected] = useState<ProviderId | null>(null);
@@ -78,13 +77,12 @@ export default function SwapTerminal() {
     }, 600);
   }, [amount, fromId, toId]);
 
-  const canQuote =
-    amount &&
-    Number(amount) > 0 &&
-    fromId !== toId &&
-    eligible.length > 0 &&
-    destination.trim().length > 0 &&
-    refund.trim().length > 0;
+const canQuote =
+  amount &&
+  Number(amount) > 0 &&
+  fromId !== toId &&
+  eligible.length > 0 &&
+  destination.trim().length > 0;
 
   function flip() {
     setFromId(toId);
@@ -112,7 +110,7 @@ export default function SwapTerminal() {
           toAssetId: toId,
           amount,
           destinationAddress: destination || undefined,
-          refundAddress: refund || undefined,
+          refundAddress: destination,
           slippageBps: 100,
         }),
       });
@@ -236,19 +234,7 @@ export default function SwapTerminal() {
               placeholder={`Where you receive ${toSym}`}
               onChange={(e) => { setDestination(e.target.value); reset(); }}
             />
-          </div>
-          <div className="field">
-            <label htmlFor="refund">Refund address (required)</label>
-            <input
-              id="refund"
-              value={refund}
-              placeholder="Your source chain address for refunds"
-              onChange={(e) => setRefund(e.target.value)}
-            />
-            <div className="hint">Enter your address on the source chain. Used if the swap fails.</div>
-          </div>
-        </div>
-
+         
         <button className="btn-primary" disabled={!canQuote || loading} onClick={getQuotes}>
           {loading
             ? "Comparing routes…"
@@ -256,8 +242,6 @@ export default function SwapTerminal() {
             ? "No route for this pair"
             : !destination.trim()
             ? "Enter destination address"
-            : !refund.trim()
-            ? "Enter refund address"
             : "Compare routes"}
         </button>
 
