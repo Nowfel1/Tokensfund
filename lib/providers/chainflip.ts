@@ -77,7 +77,7 @@ throw new Error(`brokerUrl=${process.env.CHAINFLIP_BROKER_URL} | network=${proce
 
   const slippage = raw.recommendedSlippageTolerancePercent > 0
     ? raw.recommendedSlippageTolerancePercent
-    : req.slippageBps ? req.slippageBps / 100 : 1.5;
+    : req.slippageBps ? (req.slippageBps as number) / 100 : 1.5;
 
   // Call broker JSON-RPC directly instead of via SDK
   const brokerUrl = process.env.CHAINFLIP_BROKER_URL!;
