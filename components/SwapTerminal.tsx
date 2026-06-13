@@ -31,6 +31,7 @@ export default function SwapTerminal() {
   const [toId, setToId] = useState("ETH");
   const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
+  const [refund, setRefund] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<AggregatedQuotes | null>(null);
   const [selected, setSelected] = useState<ProviderId | null>(null);
@@ -38,15 +39,14 @@ export default function SwapTerminal() {
   const [opening, setOpening] = useState(false);
   const [deposit, setDeposit] = useState<SwapInstruction | null>(null);
 
-  // Live estimate state
   const [liveOut, setLiveOut] = useState<number | null>(null);
   const [liveLoading, setLiveLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
+  const fromSym = ASSETS.find((a) => a.id === fromId)?.symbol ?? fromId;
 
-  // Debounced live estimate
   useEffect(() => {
     setLiveOut(null);
     if (!amount || Number(amount) <= 0 || fromId === toId || eligible.length === 0) return;
@@ -57,12 +57,7 @@ export default function SwapTerminal() {
         const res = await fetch("/api/quote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            fromAssetId: fromId,
-            toAssetId: toId,
-            amount,
-            slippageBps: 100,
-          }),
+          body: JSON.stringify({ fromAssetId: fromId, toAssetId: toId, amount, slippageBps: 100 }),
         });
         const data = await res.json();
         if (res.ok && data.quotes?.length) {
@@ -77,16 +72,21 @@ export default function SwapTerminal() {
     }, 600);
   }, [amount, fromId, toId]);
 
-const canQuote =
-  amount &&
-  Number(amount) > 0 &&
-  fromId !== toId &&
-  eligible.length > 0 &&
-  destination.trim().length > 0;
+  // Chainflip requires refund address; other providers it's optional
+  const needsRefund = selected === "chainflip" || (!selected && eligible.includes("chainflip"));
+
+  const canQuote =
+    amount &&
+    Number(amount) > 0 &&
+    fromId !== toId &&
+    eligible.length > 0 &&
+    destination.trim().length > 0;
 
   function flip() {
     setFromId(toId);
     setToId(fromId);
+    setDestination("");
+    setRefund("");
     reset();
   }
 
@@ -110,7 +110,7 @@ const canQuote =
           toAssetId: toId,
           amount,
           destinationAddress: destination || undefined,
-          refundAddress: destination,
+          refundAddress: refund || undefined,
           slippageBps: 100,
         }),
       });
@@ -132,6 +132,10 @@ const canQuote =
       setError("Enter the address where you want to receive funds first.");
       return;
     }
+    if (selected === "chainflip" && !refund) {
+      setError(`Enter a ${fromSym} refund address — required by Chainflip in case the swap fails.`);
+      return;
+    }
     setOpening(true);
     setError(null);
     try {
@@ -144,7 +148,7 @@ const canQuote =
           toAssetId: toId,
           amount,
           destinationAddress: destination,
-          refundAddress: destination,
+          refundAddress: refund || destination,
           slippageBps: 100,
         }),
       });
@@ -160,11 +164,7 @@ const canQuote =
 
   const receiveValue = result && selected
     ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
-    : liveLoading
-    ? "..."
-    : liveOut
-    ? fmt(liveOut)
-    : "0.0";
+    : liveLoading ? "..." : liveOut ? fmt(liveOut) : "0.0";
 
   const receiveEmpty = !result && !liveOut && !liveLoading;
 
@@ -179,16 +179,13 @@ const canQuote =
             inputMode="decimal"
             placeholder="0.0"
             value={amount}
-            onChange={(e) => {
-              setAmount(e.target.value.replace(/[^0-9.]/g, ""));
-              reset();
-            }}
+            onChange={(e) => { setAmount(e.target.value.replace(/[^0-9.]/g, "")); reset(); }}
             aria-label="Amount to send"
           />
           <select
             className="token-select"
             value={fromId}
-            onChange={(e) => { setFromId(e.target.value); reset(); }}
+            onChange={(e) => { setFromId(e.target.value); setRefund(""); reset(); }}
             aria-label="Asset to send"
           >
             {ASSETS.map((a) => (
@@ -225,34 +222,43 @@ const canQuote =
         </div>
 
         {/* addresses */}
-          <div className="fields">
-         <div className="field">
-         <label htmlFor="dest">Destination address ({toSym})</label>
-        <input
-        id="dest"
-        value={destination}
-         placeholder={`Where you receive ${toSym}`}
-         onChange={(e) => {
-        setDestination(e.target.value);
-        reset();
-      }}
-    />
-  </div>
-</div>
-         
+        <div className="fields">
+          <div className="field">
+            <label htmlFor="dest">Destination address ({toSym})</label>
+            <input
+              id="dest"
+              value={destination}
+              placeholder={`Where you receive ${toSym}`}
+              onChange={(e) => { setDestination(e.target.value); reset(); }}
+            />
+          </div>
+          <div className="field">
+            <label htmlFor="refund">
+              Refund address ({fromSym})
+              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> — required for Chainflip</span>}
+            </label>
+            <input
+              id="refund"
+              value={refund}
+              placeholder={`Your ${fromSym} address (returned if swap fails)`}
+              onChange={(e) => { setRefund(e.target.value); reset(); }}
+            />
+          </div>
+        </div>
+
         <button
-  className="btn-primary"
-  disabled={!canQuote || loading}
-  onClick={getQuotes}
->
-  {loading
-    ? "Comparing routes…"
-    : eligible.length === 0
-    ? "No route for this pair"
-    : !destination.trim()
-    ? "Enter destination address"
-    : "Compare routes"}
-</button>
+          className="btn-primary"
+          disabled={!canQuote || loading}
+          onClick={getQuotes}
+        >
+          {loading
+            ? "Comparing routes…"
+            : eligible.length === 0
+            ? "No route for this pair"
+            : !destination.trim()
+            ? "Enter destination address"
+            : "Compare routes"}
+        </button>
 
         {error && <div className="error">{error}</div>}
       </div>
@@ -341,14 +347,8 @@ function label(p: ProviderId) {
   return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : p === "exolix" ? "Exolix" : "NEAR Intents";
 }
 
-function QuoteCard({
-  q, best, selected, sym, onSelect,
-}: {
-  q: NormalizedQuote;
-  best: boolean;
-  selected: boolean;
-  sym: string;
-  onSelect: () => void;
+function QuoteCard({ q, best, selected, sym, onSelect }: {
+  q: NormalizedQuote; best: boolean; selected: boolean; sym: string; onSelect: () => void;
 }) {
   return (
     <div
@@ -356,12 +356,7 @@ function QuoteCard({
       onClick={onSelect}
       role={q.error ? undefined : "button"}
       tabIndex={q.error ? undefined : 0}
-      onKeyDown={(e) => {
-        if (!q.error && (e.key === "Enter" || e.key === " ")) {
-          e.preventDefault();
-          onSelect();
-        }
-      }}
+      onKeyDown={(e) => { if (!q.error && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onSelect(); } }}
     >
       {best && <span className="tag-best">Best route</span>}
       <div className="pmark">{PROVIDER_INITIAL[q.provider]}</div>
@@ -371,8 +366,7 @@ function QuoteCard({
           {q.error
             ? q.error.slice(0, 60)
             : q.estimatedSeconds
-            ? `~${Math.round(q.estimatedSeconds / 60)} min` +
-              (q.feeOut ? ` · fee ${fmt(q.feeOut)} ${sym}` : "")
+            ? `~${Math.round(q.estimatedSeconds / 60)} min` + (q.feeOut ? ` · fee ${fmt(q.feeOut)} ${sym}` : "")
             : "intent-based"}
         </div>
       </div>
@@ -397,11 +391,7 @@ function Copyable({ text }: { text: string }) {
       <code>{text}</code>
       <button
         className="copybtn"
-        onClick={() => {
-          navigator.clipboard?.writeText(text);
-          setCopied(true);
-          setTimeout(() => setCopied(false), 1400);
-        }}
+        onClick={() => { navigator.clipboard?.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1400); }}
       >
         {copied ? "Copied" : "Copy"}
       </button>
