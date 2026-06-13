@@ -144,7 +144,7 @@ const canQuote =
           toAssetId: toId,
           amount,
           destinationAddress: destination,
-          refundAddress: refund || destination,
+          refundAddress: destination,
           slippageBps: 100,
         }),
       });
@@ -225,25 +225,34 @@ const canQuote =
         </div>
 
         {/* addresses */}
-        <div className="fields">
-          <div className="field">
-            <label htmlFor="dest">Destination address ({toSym})</label>
-            <input
-              id="dest"
-              value={destination}
-              placeholder={`Where you receive ${toSym}`}
-              onChange={(e) => { setDestination(e.target.value); reset(); }}
-            />
+          <div className="fields">
+         <div className="field">
+         <label htmlFor="dest">Destination address ({toSym})</label>
+        <input
+        id="dest"
+        value={destination}
+         placeholder={`Where you receive ${toSym}`}
+         onChange={(e) => {
+        setDestination(e.target.value);
+        reset();
+      }}
+    />
+  </div>
+</div>
          
-        <button className="btn-primary" disabled={!canQuote || loading} onClick={getQuotes}>
-          {loading
-            ? "Comparing routes…"
-            : eligible.length === 0
-            ? "No route for this pair"
-            : !destination.trim()
-            ? "Enter destination address"
-            : "Compare routes"}
-        </button>
+        <button
+  className="btn-primary"
+  disabled={!canQuote || loading}
+  onClick={getQuotes}
+>
+  {loading
+    ? "Comparing routes…"
+    : eligible.length === 0
+    ? "No route for this pair"
+    : !destination.trim()
+    ? "Enter destination address"
+    : "Compare routes"}
+</button>
 
         {error && <div className="error">{error}</div>}
       </div>
