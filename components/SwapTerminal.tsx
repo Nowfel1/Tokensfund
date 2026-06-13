@@ -235,7 +235,7 @@ export default function SwapTerminal() {
           <div className="field">
             <label htmlFor="refund">
               Refund address ({fromSym})
-              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> — required for Chainflip</span>}
+              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> — (required)</span>}
             </label>
             <input
               id="refund"
