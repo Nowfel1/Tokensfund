@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     }
     if (body.provider === "chainflip") {
       const quote = await chainflip.getQuote(from, to, body);
-      return NextResponse.json(await chainflip.buildSwap(quote, body, from, to)); // ← fixed
+      return NextResponse.json(await exolix.buildSwap(quote, body, from, to));
     }
     if (body.provider === "near_intents") {
       const quote = await nearIntents.getQuote(from, to, body);
