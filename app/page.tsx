@@ -27,8 +27,7 @@ export default function Home() {
 
       <section className="hiw">
         <div className="hiw-head">
-          <span className="hiw-label">PROCESS</span>
-          <h2 className="hiw-title">How it works</h2>
+           <h2 className="hiw-title">How it works</h2>
           <p className="hiw-sub">Four steps. No account. No waiting.</p>
         </div>
         <div className="hiw-grid">
