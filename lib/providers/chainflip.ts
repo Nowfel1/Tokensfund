@@ -66,9 +66,6 @@ export async function buildSwap(
 ): Promise<SwapInstruction> {
   if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
 
-// DEBUG
-throw new Error(`brokerUrl=${process.env.CHAINFLIP_BROKER_URL} | network=${process.env.CHAINFLIP_NETWORK}`);
-
   const freshQuote = await getQuote(from, to, req);
   const raw = freshQuote.raw as any;
 
