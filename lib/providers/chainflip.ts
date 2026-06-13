@@ -1,5 +1,4 @@
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
-
 import { SwapSDK } from "@chainflip/sdk/swap";
 
 const NETWORK = (process.env.CHAINFLIP_NETWORK as "mainnet" | "perseverance") || "mainnet";
@@ -24,6 +23,7 @@ function toBase(humanAmount: string, decimals: number): string {
   const fracPadded = (frac + "0".repeat(decimals)).slice(0, decimals);
   return (BigInt(whole || "0") * 10n ** BigInt(decimals) + BigInt(fracPadded || "0")).toString();
 }
+
 function fromBase(base: string, decimals: number): number {
   return Number(base) / 10 ** decimals;
 }
@@ -70,20 +70,31 @@ export async function buildSwap(
   const freshQuote = await getQuote(from, to, req);
   const raw = freshQuote.raw as any;
 
-  const channel = await getSdk().requestDepositAddressV2({
-    quote: raw,
-    destAddress: req.destinationAddress,
-    fillOrKillParams: {
-      slippageTolerancePercent:
-        raw.recommendedSlippageTolerancePercent > 0
-          ? raw.recommendedSlippageTolerancePercent
-          : req.slippageBps
-          ? req.slippageBps / 100
-          : 1.5,
-      refundAddress: req.refundAddress || req.destinationAddress,
-      retryDurationBlocks: 100,
-    },
-  } as any);
+  let channel: any;
+  try {
+    channel = await getSdk().requestDepositAddressV2({
+      quote: raw,
+      destAddress: req.destinationAddress,
+      fillOrKillParams: {
+        slippageTolerancePercent:
+          raw.recommendedSlippageTolerancePercent > 0
+            ? raw.recommendedSlippageTolerancePercent
+            : req.slippageBps
+            ? req.slippageBps / 100
+            : 1.5,
+        refundAddress: req.refundAddress || req.destinationAddress,
+        retryDurationBlocks: 100,
+      },
+    } as any);
+  } catch (e: any) {
+    const msg =
+      e?.response?.data?.message ||
+      e?.response?.data?.error ||
+      e?.cause?.message ||
+      e?.message ||
+      "Chainflip deposit channel failed";
+    throw new Error(msg);
+  }
 
   return {
     provider: "chainflip",
