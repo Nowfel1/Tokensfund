@@ -69,44 +69,62 @@ export async function buildSwap(
   const freshQuote = await getQuote(from, to, req);
   const raw = freshQuote.raw as any;
 
-  let channel: any;
+  const fromRef = from.providerIds.chainflip!;
+  const toRef = to.providerIds.chainflip!;
+
+  const slippage = raw.recommendedSlippageTolerancePercent > 0
+    ? raw.recommendedSlippageTolerancePercent
+    : req.slippageBps ? req.slippageBps / 100 : 1.5;
+
+  // Call broker JSON-RPC directly instead of via SDK
+  const brokerUrl = process.env.CHAINFLIP_BROKER_URL!;
+  const commissionBps = process.env.CHAINFLIP_COMMISSION_BPS
+    ? Number(process.env.CHAINFLIP_COMMISSION_BPS)
+    : 0;
+
+  const rpcBody = {
+    jsonrpc: "2.0",
+    id: 1,
+    method: "broker_requestSwapDepositAddress",
+    params: [
+      { asset: fromRef.asset, chain: fromRef.chain },
+      { asset: toRef.asset, chain: toRef.chain },
+      req.destinationAddress,
+      commissionBps,
+      null, // message_metadata
+      Math.round(slippage * 100), // max_boost_fee_bps
+      req.refundAddress || req.destinationAddress,
+      100, // retry_duration_blocks
+      Math.round(slippage * 10000), // min_price_x128 placeholder
+    ],
+  };
+
+  let rpcRes: any;
   try {
-    channel = await getSdk().requestDepositAddressV2({
-      quote: raw,
-      destAddress: req.destinationAddress,
-      fillOrKillParams: {
-        slippageTolerancePercent:
-          raw.recommendedSlippageTolerancePercent > 0
-            ? raw.recommendedSlippageTolerancePercent
-            : req.slippageBps
-            ? req.slippageBps / 100
-            : 1.5,
-        refundAddress: req.refundAddress || req.destinationAddress,
-        retryDurationBlocks: 100,
-      },
-    } as any);
+    const res = await fetch(brokerUrl, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(rpcBody),
+    });
+    rpcRes = await res.json();
   } catch (e: any) {
-    const msg =
-      e?.response?.data?.message ||
-      e?.response?.data?.error ||
-      e?.cause?.message ||
-      e?.message ||
-      "Chainflip deposit channel failed";
-    throw new Error(`CF: ${msg} | raw: ${JSON.stringify(e).slice(0, 300)}`);
+    throw new Error(`Broker unreachable: ${e.message}`);
   }
 
+  if (rpcRes.error) {
+    throw new Error(`Broker error: ${JSON.stringify(rpcRes.error)}`);
+  }
+
+  const result = rpcRes.result;
   return {
     provider: "chainflip",
-    depositAddress: channel.depositAddress,
+    depositAddress: result.address,
     depositAmount: req.amount,
-    expiresAt: channel.estimatedDepositChannelExpiryTime
-      ? Math.floor(channel.estimatedDepositChannelExpiryTime / 1000)
-      : undefined,
-    trackingId: channel.depositChannelId,
+    expiresAt: result.expiry_block ? undefined : undefined,
+    trackingId: result.channel_id?.toString(),
     notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
   };
 }
-
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
     const status: any = await getSdk().getStatusV2({ id: trackingId } as any);
