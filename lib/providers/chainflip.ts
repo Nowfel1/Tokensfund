@@ -86,6 +86,10 @@ export async function buildSwap(
       { asset: toRef.asset, chain: toRef.chain },
       req.destinationAddress,
       commissionBps,
+      null,
+      null,
+      null,
+      null,
     ],
   };
 
