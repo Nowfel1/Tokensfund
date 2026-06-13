@@ -59,52 +59,46 @@ export async function getQuote(
 }
 
 export async function buildSwap(
-  _quote: NormalizedQuote,
+  quote: NormalizedQuote,
   req: QuoteRequest,
   from: CanonicalAsset,
   to: CanonicalAsset
 ): Promise<SwapInstruction> {
-  if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
+  const fromRef = from.providerIds.exolix!;
+  const toRef = to.providerIds.exolix!;
 
-  // Re-quote fresh right before opening — Chainflip quotes expire in ~10s
-  const freshQuote = await getQuote(from, to, req);
-  const raw = freshQuote.raw as any;
+  const body = {
+    coinFrom: fromRef.coin,
+    networkFrom: fromRef.network ?? undefined,
+    coinTo: toRef.coin,
+    networkTo: toRef.network ?? undefined,
+    amount: req.amount,
+    withdrawalAddress: req.destinationAddress,
+    withdrawalExtraId: "",
+    refundAddress: req.refundAddress ?? "",
+    refundExtraId: "",
+    rateType: "float",
+    affiliateId: process.env.EXOLIX_AFFILIATE_ID ?? "",
+  };
 
-  let channel: any;
-  try {
-    channel = await getSdk().requestDepositAddressV2({
-      quote: raw,
-      destAddress: req.destinationAddress,
-      fillOrKillParams: {
-        slippageTolerancePercent:
-          raw.recommendedSlippageTolerancePercent > 0
-            ? raw.recommendedSlippageTolerancePercent
-            : req.slippageBps
-            ? req.slippageBps / 100
-            : 1.5,
-        refundAddress: req.refundAddress || req.destinationAddress,
-        retryDurationBlocks: 100,
-      },
-    } as any);
-  } catch (e: any) {
-    const msg =
-      e?.response?.data?.message ||
-      e?.response?.data?.error ||
-      e?.cause?.message ||
-      e?.message ||
-      "Chainflip deposit channel failed";
-    throw new Error(msg);
+  const res = await fetch(`${BASE}/transactions`, {
+    method: "POST",
+    headers,
+    body: JSON.stringify(body),
+  });
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error(`Exolix swap failed (${res.status}): ${err.slice(0, 200)}`);
   }
-
+  const data = await res.json();
+  if (data.message) throw new Error(`Exolix: ${data.message}`);
   return {
-    provider: "chainflip",
-    depositAddress: channel.depositAddress,
-    depositAmount: req.amount,
-    expiresAt: channel.estimatedDepositChannelExpiryTime
-      ? Math.floor(channel.estimatedDepositChannelExpiryTime / 1000)
-      : undefined,
-    trackingId: channel.depositChannelId,
-    notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
+    provider: "exolix",
+    depositAddress: data.depositAddress,
+    depositAmount: String(data.amount),
+    memo: data.depositExtraId || undefined,
+    trackingId: data.id,
+    notes: undefined,
   };
 }
 
