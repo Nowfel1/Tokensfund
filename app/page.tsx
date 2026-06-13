@@ -15,10 +15,7 @@ export default function Home() {
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
-        <p className="tagline">
-          One intent, three liquidity networks. We quote THORChain, Chainflip and NEAR Intents
-          at once and route your swap to the best price — without ever holding your funds.
-        </p>
+
       </header>
 
       <SwapTerminal />
