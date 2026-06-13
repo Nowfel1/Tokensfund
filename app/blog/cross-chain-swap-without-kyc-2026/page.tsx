@@ -1,115 +1,120 @@
+import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export const metadata = {
   title: "Cross Chain Swap Without KYC in 2026 | TokensFund",
-  description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, and NEAR Intents. Fast, private, and non-custodial.",
+  description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, and NEAR Intents. No account, no KYC, best rates.",
+  keywords: ["cross chain swap without KYC", "swap crypto no KYC 2026", "THORChain Chainflip NEAR Intents", "non custodial cross chain swap"],
+  openGraph: {
+    title: "Cross Chain Swap Without KYC in 2026",
+    description: "Swap between any chains without KYC using THORChain, Chainflip and NEAR Intents — no account required.",
+    images: [{ url: "https://tokensfund.xyz/blog/cross-chain-swap.png", width: 1200, height: 400 }],
+  },
 };
 
-export default function CrossChainSwapGuide() {
+export default function Post() {
   return (
     <main className="wrap">
-      {/* Header with clickable logo */}
       <header className="masthead">
-        <Link href="/" className="brand">
+        <div className="brand">
+          <Logo size={34} />
           <span>tokensfund<span className="tld">.xyz</span></span>
-        </Link>
+        </div>
       </header>
 
       <article className="blog-post">
-        {/* Meta Info */}
-        <div className="blog-meta">
-          <Link href="/blog" className="back-link">← Back to Blog</Link>
+        <div className="blog-post-meta">
+          <span className="blog-tag">Guide</span>
           <span className="blog-date">June 13, 2026</span>
         </div>
 
         <h1>Cross Chain Swap Without KYC in 2026</h1>
-        
-        <p className="blog-intro">
-          In 2026, swapping between different blockchains without KYC has become faster, 
-          cheaper, and more private. Whether you want to move BTC → SOL, ETH → XMR, or any other pair, 
-          decentralized protocols like <strong>THORChain</strong>, <strong>Chainflip</strong>, and <strong>NEAR Intents</strong> 
-          make it possible without creating accounts or going through centralized exchanges.
-        </p>
 
-        {/* Why It Matters */}
-        <h2>Why Cross-Chain Swaps Without KYC Matter</h2>
+        <img
+          src="/blog/banner_cross_chain.png"
+          alt="Cross chain swap without KYC in 2026"
+          className="blog-banner"
+          style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
+        />
+
         <p>
-          Most people still use centralized exchanges for cross-chain swaps, which require KYC and hold your funds. 
-          In 2026, you no longer need to compromise on privacy or security. 
-          Non-custodial cross-chain swaps give you full control over your assets.
+          Cross-chain swaps without KYC have become much more accessible in 2026. 
+          Whether you want to move BTC to SOL, ETH to XMR, or any other combination, 
+          you can now do it directly between wallets using decentralized protocols — 
+          no accounts, no KYC, and no middlemen holding your funds.
         </p>
 
-        {/* Best Protocols */}
-        <h2>Best Protocols for Cross-Chain Swaps in 2026</h2>
-        <div className="protocol-grid">
-          <div className="protocol-card">
-            <h3>THORChain</h3>
-            <p>Native cross-chain liquidity. Excellent for BTC, ETH, SOL and many other assets.</p>
-          </div>
-          <div className="protocol-card">
-            <h3>Chainflip</h3>
-            <p>Fast execution and very competitive fees. Great for major chain pairs.</p>
-          </div>
-          <div className="protocol-card">
-            <h3>NEAR Intents</h3>
-            <p>Modern intent-based system. Fast and efficient routing.</p>
-          </div>
-        </div>
+        <p>
+          In this guide, we’ll show you how to perform cross-chain swaps in 2026 using 
+          <strong> THORChain, Chainflip, and NEAR Intents</strong> through TokensFund.
+        </p>
 
-        {/* How to Swap */}
-        <h2>How to Do a Cross-Chain Swap on TokensFund</h2>
-        <ol className="steps-list">
-          <li>Go to <a href="https://tokensfund.xyz" target="_blank" rel="noopener">tokensfund.xyz</a></li>
-          <li>Select the asset you want to <strong>send</strong></li>
-          <li>Select the asset you want to <strong>receive</strong></li>
+        <h2>Best Protocols for Cross-Chain Swaps (No KYC)</h2>
+        <p>These are currently the top protocols supporting non-custodial cross-chain swaps:</p>
+        <ul>
+          <li><strong>THORChain</strong> — Mature decentralized liquidity protocol with strong BTC and multi-chain support.</li>
+          <li><strong>Chainflip</strong> — Fast and cost-effective swaps between major chains.</li>
+          <li><strong>NEAR Intents</strong> — Newer intent-based system focused on efficiency and speed.</li>
+        </ul>
+
+        <h2>Step-by-Step: Cross Chain Swap on TokensFund</h2>
+        <ol>
+          <li>Go to <a href="https://tokensfund.xyz">tokensfund.xyz</a></li>
+          <li>Select the coin you want to <strong>send</strong></li>
+          <li>Select the coin you want to <strong>receive</strong></li>
           <li>Enter the amount you want to swap</li>
-          <li>Paste your destination wallet address</li>
-          <li>Compare live quotes from THORChain, Chainflip & NEAR Intents</li>
-          <li>Choose the best route (usually the cheapest + fastest)</li>
-          <li>Confirm and generate your one-time deposit address</li>
-          <li>Send the exact amount from your wallet</li>
+          <li>Enter your destination wallet address</li>
+          <li>Enter a refund address (used only if the swap fails)</li>
+          <li>Click <strong>"Compare routes"</strong> to see live quotes from THORChain, Chainflip and NEAR Intents</li>
+          <li>Choose the best rate and click <strong>"Swap"</strong></li>
+          <li>Send the exact amount to the one-time deposit address</li>
           <li>Receive the swapped crypto directly in your wallet</li>
         </ol>
 
-        {/* Benefits */}
-        <h2>Why Use TokensFund for Cross-Chain Swaps?</h2>
-        <div className="benefits-grid">
-          <div className="benefit-item">✅ Compares multiple protocols automatically</div>
-          <div className="benefit-item">✅ Completely non-custodial</div>
-          <div className="benefit-item">✅ No KYC or registration required</div>
-          <div className="benefit-item">✅ Automatic refund if swap fails</div>
-          <div className="benefit-item">✅ Best rate routing across protocols</div>
-          <div className="benefit-item">✅ Supports major chains (BTC, ETH, SOL, etc.)</div>
-        </div>
-
-        {/* Safety */}
-        <h2>Is It Safe?</h2>
-        <p>
-          Yes. <strong>TokensFund never holds your funds.</strong> You send crypto directly to a 
-          one-time deposit address generated for your swap. The swapped amount is sent straight 
-          to your wallet. If anything goes wrong, you receive an automatic refund.
-        </p>
-
-        {/* Fees */}
-        <h2>Fees in 2026</h2>
-        <p>Fees are generally low across all protocols:</p>
+        <h2>Why Use TokensFund?</h2>
         <ul>
-          <li><strong>THORChain:</strong> ~0.1% – 0.3% liquidity fee</li>
-          <li><strong>Chainflip:</strong> Very competitive (often under 0.2%)</li>
-          <li><strong>NEAR Intents:</strong> Efficient pricing with fast execution</li>
+          <li>✅ Compares multiple protocols at once and shows the best rate</li>
+          <li>✅ Fully non-custodial — you never lose control of your funds</li>
+          <li>✅ No KYC, no account, no email required</li>
+          <li>✅ Automatic refund if something goes wrong</li>
+          <li>✅ Supports major chains including BTC, ETH, SOL, and more</li>
         </ul>
 
-        {/* Final CTA */}
-        <div className="cta-box">
-          <h3>Ready to do a cross-chain swap?</h3>
-          <p>Compare the best rates across THORChain, Chainflip & NEAR Intents in one click.</p>
+        <h2>Is It Safe?</h2>
+        <p>
+          Yes. TokensFund does not hold your funds at any point. You send crypto directly 
+          to a one-time deposit address. The swapped amount is sent straight to your 
+          destination wallet. If the swap fails for any reason, your original funds are 
+          automatically refunded.
+        </p>
+
+        <h2>Fees for Cross-Chain Swaps</h2>
+        <p>
+          Fees depend on the protocol and network conditions:
+        </p>
+        <ul>
+          <li><strong>THORChain:</strong> Usually 0.1% – 0.3% liquidity fee</li>
+          <li><strong>Chainflip:</strong> Generally very competitive</li>
+          <li><strong>NEAR Intents:</strong> Efficient pricing with fast execution</li>
+        </ul>
+        <p>TokensFund shows you all available quotes so you can choose the cheapest and fastest option.</p>
+
+        <div className="blog-cta">
+          <p>Ready to do a cross-chain swap?</p>
           <a 
-            href="https://tokensfund.xyz" 
-            className="btn-primary" 
-            target="_blank" 
-            rel="noopener"
+            href="/" 
+            style={{ 
+              display: "inline-block", 
+              textDecoration: "none", 
+              background: "var(--gold)", 
+              color: "#000", 
+              fontWeight: "700", 
+              padding: "12px 28px", 
+              borderRadius: "8px", 
+              fontSize: "1rem" 
+            }}
           >
-            Start Cross-Chain Swap →
+            Start Cross Chain Swap →
           </a>
         </div>
       </article>
