@@ -16,9 +16,6 @@ const posts = [
   },
 ];
 
-import Link from "next/link";
-import Logo from "@/components/Logo";
-
 export default function Blog() {
   return (
     <main className="wrap">
@@ -28,13 +25,11 @@ export default function Blog() {
           <span>tokensfund<span className="tld">.xyz</span></span>
         </Link>
       </header>
-      ...
-    </main>
-  );
-}
+
       <section className="blog-index">
         <h1 className="blog-index-title">Blog</h1>
         <p className="blog-index-sub">Crypto swap guides, tips and updates.</p>
+        
         <div className="blog-list">
           {posts.map((p) => (
             <Link key={p.slug} href={`/blog/${p.slug}`} className="blog-card">
