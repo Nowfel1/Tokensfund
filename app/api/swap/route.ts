@@ -5,6 +5,7 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as exolix from "@/lib/providers/exolix";
+
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
@@ -26,7 +27,7 @@ export async function POST(req: NextRequest) {
     }
     if (body.provider === "chainflip") {
       const quote = await chainflip.getQuote(from, to, body);
-      return NextResponse.json(await exolix.buildSwap(quote, body, from, to));
+      return NextResponse.json(await chainflip.buildSwap(quote, body, from, to));
     }
     if (body.provider === "near_intents") {
       const quote = await nearIntents.getQuote(from, to, body);
@@ -34,7 +35,7 @@ export async function POST(req: NextRequest) {
     }
     if (body.provider === "exolix") {
       const quote = await exolix.getQuote(from, to, body);
-      return NextResponse.json(await exolix.buildSwap(quote, body)); // ← fixed
+      return NextResponse.json(await exolix.buildSwap(quote, body, from, to));
     }
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
   } catch (e: any) {
