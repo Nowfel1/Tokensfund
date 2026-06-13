@@ -58,4 +58,69 @@ export async function getQuote(
   };
 }
 
-expor
+export async function buildSwap(
+  _quote: NormalizedQuote,
+  req: QuoteRequest,
+  from: CanonicalAsset,
+  to: CanonicalAsset
+): Promise<SwapInstruction> {
+  if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
+
+  const freshQuote = await getQuote(from, to, req);
+  const raw = freshQuote.raw as any;
+
+  let channel: any;
+  try {
+    channel = await getSdk().requestDepositAddressV2({
+      quote: raw,
+      destAddress: req.destinationAddress,
+      fillOrKillParams: {
+        slippageTolerancePercent:
+          raw.recommendedSlippageTolerancePercent > 0
+            ? raw.recommendedSlippageTolerancePercent
+            : req.slippageBps
+            ? req.slippageBps / 100
+            : 1.5,
+        refundAddress: req.refundAddress || req.destinationAddress,
+        retryDurationBlocks: 100,
+      },
+    } as any);
+  } catch (e: any) {
+    const msg =
+      e?.response?.data?.message ||
+      e?.response?.data?.error ||
+      e?.cause?.message ||
+      e?.message ||
+      "Chainflip deposit channel failed";
+    throw new Error(`CF: ${msg} | raw: ${JSON.stringify(e).slice(0, 300)}`);
+  }
+
+  return {
+    provider: "chainflip",
+    depositAddress: channel.depositAddress,
+    depositAmount: req.amount,
+    expiresAt: channel.estimatedDepositChannelExpiryTime
+      ? Math.floor(channel.estimatedDepositChannelExpiryTime / 1000)
+      : undefined,
+    trackingId: channel.depositChannelId,
+    notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
+  };
+}
+
+export async function getStatus(trackingId: string): Promise<SwapStatus> {
+  try {
+    const status: any = await getSdk().getStatusV2({ id: trackingId } as any);
+    const phase = String(status.state ?? status.status ?? "").toUpperCase();
+    const map: Record<string, SwapStatus["state"]> = {
+      AWAITING_DEPOSIT: "awaiting_deposit",
+      DEPOSIT_RECEIVED: "deposit_detected",
+      SWAPPING: "processing",
+      SENDING: "processing",
+      COMPLETED: "success",
+      FAILED: "failed",
+    };
+    return { provider: "chainflip", state: map[phase] ?? "unknown", detail: phase };
+  } catch (e: any) {
+    return { provider: "chainflip", state: "unknown", detail: e.message };
+  }
+}
