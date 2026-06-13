@@ -16,15 +16,22 @@ const posts = [
   },
 ];
 
+import Link from "next/link";
+import Logo from "@/components/Logo";
+
 export default function Blog() {
   return (
     <main className="wrap">
       <header className="masthead">
-        <div className="brand">
+        <Link href="/" className="brand">
           <Logo size={34} />
           <span>tokensfund<span className="tld">.xyz</span></span>
-        </div>
+        </Link>
       </header>
+      ...
+    </main>
+  );
+}
       <section className="blog-index">
         <h1 className="blog-index-title">Blog</h1>
         <p className="blog-index-sub">Crypto swap guides, tips and updates.</p>
