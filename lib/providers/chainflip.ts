@@ -66,9 +66,6 @@ export async function buildSwap(
 ): Promise<SwapInstruction> {
   if (!req.destinationAddress) throw new Error("Chainflip needs a destination address.");
 
-  const freshQuote = await getQuote(from, to, req);
-  const raw = freshQuote.raw as any;
-
   const fromRef = from.providerIds.chainflip!;
   const toRef = to.providerIds.chainflip!;
 
@@ -113,13 +110,12 @@ export async function buildSwap(
   }
 
   const result = rpcRes.result;
-  throw new Error(`BROKER RESULT: ${JSON.stringify(result)}`);
 
   return {
     provider: "chainflip",
     depositAddress: result.address,
     depositAmount: req.amount,
-    expiresAt: undefined,
+    expiresAt: result.source_chain_expiry_block ?? undefined,
     trackingId: result.channel_id?.toString(),
     notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
   };
