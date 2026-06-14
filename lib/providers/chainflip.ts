@@ -86,10 +86,11 @@ export async function buildSwap(
       { asset: toRef.asset, chain: toRef.chain },
       req.destinationAddress,
       commissionBps,
-      null,
-      null,
-      null,
-      null,
+      {
+        refund_address: req.refundAddress || req.destinationAddress,
+        min_price: "0x0",
+        retry_duration: 100,
+      },
     ],
   };
 
