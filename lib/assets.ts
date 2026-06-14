@@ -13,19 +13,6 @@ export const ASSETS: CanonicalAsset[] = [
       near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
       exolix: { coin: "BTC", network: "BTC" },
     },
-    },
-    {
-  id: "LTC",
-  symbol: "LTC",
-  name: "Litecoin",
-  chain: "Litecoin",
-  decimals: 8,
-  providerIds: {
-    thorchain: { asset: "LTC.LTC", decimals: 8 },
-    chainflip: { asset: "LTC", chain: "Litecoin" },
-    near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
-    exolix: { coin: "LTC", network: "LTC" },
-  },
   },
   {
     id: "ETH",
@@ -38,6 +25,18 @@ export const ASSETS: CanonicalAsset[] = [
       chainflip: { asset: "ETH", chain: "Ethereum" },
       near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
       exolix: { coin: "ETH", network: "ETH" },
+    },
+  },
+  {
+    id: "SOL",
+    symbol: "SOL",
+    name: "Solana",
+    chain: "Solana",
+    decimals: 9,
+    providerIds: {
+      chainflip: { asset: "SOL", chain: "Solana" },
+      near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
+      exolix: { coin: "SOL", network: "SOL" },
     },
   },
   {
@@ -78,26 +77,28 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    id: "SOL",
-    symbol: "SOL",
-    name: "Solana",
-    chain: "Solana",
-    decimals: 9,
+    id: "LTC",
+    symbol: "LTC",
+    name: "Litecoin",
+    chain: "Litecoin",
+    decimals: 8,
     providerIds: {
-      chainflip: { asset: "SOL", chain: "Solana" },
-      near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
-      exolix: { coin: "SOL", network: "SOL" },
+      thorchain: { asset: "LTC.LTC", decimals: 8 },
+      chainflip: { asset: "LTC", chain: "Litecoin" },
+      near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
+      exolix: { coin: "LTC", network: "LTC" },
     },
   },
   {
-    id: "NEAR",
-    symbol: "NEAR",
-    name: "NEAR",
-    chain: "NEAR",
-    decimals: 24,
+    id: "DOGE",
+    symbol: "DOGE",
+    name: "Dogecoin",
+    chain: "Dogecoin",
+    decimals: 8,
     providerIds: {
-      near_intents: { asset: "nep141:wrap.near", decimals: 24 },
-      exolix: { coin: "NEAR", network: "NEAR" },
+      thorchain: { asset: "DOGE.DOGE", decimals: 8 },
+      near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
+      exolix: { coin: "DOGE", network: "DOGE" },
     },
   },
   {
@@ -108,6 +109,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 12,
     providerIds: {
       thorchain: { asset: "XMR.XMR", decimals: 8 },
+      near_intents: { asset: "nep141:xmr.omft.near", decimals: 12 },
       exolix: { coin: "XMR", network: "XMR" },
     },
   },
@@ -118,6 +120,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Zcash",
     decimals: 8,
     providerIds: {
+      near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
       exolix: { coin: "ZEC", network: "ZEC" },
     },
   },
@@ -130,6 +133,17 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       near_intents: { asset: "nep141:ton.omft.near", decimals: 9 },
       exolix: { coin: "TON", network: "TON" },
+    },
+  },
+  {
+    id: "NEAR",
+    symbol: "NEAR",
+    name: "NEAR",
+    chain: "NEAR",
+    decimals: 24,
+    providerIds: {
+      near_intents: { asset: "nep141:wrap.near", decimals: 24 },
+      exolix: { coin: "NEAR", network: "NEAR" },
     },
   },
 ];
