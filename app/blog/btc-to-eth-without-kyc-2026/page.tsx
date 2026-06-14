@@ -1,5 +1,4 @@
 import Logo from "@/components/Logo";
-import Link from "next/link";
 
 export const metadata = {
   title: "How to Swap BTC to ETH Without KYC in 2026 | TokensFund",
@@ -17,13 +16,13 @@ export default function Post() {
     <main className="wrap">
       <header className="masthead">
         <div className="header-inner">
-          <Link href="/" className="brand" style={{ textDecoration: "none", color: "inherit" }}>
+          <a href="/" className="brand" style={{ textDecoration: "none", color: "inherit" }}>
             <Logo size={34} />
             <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
+          </a>
           <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
+            <a href="/" className="nav-link">Swap</a>
+            <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
       </header>
