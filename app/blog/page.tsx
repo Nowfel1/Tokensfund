@@ -8,6 +8,13 @@ export const metadata = {
 
 const posts = [
   {
+    slug: "btc-to-eth-without-kyc-2026",
+    title: "How to Swap BTC to ETH Without KYC in 2026",
+    date: "June 14, 2026",
+    description: "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap Bitcoin to Ethereum at the best rate — no account, no KYC.",
+    tag: "Guide",
+  },
+  {
     slug: "cross-chain-swap-without-kyc-2026",
     title: "Cross Chain Swap Without KYC in 2026",
     date: "June 13, 2026",
