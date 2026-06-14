@@ -229,7 +229,7 @@ export default function SwapTerminal() {
               id="dest"
               value={destination}
               placeholder={`Where you receive ${toSym}`}
-              onChange={(e) => { setDestination(e.target.value); reset(); }}
+              onChange={(e) => { setDestination(e.target.value); }}
             />
           </div>
           <div className="field">
@@ -241,7 +241,7 @@ export default function SwapTerminal() {
               id="refund"
               value={refund}
               placeholder={`Your ${fromSym} address (returned if swap fails)`}
-              onChange={(e) => { setRefund(e.target.value); reset(); }}
+              onChange={(e) => { setRefund(e.target.value); }}
             />
           </div>
         </div>
