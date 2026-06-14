@@ -31,6 +31,7 @@ function dummyAddress(asset: CanonicalAsset): string {
   if (chain === "dogecoin") return "D7Y55Jr7bPaxSHpFZFDEoCJaQF6FwxMXbs";
   if (chain === "zcash") return "t1KzZ5n2TPEGYXTZ3WYGL1AYEumEQaRoHaL";
   if (chain === "ton") return "EQD2NmD_lH5f5u1Kj3KfGyTvhZSX0Eg6qp2a5IQUKXxOG3f";
+  if (chain === "xrp ledger") return "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
    return "0x0000000000000000000000000000000000000001";
 }
 
