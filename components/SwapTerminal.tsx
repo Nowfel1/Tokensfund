@@ -62,8 +62,6 @@ export default function SwapTerminal() {
             toAssetId: toId,
             amount,
             slippageBps: 100,
-            destinationAddress: destination || "0x0000000000000000000000000000000000000001",
-            refundAddress: refund || "0x0000000000000000000000000000000000000001",
           }),
         });
         const data = await res.json();
