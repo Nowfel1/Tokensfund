@@ -5,6 +5,7 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as exolix from "@/lib/providers/exolix";
+import * as cce from "@/lib/providers/cce";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,6 +37,10 @@ export async function POST(req: NextRequest) {
     if (body.provider === "exolix") {
       const quote = await exolix.getQuote(from, to, body);
       return NextResponse.json(await exolix.buildSwap(quote, body, from, to));
+    }
+    if (body.provider === "cce") {
+      const quote = await cce.getQuote(from, to, body);
+      return NextResponse.json(await cce.buildSwap(quote, body, from, to));
     }
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
   } catch (e: any) {
