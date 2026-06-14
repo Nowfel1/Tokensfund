@@ -43,6 +43,18 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+  id: "XRP",
+  symbol: "XRP",
+  name: "XRP",
+  chain: "XRP Ledger",
+  decimals: 6,
+  providerIds: {
+    exolix: { coin: "XRP", network: "XRP" },
+    near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
+    cce: { abbr: "XRP", chain: "XRP" },
+  },
+},
+  {
     id: "USDC",
     symbol: "USDC",
     name: "USD Coin (Ethereum)",
