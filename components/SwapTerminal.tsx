@@ -57,8 +57,14 @@ export default function SwapTerminal() {
         const res = await fetch("/api/quote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ fromAssetId: fromId, toAssetId: toId, amount, slippageBps: 100 }),
-        });
+          body: JSON.stringify({
+  fromAssetId: fromId,
+  toAssetId: toId,
+  amount,
+  slippageBps: 100,
+  destinationAddress: destination || "0x0000000000000000000000000000000000000001",
+  refundAddress: refund || "0x0000000000000000000000000000000000000001",
+}),
         const data = await res.json();
         if (res.ok && data.quotes?.length) {
           const best = data.quotes[data.bestIndex];
