@@ -125,6 +125,17 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+  id: "TAO",
+  symbol: "TAO",
+  name: "Bittensor",
+  chain: "Bittensor",
+  decimals: 9,
+  providerIds: {
+    exolix: { coin: "TAO", network: "TAO" },
+    near_intents: { asset: "nep141:tao.omft.near", decimals: 9 },
+  },
+},
+  {
     id: "TON",
     symbol: "TON",
     name: "Toncoin",
