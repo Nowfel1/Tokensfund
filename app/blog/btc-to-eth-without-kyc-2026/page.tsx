@@ -11,12 +11,35 @@ export const metadata = {
   },
 };
 
+const ctaStyle = {
+  display: "inline-block",
+  textDecoration: "none",
+  background: "var(--gold)",
+  color: "#000",
+  fontWeight: "700",
+  padding: "12px 28px",
+  borderRadius: "8px",
+  fontSize: "1rem",
+};
+
+const brandStyle = {
+  textDecoration: "none",
+  color: "inherit",
+};
+
+const bannerStyle = {
+  width: "100%",
+  height: "auto",
+  borderRadius: "12px",
+  marginBottom: "2rem",
+};
+
 export default function Post() {
   return (
     <main className="wrap">
       <header className="masthead">
         <div className="header-inner">
-          <a href="/" className="brand" style={{ textDecoration: "none", color: "inherit" }}>
+          <a href="/" className="brand" style={brandStyle}>
             <Logo size={34} />
             <span>tokensfund<span className="tld">.xyz</span></span>
           </a>
@@ -39,7 +62,7 @@ export default function Post() {
           src="/blog/banner_btc_eth.png"
           alt="How to swap BTC to ETH without KYC in 2026"
           className="blog-banner"
-          style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
+          style={bannerStyle}
         />
 
         <p>
@@ -147,19 +170,7 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to swap BTC to ETH without KYC?</p>
-          
-            href="/"
-            style={{
-              display: "inline-block",
-              textDecoration: "none",
-              background: "var(--gold)",
-              color: "#000",
-              fontWeight: "700",
-              padding: "12px 28px",
-              borderRadius: "8px",
-              fontSize: "1rem",
-            }}
-          >
+          <a href="/" style={ctaStyle}>
             Swap BTC to ETH Now
           </a>
         </div>
