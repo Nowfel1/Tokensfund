@@ -1,17 +1,10 @@
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
-// NEAR Intents integration via the 1Click REST API.
-// Docs: https://docs.near-intents.org/integration/distribution-channels/1click-api/quickstart
-// No testnet exists — test with tiny real amounts.
-// Set NEAR_1CLICK_JWT to skip the 0.2% no-key fee (register at partners.near-intents.org).
-
 const BASE = process.env.NEAR_1CLICK_URL || "https://1click.chaindefuser.com";
 const JWT = process.env.NEAR_1CLICK_JWT;
 
-// Platform fee. NOTE: 1Click splits appFees 50/50 with the protocol by default,
-// so this `fee` is the TOTAL charged to the user. To net 2% yourself, set 400.
 const FEE_BPS = process.env.NEAR_APP_FEE_BPS ? Number(process.env.NEAR_APP_FEE_BPS) : undefined;
-const FEE_RECIPIENT = process.env.NEAR_FEE_RECIPIENT; // a NEAR-supported address you control
+const FEE_RECIPIENT = process.env.NEAR_FEE_RECIPIENT;
 
 function headers() {
   const h: Record<string, string> = { "Content-Type": "application/json" };
@@ -20,13 +13,26 @@ function headers() {
 }
 
 function toBase(humanAmount: string, decimals: number): string {
-  // Avoid float drift for high-decimal assets (NEAR = 24).
   const [whole, frac = ""] = humanAmount.split(".");
   const fracPadded = (frac + "0".repeat(decimals)).slice(0, decimals);
   return (BigInt(whole || "0") * 10n ** BigInt(decimals) + BigInt(fracPadded || "0")).toString();
 }
+
 function fromBase(base: string, decimals: number): number {
   return Number(base) / 10 ** decimals;
+}
+
+function dummyAddress(asset: CanonicalAsset): string {
+  const chain = asset.chain.toLowerCase();
+  if (chain === "bitcoin") return "bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf5mdq";
+  if (chain === "solana") return "11111111111111111111111111111111";
+  if (chain === "near") return "dummy.near";
+  if (chain === "monero") return "44AFFq5kSiGBoZ4NMDwYtN18obc8AemS33DBLWs3H7otXft3XjrpDtQGv7SqSsaBYBb98uNbr2VBBEt7f2wfn3QVnKJtVj3";
+  if (chain === "litecoin") return "LX2LMYXtuv5JcznS617SKUwpEBK2rUkdND";
+  if (chain === "dogecoin") return "D7Y55Jr7bPaxSHpFZFDEoCJaQF6FwxMXbs";
+  if (chain === "zcash") return "t1KzZ5n2TPEGYXTZ3WYGL1AYEumEQaRoHaL";
+  if (chain === "ton") return "EQD2NmD_lH5f5u1Kj3KfGyTvhZSX0Eg6qp2a5IQUKXxOG3f";
+  return "0x0000000000000000000000000000000000000001";
 }
 
 async function requestQuote(
@@ -39,6 +45,9 @@ async function requestQuote(
   const toRef = to.providerIds.near_intents!;
   const fromDecimals = fromRef.decimals ?? from.decimals;
 
+  const recipient = req.destinationAddress || dummyAddress(to);
+  const refundTo = req.refundAddress || req.destinationAddress || dummyAddress(from);
+
   const body = {
     dry,
     swapType: "EXACT_INPUT",
@@ -47,14 +56,10 @@ async function requestQuote(
     depositType: "ORIGIN_CHAIN",
     destinationAsset: toRef.asset,
     amount: toBase(req.amount, fromDecimals),
-    ...(req.destinationAddress ? {
-      recipient: req.destinationAddress,
-      recipientType: "DESTINATION_CHAIN",
-    } : {}),
-    ...(req.refundAddress ? {
-      refundTo: req.refundAddress,
-      refundType: "ORIGIN_CHAIN",
-    } : {}),
+    recipient,
+    recipientType: "DESTINATION_CHAIN",
+    refundTo,
+    refundType: "ORIGIN_CHAIN",
     deadline: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     ...(FEE_BPS && FEE_RECIPIENT
       ? { appFees: [{ recipient: FEE_RECIPIENT, fee: FEE_BPS }] }
@@ -78,7 +83,7 @@ export async function getQuote(
   to: CanonicalAsset,
   req: QuoteRequest
 ): Promise<NormalizedQuote> {
-  const data = await requestQuote(from, to, req, /* dry */ true);
+  const data = await requestQuote(from, to, req, true);
   const q = data.quote ?? data;
   const toDecimals = to.providerIds.near_intents!.decimals ?? to.decimals;
 
@@ -101,8 +106,7 @@ export async function buildSwap(
   to: CanonicalAsset,
   req: QuoteRequest
 ): Promise<SwapInstruction> {
-  // Re-request with dry:false to obtain an executable deposit address.
-  const data = await requestQuote(from, to, req, /* dry */ false);
+  const data = await requestQuote(from, to, req, false);
   const q = data.quote ?? data;
   const depositAddress = q.depositAddress ?? data.depositAddress;
   if (!depositAddress) {
