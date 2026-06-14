@@ -90,6 +90,7 @@ export async function buildSwap(
         refund_address: req.refundAddress || req.destinationAddress,
         min_price: "0x0",
         retry_duration: 100,
+        message: null,
       },
     ],
   };
