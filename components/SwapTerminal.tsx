@@ -9,6 +9,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   chainflip: "CF",
   near_intents: "NI",
   exolix: "EX",
+  cce: "CC",
 };
 
 function fmt(n: number) {
@@ -21,7 +22,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents", "exolix"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "exolix", "cce"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -57,7 +58,7 @@ export default function SwapTerminal() {
         const res = await fetch("/api/quote", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-         body: JSON.stringify({
+          body: JSON.stringify({
             fromAssetId: fromId,
             toAssetId: toId,
             amount,
@@ -77,7 +78,6 @@ export default function SwapTerminal() {
     }, 600);
   }, [amount, fromId, toId]);
 
-  // Chainflip requires refund address; other providers it's optional
   const needsRefund = selected === "chainflip" || (!selected && eligible.includes("chainflip"));
 
   const canQuote =
@@ -176,7 +176,6 @@ export default function SwapTerminal() {
   return (
     <div>
       <div className="card">
-        {/* FROM */}
         <div className="leg">
           <span className="label">You send</span>
           <input
@@ -208,7 +207,6 @@ export default function SwapTerminal() {
           </button>
         </div>
 
-        {/* TO */}
         <div className="leg">
           <span className="label">You receive (estimated)</span>
           <div className={`amount-readout ${receiveEmpty ? "empty" : ""}`}>
@@ -226,7 +224,6 @@ export default function SwapTerminal() {
           </select>
         </div>
 
-        {/* addresses */}
         <div className="fields">
           <div className="field">
             <label htmlFor="dest">Destination address ({toSym})</label>
@@ -268,7 +265,6 @@ export default function SwapTerminal() {
         {error && <div className="error">{error}</div>}
       </div>
 
-      {/* QUOTE RACE */}
       {(loading || result) && (
         <div className="race">
           <div className="race-head">
@@ -308,7 +304,6 @@ export default function SwapTerminal() {
         </div>
       )}
 
-      {/* DEPOSIT INSTRUCTIONS */}
       {deposit && (
         <div className="deposit">
           <h3>
@@ -349,7 +344,11 @@ export default function SwapTerminal() {
 }
 
 function label(p: ProviderId) {
-  return p === "thorchain" ? "THORChain" : p === "chainflip" ? "Chainflip" : p === "exolix" ? "Exolix" : "NEAR Intents";
+  return p === "thorchain" ? "THORChain"
+    : p === "chainflip" ? "Chainflip"
+    : p === "exolix" ? "Exolix"
+    : p === "cce" ? "CCE.Cash"
+    : "NEAR Intents";
 }
 
 function QuoteCard({ q, best, selected, sym, onSelect }: {
