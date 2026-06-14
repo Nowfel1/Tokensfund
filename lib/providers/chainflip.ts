@@ -80,19 +80,18 @@ export async function buildSwap(
   const rpcBody = {
     jsonrpc: "2.0",
     id: 1,
-    method: "broker_requestSwapDepositAddress",
-    params: [
-      { asset: fromRef.asset, chain: fromRef.chain },
-      { asset: toRef.asset, chain: toRef.chain },
-      req.destinationAddress,
-      commissionBps,
-      {
+    method: "broker_request_swap_deposit_address",
+    params: {
+      source_asset: { chain: fromRef.chain, asset: fromRef.asset },
+      destination_asset: { chain: toRef.chain, asset: toRef.asset },
+      destination_address: req.destinationAddress,
+      broker_commission: commissionBps,
+      refund_parameters: {
+        retry_duration: 100,
         refund_address: req.refundAddress || req.destinationAddress,
         min_price: "0x0",
-        retry_duration: 100,
-        message: null,
       },
-    ],
+    },
   };
 
   let rpcRes: any;
