@@ -109,7 +109,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 12,
     providerIds: {
       thorchain: { asset: "XMR.XMR", decimals: 8 },
-      near_intents: { asset: "nep141:xmr.omft.near", decimals: 12 },
       exolix: { coin: "XMR", network: "XMR" },
     },
   },
@@ -132,8 +131,7 @@ export const ASSETS: CanonicalAsset[] = [
   decimals: 9,
   providerIds: {
     exolix: { coin: "TAO", network: "TAO" },
-    near_intents: { asset: "nep141:tao.omft.near", decimals: 9 },
-  },
+      },
 },
   {
     id: "TON",
