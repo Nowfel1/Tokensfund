@@ -47,10 +47,14 @@ async function requestQuote(
     depositType: "ORIGIN_CHAIN",
     destinationAsset: toRef.asset,
     amount: toBase(req.amount, fromDecimals),
-    recipient: req.destinationAddress || "",
-    recipientType: "DESTINATION_CHAIN",
-    refundTo: req.refundAddress || req.destinationAddress || "",
-    refundType: req.refundAddress ? "ORIGIN_CHAIN" : "DESTINATION_CHAIN",
+    ...(req.destinationAddress ? {
+      recipient: req.destinationAddress,
+      recipientType: "DESTINATION_CHAIN",
+    } : {}),
+    ...(req.refundAddress ? {
+      refundTo: req.refundAddress,
+      refundType: "ORIGIN_CHAIN",
+    } : {}),
     deadline: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
     ...(FEE_BPS && FEE_RECIPIENT
       ? { appFees: [{ recipient: FEE_RECIPIENT, fee: FEE_BPS }] }
