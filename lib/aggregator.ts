@@ -4,28 +4,29 @@ import * as thorchain from "./providers/thorchain";
 import * as chainflip from "./providers/chainflip";
 import * as nearIntents from "./providers/nearIntents";
 import * as exolix from "./providers/exolix";
+import * as cce from "./providers/cce";
 
 const LABELS: Record<ProviderId, string> = {
   thorchain: "THORChain",
   chainflip: "Chainflip",
   near_intents: "NEAR Intents",
   exolix: "Exolix",
+  cce: "CCE.Cash",
 };
 
 export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuotes> {
   const fromAsset = getAsset(req.fromAssetId);
   const toAsset = getAsset(req.toAssetId);
-
   if (!fromAsset || !toAsset) throw new Error("Unknown asset.");
   if (fromAsset.id === toAsset.id) throw new Error("Pick two different assets.");
 
   const eligible = providersForPair(fromAsset.id, toAsset.id);
-
   const settled = await Promise.allSettled(
     eligible.map((p) => {
       if (p === "thorchain") return thorchain.getQuote(fromAsset, toAsset, req);
       if (p === "chainflip") return chainflip.getQuote(fromAsset, toAsset, req);
       if (p === "exolix") return exolix.getQuote(fromAsset, toAsset, req);
+      if (p === "cce") return cce.getQuote(fromAsset, toAsset, req);
       return nearIntents.getQuote(fromAsset, toAsset, req);
     })
   );
@@ -42,8 +43,6 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
   });
 
   quotes.sort((a, b) => (b.error ? -1 : 0) - (a.error ? -1 : 0) || b.expectedOut - a.expectedOut);
-
   const bestIndex = quotes.findIndex((q) => !q.error && q.expectedOut > 0);
-
   return { request: req, fromAsset, toAsset, quotes, bestIndex };
 }
