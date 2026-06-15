@@ -11,7 +11,6 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "BTC.BTC", decimals: 8 },
       chainflip: { asset: "BTC", chain: "Bitcoin" },
       near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
-      exolix: { coin: "BTC", network: "BTC" },
       cce: { abbr: "BTC", chain: "Bitcoin" },
     },
   },
@@ -25,7 +24,6 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "ETH.ETH", decimals: 8 },
       chainflip: { asset: "ETH", chain: "Ethereum" },
       near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
-      exolix: { coin: "ETH", network: "ETH" },
       cce: { abbr: "ETH", chain: "Ethereum" },
     },
   },
@@ -38,22 +36,20 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       chainflip: { asset: "SOL", chain: "Solana" },
       near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
-      exolix: { coin: "SOL", network: "SOL" },
       cce: { abbr: "SOL", chain: "Solana" },
     },
   },
   {
-  id: "XRP",
-  symbol: "XRP",
-  name: "XRP",
-  chain: "XRP Ledger",
-  decimals: 6,
-  providerIds: {
-    exolix: { coin: "XRP", network: "XRP" },
-    near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
-    cce: { abbr: "XRP", chain: "XRP" },
+    id: "XRP",
+    symbol: "XRP",
+    name: "XRP",
+    chain: "XRP Ledger",
+    decimals: 6,
+    providerIds: {
+      near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
+      cce: { abbr: "XRP", chain: "XRP" },
+    },
   },
-},
   {
     id: "USDC",
     symbol: "USDC",
@@ -70,7 +66,6 @@ export const ASSETS: CanonicalAsset[] = [
         asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
         decimals: 6,
       },
-      exolix: { coin: "USDC", network: "ETH" },
       cce: { abbr: "USDC", chain: "Ethereum" },
     },
   },
@@ -89,7 +84,6 @@ export const ASSETS: CanonicalAsset[] = [
         asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
         decimals: 6,
       },
-      exolix: { coin: "USDT", network: "ETH" },
       cce: { abbr: "USDT", chain: "Ethereum" },
     },
   },
@@ -103,7 +97,6 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "LTC.LTC", decimals: 8 },
       chainflip: { asset: "LTC", chain: "Litecoin" },
       near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
-      exolix: { coin: "LTC", network: "LTC" },
       cce: { abbr: "LTC", chain: "Litecoin" },
     },
   },
@@ -116,7 +109,6 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       thorchain: { asset: "DOGE.DOGE", decimals: 8 },
       near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
-      exolix: { coin: "DOGE", network: "DOGE" },
       cce: { abbr: "DOGE", chain: "Dogecoin" },
     },
   },
@@ -128,7 +120,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 12,
     providerIds: {
       thorchain: { asset: "XMR.XMR", decimals: 8 },
-      exolix: { coin: "XMR", network: "XMR" },
       cce: { abbr: "XMR", chain: "Monero" },
     },
   },
@@ -140,7 +131,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 8,
     providerIds: {
       near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-      exolix: { coin: "ZEC", network: "ZEC" },
       cce: { abbr: "ZEC", chain: "Zcash" },
     },
   },
@@ -151,7 +141,17 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Bittensor",
     decimals: 9,
     providerIds: {
-      exolix: { coin: "TAO", network: "TAO" },
+      cce: { abbr: "TAO", chain: "Bittensor" },
+    },
+  },
+  {
+    id: "HYPE",
+    symbol: "HYPE",
+    name: "Hyperliquid",
+    chain: "Hyperliquid",
+    decimals: 8,
+    providerIds: {
+      cce: { abbr: "HYPE", chain: "Hyperliquid" },
     },
   },
   {
@@ -162,7 +162,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 9,
     providerIds: {
       near_intents: { asset: "nep141:ton.omft.near", decimals: 9 },
-      exolix: { coin: "TON", network: "TON" },
       cce: { abbr: "TON", chain: "TON" },
     },
   },
@@ -174,7 +173,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 24,
     providerIds: {
       near_intents: { asset: "nep141:wrap.near", decimals: 24 },
-      exolix: { coin: "NEAR", network: "NEAR" },
     },
   },
 ];
@@ -189,11 +187,10 @@ export function providersForPair(fromId: string, toId: string) {
   const from = getAsset(fromId);
   const to = getAsset(toId);
   if (!from || !to) return [];
-  const ids: ("thorchain" | "chainflip" | "near_intents" | "exolix" | "cce")[] = [
+  const ids: ("thorchain" | "chainflip" | "near_intents" | "cce")[] = [
     "thorchain",
     "chainflip",
     "near_intents",
-    "exolix",
     "cce",
   ];
   return ids.filter((p) => from.providerIds[p] && to.providerIds[p]);
