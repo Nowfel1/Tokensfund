@@ -145,16 +145,6 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    id: "HYPE",
-    symbol: "HYPE",
-    name: "Hyperliquid",
-    chain: "Hyperliquid",
-    decimals: 8,
-    providerIds: {
-      cce: { abbr: "HYPE", chain: "Hyperliquid" },
-    },
-  },
-  {
     id: "TON",
     symbol: "TON",
     name: "Toncoin",
