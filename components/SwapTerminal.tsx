@@ -21,7 +21,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents", "exolix", "cce"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "cce"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -137,7 +137,7 @@ export default function SwapTerminal() {
       return;
     }
     if (selected === "chainflip" && !refund) {
-      setError(`Enter a ${fromSym} refund address — required by Chainflip in case the swap fails.`);
+      setError(`Enter a ${fromSym} refund address - required by Chainflip in case the swap fails.`);
       return;
     }
     setOpening(true);
@@ -236,7 +236,7 @@ export default function SwapTerminal() {
           <div className="field">
             <label htmlFor="refund">
               Refund address ({fromSym})
-              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> — (required)</span>}
+              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> - (required)</span>}
             </label>
             <input
               id="refund"
@@ -253,7 +253,7 @@ export default function SwapTerminal() {
           onClick={getQuotes}
         >
           {loading
-            ? "Comparing routes…"
+            ? "Comparing routes..."
             : eligible.length === 0
             ? "No route for this pair"
             : !destination.trim()
@@ -270,7 +270,7 @@ export default function SwapTerminal() {
             <h2>Routes</h2>
             <span className="count">
               {loading
-                ? `${eligible.length} networks quoting…`
+                ? `${eligible.length} networks quoting...`
                 : `${result?.quotes.filter((q) => !q.error).length}/${result?.quotes.length} routed`}
             </span>
           </div>
@@ -297,7 +297,7 @@ export default function SwapTerminal() {
               ))}
           {result && selected && !deposit && (
             <button className="btn-primary" disabled={opening} onClick={openDeposit}>
-              {opening ? "Opening deposit address…" : `Swap via ${label(selected)}`}
+              {opening ? "Opening deposit address..." : `Swap via ${label(selected)}`}
             </button>
           )}
         </div>
@@ -326,7 +326,7 @@ export default function SwapTerminal() {
           </div>
           {deposit.memo && (
             <p className="warn">
-              ⚠ You must include this exact memo. THORChain refunds deposits sent without the
+              You must include this exact memo. THORChain refunds deposits sent without the
               correct memo. On Bitcoin it goes in an OP_RETURN output.
             </p>
           )}
@@ -355,48 +355,3 @@ function QuoteCard({ q, best, selected, sym, onSelect }: {
   return (
     <div
       className={`quote ${best ? "best" : ""} ${q.error ? "failed" : "selectable"} ${selected ? "selected" : ""}`}
-      onClick={onSelect}
-      role={q.error ? undefined : "button"}
-      tabIndex={q.error ? undefined : 0}
-      onKeyDown={(e) => { if (!q.error && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onSelect(); } }}
-    >
-      {best && <span className="tag-best">Best route</span>}
-      <div className="pmark">{PROVIDER_INITIAL[q.provider]}</div>
-      <div>
-        <div className="pname">{q.providerLabel}</div>
-        <div className="pmeta">
-          {q.error
-            ? q.error.slice(0, 60)
-            : q.estimatedSeconds
-            ? `~${Math.round(q.estimatedSeconds / 60)} min` + (q.feeOut ? ` · fee ${fmt(q.feeOut)} ${sym}` : "")
-            : "intent-based"}
-        </div>
-      </div>
-      <div className="out">
-        {q.error ? (
-          <div className="num" style={{ color: "var(--muted-2)" }}>—</div>
-        ) : (
-          <>
-            <div className="num">{fmt(q.expectedOut)}</div>
-            <div className="sym">{sym}</div>
-          </>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function Copyable({ text }: { text: string }) {
-  const [copied, setCopied] = useState(false);
-  return (
-    <div className="copyline">
-      <code>{text}</code>
-      <button
-        className="copybtn"
-        onClick={() => { navigator.clipboard?.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1400); }}
-      >
-        {copied ? "Copied" : "Copy"}
-      </button>
-    </div>
-  );
-}
