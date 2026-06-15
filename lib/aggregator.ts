@@ -3,14 +3,12 @@ import { getAsset, providersForPair } from "./assets";
 import * as thorchain from "./providers/thorchain";
 import * as chainflip from "./providers/chainflip";
 import * as nearIntents from "./providers/nearIntents";
-import * as exolix from "./providers/exolix";
 import * as cce from "./providers/cce";
 
 const LABELS: Record<ProviderId, string> = {
   thorchain: "THORChain",
   chainflip: "Chainflip",
   near_intents: "NEAR Intents",
-  exolix: "Exolix",
   cce: "CCE.Cash",
 };
 
@@ -25,7 +23,6 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
     eligible.map((p) => {
       if (p === "thorchain") return thorchain.getQuote(fromAsset, toAsset, req);
       if (p === "chainflip") return chainflip.getQuote(fromAsset, toAsset, req);
-      if (p === "exolix") return exolix.getQuote(fromAsset, toAsset, req);
       if (p === "cce") return cce.getQuote(fromAsset, toAsset, req);
       return nearIntents.getQuote(fromAsset, toAsset, req);
     })
