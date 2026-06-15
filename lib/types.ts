@@ -1,4 +1,4 @@
-export type ProviderId = "thorchain" | "chainflip" | "near_intents" | "exolix" | "cce";
+export type ProviderId = "thorchain" | "chainflip" | "near_intents" | "cce";
 
 export interface CanonicalAsset {
   id: string;
