@@ -8,7 +8,6 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   thorchain: "TC",
   chainflip: "CF",
   near_intents: "NI",
-  exolix: "EX",
   cce: "CC",
 };
 
@@ -346,7 +345,6 @@ export default function SwapTerminal() {
 function label(p: ProviderId) {
   return p === "thorchain" ? "THORChain"
     : p === "chainflip" ? "Chainflip"
-    : p === "exolix" ? "Exolix"
     : p === "cce" ? "CCE.Cash"
     : "NEAR Intents";
 }
