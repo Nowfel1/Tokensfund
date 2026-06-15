@@ -137,7 +137,7 @@ export default function SwapTerminal() {
       return;
     }
     if (selected === "chainflip" && !refund) {
-      setError(`Enter a ${fromSym} refund address - required by Chainflip in case the swap fails.`);
+      setError("Enter a " + fromSym + " refund address - required by Chainflip in case the swap fails.");
       return;
     }
     setOpening(true);
@@ -192,7 +192,7 @@ export default function SwapTerminal() {
             aria-label="Asset to send"
           >
             {ASSETS.map((a) => (
-              <option key={a.id} value={a.id}>{a.symbol} · {a.chain}</option>
+              <option key={a.id} value={a.id}>{a.symbol} - {a.chain}</option>
             ))}
           </select>
         </div>
@@ -208,7 +208,7 @@ export default function SwapTerminal() {
 
         <div className="leg">
           <span className="label">You receive (estimated)</span>
-          <div className={`amount-readout ${receiveEmpty ? "empty" : ""}`}>
+          <div className={receiveEmpty ? "amount-readout empty" : "amount-readout"}>
             {receiveValue}
           </div>
           <select
@@ -218,30 +218,30 @@ export default function SwapTerminal() {
             aria-label="Asset to receive"
           >
             {ASSETS.map((a) => (
-              <option key={a.id} value={a.id}>{a.symbol} · {a.chain}</option>
+              <option key={a.id} value={a.id}>{a.symbol} - {a.chain}</option>
             ))}
           </select>
         </div>
 
         <div className="fields">
           <div className="field">
-            <label htmlFor="dest">Destination address ({toSym})</label>
+            <label htmlFor="dest">{"Destination address (" + toSym + ")"}</label>
             <input
               id="dest"
               value={destination}
-              placeholder={`Where you receive ${toSym}`}
+              placeholder={"Where you receive " + toSym}
               onChange={(e) => { setDestination(e.target.value); }}
             />
           </div>
           <div className="field">
             <label htmlFor="refund">
-              Refund address ({fromSym})
+              {"Refund address (" + fromSym + ")"}
               {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> - (required)</span>}
             </label>
             <input
               id="refund"
               value={refund}
-              placeholder={`Your ${fromSym} address (returned if swap fails)`}
+              placeholder={"Your " + fromSym + " address (returned if swap fails)"}
               onChange={(e) => { setRefund(e.target.value); }}
             />
           </div>
@@ -270,8 +270,8 @@ export default function SwapTerminal() {
             <h2>Routes</h2>
             <span className="count">
               {loading
-                ? `${eligible.length} networks quoting...`
-                : `${result?.quotes.filter((q) => !q.error).length}/${result?.quotes.length} routed`}
+                ? eligible.length + " networks quoting..."
+                : result?.quotes.filter((q) => !q.error).length + "/" + result?.quotes.length + " routed"}
             </span>
           </div>
           {loading
@@ -297,7 +297,7 @@ export default function SwapTerminal() {
               ))}
           {result && selected && !deposit && (
             <button className="btn-primary" disabled={opening} onClick={openDeposit}>
-              {opening ? "Opening deposit address..." : `Swap via ${label(selected)}`}
+              {opening ? "Opening deposit address..." : "Swap via " + label(selected)}
             </button>
           )}
         </div>
@@ -306,11 +306,10 @@ export default function SwapTerminal() {
       {deposit && (
         <div className="deposit">
           <h3>
-            Send {deposit.depositAmount} {ASSETS.find((a) => a.id === fromId)?.symbol} to complete your swap
+            {"Send " + deposit.depositAmount + " " + (ASSETS.find((a) => a.id === fromId)?.symbol ?? "") + " to complete your swap"}
           </h3>
           <p className="sub">
-            This is a one-time address from {label(deposit.provider)}. The swap starts automatically
-            once your deposit confirms.
+            {"This is a one-time address from " + label(deposit.provider) + ". The swap starts automatically once your deposit confirms."}
           </p>
           <div className="kv">
             <div className="row">
@@ -326,14 +325,13 @@ export default function SwapTerminal() {
           </div>
           {deposit.memo && (
             <p className="warn">
-              You must include this exact memo. THORChain refunds deposits sent without the
-              correct memo. On Bitcoin it goes in an OP_RETURN output.
+              You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.
             </p>
           )}
           {deposit.notes && <p className="warn">{deposit.notes}</p>}
           {deposit.expiresAt && (
             <p className="warn">
-              Quote valid until {new Date(deposit.expiresAt * 1000).toLocaleTimeString()}.
+              {"Quote valid until " + new Date(deposit.expiresAt * 1000).toLocaleTimeString() + "."}
             </p>
           )}
         </div>
@@ -343,15 +341,74 @@ export default function SwapTerminal() {
 }
 
 function label(p: ProviderId) {
-  return p === "thorchain" ? "THORChain"
-    : p === "chainflip" ? "Chainflip"
-    : p === "cce" ? "CCE.Cash"
-    : "NEAR Intents";
+  if (p === "thorchain") return "THORChain";
+  if (p === "chainflip") return "Chainflip";
+  if (p === "cce") return "CCE.Cash";
+  return "NEAR Intents";
 }
 
 function QuoteCard({ q, best, selected, sym, onSelect }: {
-  q: NormalizedQuote; best: boolean; selected: boolean; sym: string; onSelect: () => void;
+  q: NormalizedQuote;
+  best: boolean;
+  selected: boolean;
+  sym: string;
+  onSelect: () => void;
 }) {
+  const cls = "quote" + (best ? " best" : "") + (q.error ? " failed" : " selectable") + (selected ? " selected" : "");
   return (
     <div
-      className={`quote ${best ? "best" : ""} ${q.error ? "failed" : "selectable"} ${selected ? "selected" : ""}`}
+      className={cls}
+      onClick={onSelect}
+      role={q.error ? undefined : "button"}
+      tabIndex={q.error ? undefined : 0}
+      onKeyDown={(e) => {
+        if (!q.error && (e.key === "Enter" || e.key === " ")) {
+          e.preventDefault();
+          onSelect();
+        }
+      }}
+    >
+      {best && <span className="tag-best">Best route</span>}
+      <div className="pmark">{PROVIDER_INITIAL[q.provider]}</div>
+      <div>
+        <div className="pname">{q.providerLabel}</div>
+        <div className="pmeta">
+          {q.error
+            ? q.error.slice(0, 60)
+            : q.estimatedSeconds
+            ? "~" + Math.round(q.estimatedSeconds / 60) + " min" + (q.feeOut ? " - fee " + fmt(q.feeOut) + " " + sym : "")
+            : "intent-based"}
+        </div>
+      </div>
+      <div className="out">
+        {q.error ? (
+          <div className="num" style={{ color: "var(--muted-2)" }}>-</div>
+        ) : (
+          <div>
+            <div className="num">{fmt(q.expectedOut)}</div>
+            <div className="sym">{sym}</div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function Copyable({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <div className="copyline">
+      <code>{text}</code>
+      <button
+        className="copybtn"
+        onClick={() => {
+          navigator.clipboard?.writeText(text);
+          setCopied(true);
+          setTimeout(() => setCopied(false), 1400);
+        }}
+      >
+        {copied ? "Copied" : "Copy"}
+      </button>
+    </div>
+  );
+}
