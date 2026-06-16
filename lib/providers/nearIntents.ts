@@ -31,9 +31,8 @@ function dummyAddress(asset: CanonicalAsset): string {
   if (chain === "dogecoin") return "D7Y55Jr7bPaxSHpFZFDEoCJaQF6FwxMXbs";
   if (chain === "zcash") return "t1KzZ5n2TPEGYXTZ3WYGL1AYEumEQaRoHaL";
   if (chain === "ton") return "0:0000000000000000000000000000000000000000000000000000000000000000";
-  if (chain === "xrp ledger") return "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
-  if (chain === "bittensor") return "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
-   return "0x0000000000000000000000000000000000000001";
+  if (chain === "xrp ledger") return "rPEPPER7kfTD9w2To4CQk6UCfuHM9c6GDY";
+ return "0x0000000000000000000000000000000000000001";
 }
 
 async function requestQuote(
