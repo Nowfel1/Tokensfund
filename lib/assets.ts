@@ -47,7 +47,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 6,
     providerIds: {
       near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
-      cce: { abbr: "XRP", chain: "XRP" },
     },
   },
   {
