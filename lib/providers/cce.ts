@@ -5,7 +5,7 @@ const BASE = "https://cce.cash/api/v1";
 const API_KEY = process.env.CCE_API_KEY ?? "";
 const API_SECRET = process.env.CCE_API_SECRET ?? "";
 
-// ==================== AUTH HELPERS ====================
+// ==================== AUTH ====================
 function sign(nonce: string, timestamp: string, bodyString: string): string {
   const payload = API_KEY + nonce + timestamp + bodyString;
   return createHmac("sha256", API_SECRET).update(payload).digest("hex");
@@ -77,10 +77,7 @@ export async function getQuote(
     provider: "cce",
     providerLabel: "CCE.Cash",
     expectedOut: Number(toData.to_quantity),
-    estimatedSeconds: 600, // ~10 minutes average
-    // Add these only if your NormalizedQuote interface supports them:
-    // minOut: data.min_amount ? Number(data.min_amount) : undefined,
-    // maxOut: data.max_amount ? Number(data.max_amount) : undefined,
+    estimatedSeconds: 600,
     raw: data,
   };
 }
@@ -122,9 +119,6 @@ export async function buildSwap(
     depositAmount: req.amount,
     trackingId: data.order_no,
     notes: `CCE.Cash Order #${data.order_no}`,
-    extra: {
-      queryCode: data.query_code,
-    },
   };
 }
 
