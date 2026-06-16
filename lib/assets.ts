@@ -173,7 +173,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Bittensor",
     decimals: 9,
     providerIds: {
-   changenow: { ticker: "tao", network: "tao" },
+   changenow: { ticker: "tao", network: "Bittensor" },
     },
   },
   {
