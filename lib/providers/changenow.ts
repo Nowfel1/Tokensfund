@@ -20,7 +20,7 @@ export async function getQuote(
     fromCurrency: getTicker(from),
     toCurrency: getTicker(to),
     fromAmount: req.amount,
-    flow: "standard",
+    flow: "fixed-rate",
     type: "direct",
   });
   const fromNetwork = getNetwork(from);
