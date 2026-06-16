@@ -11,10 +11,11 @@ function sign(nonce: string, timestamp: string, bodyString: string): string {
 }
 
 function authHeaders(body: object): Record<string, string> {
-  const nonce = randomBytes(16).toString("hex"); // 32 chars
+  const nonce = randomBytes(16).toString("hex");
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const bodyString = JSON.stringify(body);
   const signature = sign(nonce, timestamp, bodyString);
+
   return {
     "Content-Type": "application/json",
     "X-Api-Key": API_KEY,
@@ -24,18 +25,24 @@ function authHeaders(body: object): Record<string, string> {
   };
 }
 
-async function post(path: string, body: object): Promise<any> {
+async function post<T>(path: string, body: object): Promise<T> {
   const headers = authHeaders(body);
   const res = await fetch(`${BASE}${path}`, {
     method: "POST",
     headers,
     body: JSON.stringify(body),
   });
+
   const data = await res.json();
-  if (data.code !== 0) throw new Error(`CCE error: ${data.msg}`);
+
+  if (data.code !== 0) {
+    throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
+  }
+
   return data.data;
 }
 
+// ==================== QUOTE ====================
 export async function getQuote(
   from: CanonicalAsset,
   to: CanonicalAsset,
@@ -58,48 +65,37 @@ export async function getQuote(
     ],
   };
 
-  const data = await post("/openapi/order/calculate", body);
+  const data = await post<any>("/openapi/order/calculate", body);
   const toData = data.to?.[0];
+
   if (!toData) throw new Error("CCE returned no quote data.");
 
   return {
     provider: "cce",
     providerLabel: "CCE.Cash",
     expectedOut: Number(toData.to_quantity),
-    estimatedSeconds: 10 * 60, // ~10 min average
-    raw: { ...data, fromRef, toRef, amount: req.amount },
+    estimatedSeconds: 600, // 10 minutes
+    minAmount: data.min_amount,
+    maxAmount: data.max_amount,
+    raw: data,
   };
 }
 
+// ==================== BUILD SWAP ====================
 export async function buildSwap(
-  _quote: NormalizedQuote,
+  quote: NormalizedQuote,
   req: QuoteRequest,
   from: CanonicalAsset,
   to: CanonicalAsset
 ): Promise<SwapInstruction> {
-  if (!req.destinationAddress) throw new Error("CCE needs a destination address.");
+  if (!req.destinationAddress) {
+    throw new Error("Destination address is required for CCE");
+  }
 
   const fromRef = from.providerIds.cce!;
   const toRef = to.providerIds.cce!;
 
-  // Re-quote fresh to get a valid calc_id
-  const calcBody = {
-    exchange_mode: "float",
-    from_abbr: fromRef.abbr,
-    from_chain: fromRef.chain,
-    from_quantity: Number(req.amount),
-    to_address: [
-      {
-        to_abbr: toRef.abbr,
-        to_chain: toRef.chain,
-        to_ratio: 1,
-      },
-    ],
-  };
-
-  const calcData = await post("/openapi/order/calculate", calcBody);
-
-  const orderBody = {
+  const body = {
     exchange_mode: "float",
     from_abbr: fromRef.abbr,
     from_chain: fromRef.chain,
@@ -112,23 +108,30 @@ export async function buildSwap(
         to_ratio: 1,
       },
     ],
+    // refund_address: req.refundAddress, // Uncomment if you support it
   };
 
-  const orderData = await post("/openapi/order/place", orderBody);
+  const data = await post<any>("/openapi/order/place", body);
 
   return {
     provider: "cce",
-    depositAddress: orderData.address,
+    depositAddress: data.address,
     depositAmount: req.amount,
-    trackingId: orderData.order_no,
-    notes: `CCE.Cash order ${orderData.order_no}. Query code: ${orderData.query_code}`,
+    trackingId: data.order_no,
+    notes: `CCE.Cash Order: ${data.order_no} | Query Code: ${data.query_code}`,
+    extra: {
+      queryCode: data.query_code,
+    },
   };
 }
 
+// ==================== STATUS ====================
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
-    const body = { order_no: trackingId };
-    const data = await post("/openapi/order/query", body);
+    const data = await post<any>("/openapi/order/query", {
+      order_no: trackingId,
+    });
+
     const stateMap: Record<string, SwapStatus["state"]> = {
       pending: "awaiting_deposit",
       processing: "processing",
@@ -136,12 +139,18 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
       failed: "failed",
       refunded: "refunded",
     };
+
     return {
       provider: "cce",
       state: stateMap[data.status] ?? "unknown",
       detail: data.status,
+      txHash: data.tx_hash || undefined,
     };
   } catch (e: any) {
-    return { provider: "cce", state: "unknown", detail: e.message };
+    return {
+      provider: "cce",
+      state: "unknown",
+      detail: e.message,
+    };
   }
 }
