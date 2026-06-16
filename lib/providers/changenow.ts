@@ -1,34 +1,20 @@
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
 const API_KEY = process.env.CHANGENOW_API_KEY ?? "";
-const BASE = "https://api.changenow.io/v2";
+const BASE = "https://changenow.io";
 
 /**
- * Normalizes asset tickers into the lowercase format required by ChangeNOW.
+ * Extracts and normalizes the base asset identifier to lowercase (e.g., 'hype', 'tao', 'btc').
  */
 function getTicker(asset: CanonicalAsset): string {
   return (asset.providerIds.changenow?.ticker ?? asset.symbol).toLowerCase();
 }
 
 /**
- * Safely extracts and normalizes network parameters into strict lowercase.
+ * Extracts and normalizes the required blockchain network parameter to lowercase (e.g., 'hyperevm', 'tao', 'btc').
  */
 function getNetwork(asset: CanonicalAsset): string | undefined {
   return asset.providerIds.changenow?.network?.toLowerCase();
-}
-
-/**
- * Formats multi-chain or non-native tokens properly for v2 estimation paths.
- * Returns 'hype-hyperevm' for HYPE, but just 'tao', 'btc', or 'eth' for native layers.
- */
-function getMarketAssetString(asset: CanonicalAsset): string {
-  const ticker = getTicker(asset);
-  const network = getNetwork(asset);
-  
-  if (network && network !== ticker) {
-    return `${ticker}-${network}`;
-  }
-  return ticker;
 }
 
 export async function getQuote(
@@ -36,27 +22,21 @@ export async function getQuote(
   to: CanonicalAsset,
   req: QuoteRequest
 ): Promise<NormalizedQuote> {
+  // Pass basic standard tickers to the base currency parameters
   const params = new URLSearchParams({
-    fromCurrency: getMarketAssetString(from),
-    toCurrency: getMarketAssetString(to),
+    fromCurrency: getTicker(from),
+    toCurrency: getTicker(to),
     fromAmount: req.amount,
     flow: "standard",
     type: "direct",
   });
 
+  // Inject explicit network routing properties for ALL assets uniformly
   const fromNetwork = getNetwork(from);
   const toNetwork = getNetwork(to);
-  const fromTicker = getTicker(from);
-  const toTicker = getTicker(to);
-
-  // Only append standalone network params if the asset is a sub-token/wrapped variant.
-  // Appending fromNetwork/toNetwork for native layer-1 assets (e.g. btc, eth, tao) causes pair_is_inactive.
-  if (fromNetwork && fromNetwork !== fromTicker) {
-    params.set("fromNetwork", fromNetwork);
-  }
-  if (toNetwork && toNetwork !== toTicker) {
-    params.set("toNetwork", toNetwork);
-  }
+  
+  if (fromNetwork) params.set("fromNetwork", fromNetwork);
+  if (toNetwork) params.set("toNetwork", toNetwork);
 
   const res = await fetch(`${BASE}/exchange/estimated-amount?${params.toString()}`, {
     headers: { "x-changenow-api-key": API_KEY },
@@ -67,7 +47,7 @@ export async function getQuote(
     throw new Error("ChangeNOW quote failed: " + (data.error ?? res.status));
   }
 
-  // Fallback selector supporting flexible variations in v2 estimate key fields
+  // Handle payload structures for either field schema format
   const estimatedOut = data.estimatedAmount ?? data.toAmount;
   if (!estimatedOut || Number(estimatedOut) <= 0) {
     throw new Error("ChangeNOW debug: " + JSON.stringify(data).slice(0, 300));
@@ -93,7 +73,6 @@ export async function buildSwap(
   const fromNetwork = getNetwork(from);
   const toNetwork = getNetwork(to);
 
-  // POST /exchange routes expect standalone fromCurrency and fromNetwork properties
   const body: Record<string, string> = {
     fromCurrency: getTicker(from),
     toCurrency: getTicker(to),
