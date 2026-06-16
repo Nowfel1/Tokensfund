@@ -1,4 +1,5 @@
 import { CanonicalAsset } from "./types";
+import type { ProviderId } from "./types";
 
 export const ASSETS: CanonicalAsset[] = [
   {
@@ -165,8 +166,6 @@ export const ASSETS: CanonicalAsset[] = [
       changenow: { ticker: "near" },
     },
   },
-
-  // ==================== TAO (Bittensor) ====================
   {
     id: "TAO",
     symbol: "TAO",
@@ -174,7 +173,17 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Bittensor",
     decimals: 9,
     providerIds: {
-      changenow: { ticker: "tao" }, // Main provider for TAO right now
+      changenow: { ticker: "tao" },
+    },
+  },
+  {
+    id: "HYPE",
+    symbol: "HYPE",
+    name: "Hyperliquid",
+    chain: "Hyperliquid",
+    decimals: 8,
+    providerIds: {
+      changenow: { ticker: "hype" },
     },
   },
 ];
@@ -189,8 +198,6 @@ export function providersForPair(fromId: string, toId: string) {
   const from = getAsset(fromId);
   const to = getAsset(toId);
   if (!from || !to) return [];
-
-  // Updated to include changenow
   const ids: ProviderId[] = [
     "thorchain",
     "chainflip",
@@ -198,9 +205,5 @@ export function providersForPair(fromId: string, toId: string) {
     "cce",
     "changenow",
   ];
-
   return ids.filter((p) => from.providerIds[p] && to.providerIds[p]);
 }
-
-// Import ProviderId for the type above
-import type { ProviderId } from "./types";
