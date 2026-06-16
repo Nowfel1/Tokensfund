@@ -183,7 +183,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Hyperliquid",
     decimals: 8,
     providerIds: {
-   changenow: { ticker: "hype", network: "hype" },
+      changenow: { ticker: "hype", network: "hyperevm" },
     },
   },
 ];
