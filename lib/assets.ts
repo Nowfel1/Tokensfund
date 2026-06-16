@@ -142,8 +142,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 9,
     providerIds: {
       near_intents: { asset: "nep141:tao.omft.near", decimals: 9 },
-      cce: { abbr: "TAO", chain: "Bittensor" },
-    },
+     },
   },
   {
     id: "TON",
@@ -152,9 +151,8 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "TON",
     decimals: 9,
     providerIds: {
-      near_intents: { asset: "nep141:ton.omft.near", decimals: 9 },
-      cce: { abbr: "TON", chain: "TON" },
-    },
+    near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 18 },
+     },
   },
   {
     id: "NEAR",
