@@ -1,42 +1,119 @@
-import { CanonicalAsset, NormalizedQuote, QuoteRequest } from "../types";
+import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
-const CHANGENOW_API_KEY = process.env.CHANGENOW_API_KEY ?? "";
-const BASE_URL = "https://api.changenow.io/v1";
+const API_KEY = process.env.CHANGENOW_API_KEY ?? "";
+const BASE = "https://api.changenow.io/v2";
+
+function getTicker(asset: CanonicalAsset): string {
+  return asset.providerIds.changenow?.ticker ?? asset.symbol.toLowerCase();
+}
+
+function getNetwork(asset: CanonicalAsset): string | undefined {
+  return asset.providerIds.changenow?.network;
+}
 
 export async function getQuote(
   from: CanonicalAsset,
   to: CanonicalAsset,
   req: QuoteRequest
 ): Promise<NormalizedQuote> {
-  if (!CHANGENOW_API_KEY) {
-    throw new Error("ChangeNOW API key is not configured");
+  const params = new URLSearchParams({
+    fromCurrency: getTicker(from),
+    toCurrency: getTicker(to),
+    fromAmount: req.amount,
+    flow: "standard",
+    type: "direct",
+  });
+  const fromNetwork = getNetwork(from);
+  const toNetwork = getNetwork(to);
+  if (fromNetwork) params.set("fromNetwork", fromNetwork);
+  if (toNetwork) params.set("toNetwork", toNetwork);
+
+  const res = await fetch(`${BASE}/exchange/estimated-amount?${params.toString()}`, {
+    headers: { "x-changenow-api-key": API_KEY },
+  });
+  const data = await res.json();
+  if (!res.ok || data.error) {
+    throw new Error("ChangeNOW quote failed: " + (data.error ?? res.status));
   }
+  if (!data.toAmount || Number(data.toAmount) <= 0) {
+    throw new Error("ChangeNOW returned no amount for this pair");
+  }
+  return {
+    provider: "changenow",
+    providerLabel: "ChangeNOW",
+    expectedOut: Number(data.toAmount),
+    estimatedSeconds: 5 * 60,
+    raw: data,
+  };
+}
 
-  const fromTicker = from.providerIds.changenow || from.symbol.toLowerCase();
-  const toTicker = to.providerIds.changenow || to.symbol.toLowerCase();
+export async function buildSwap(
+  _quote: NormalizedQuote,
+  req: QuoteRequest,
+  from: CanonicalAsset,
+  to: CanonicalAsset
+): Promise<SwapInstruction> {
+  if (!req.destinationAddress) throw new Error("ChangeNOW needs a destination address.");
 
+  const fromNetwork = getNetwork(from);
+  const toNetwork = getNetwork(to);
+
+  const body: Record<string, string> = {
+    fromCurrency: getTicker(from),
+    toCurrency: getTicker(to),
+    fromAmount: req.amount,
+    address: req.destinationAddress,
+    refundAddress: req.refundAddress || req.destinationAddress,
+    flow: "standard",
+    type: "direct",
+  };
+  if (fromNetwork) body.fromNetwork = fromNetwork;
+  if (toNetwork) body.toNetwork = toNetwork;
+
+  const res = await fetch(`${BASE}/exchange`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-changenow-api-key": API_KEY,
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await res.json();
+  if (!res.ok || data.error) {
+    throw new Error("ChangeNOW swap failed: " + (data.error ?? res.status));
+  }
+  return {
+    provider: "changenow",
+    depositAddress: data.payinAddress,
+    depositAmount: String(data.fromAmount),
+    memo: data.payinExtraId || undefined,
+    trackingId: data.id,
+    notes: "Track your swap at changenow.io/track/" + data.id,
+  };
+}
+
+export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
-    const url = `${BASE_URL}/exchange-amount/${req.amount}/${fromTicker}_${toTicker}?api_key=${CHANGENOW_API_KEY}`;
-
-    const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error(`ChangeNOW API error: ${res.status}`);
-    }
-
+    const res = await fetch(`${BASE}/exchange/by-id?id=${trackingId}`, {
+      headers: { "x-changenow-api-key": API_KEY },
+    });
     const data = await res.json();
-
-    if (data.error || !data.estimatedAmount) {
-      throw new Error(data.error || "No quote available from ChangeNOW");
-    }
-
+    const map: Record<string, SwapStatus["state"]> = {
+      waiting: "awaiting_deposit",
+      confirming: "deposit_detected",
+      exchanging: "processing",
+      sending: "processing",
+      finished: "success",
+      failed: "failed",
+      refunded: "refunded",
+      verifying: "processing",
+    };
     return {
       provider: "changenow",
-      providerLabel: "ChangeNOW",
-      expectedOut: Number(data.estimatedAmount),
-      estimatedSeconds: 300, // ~5 minutes average
-      raw: data,
+      state: map[data.status] ?? "unknown",
+      detail: data.status,
     };
-  } catch (error: any) {
-    throw new Error(`ChangeNOW quote failed: ${error.message}`);
+  } catch (e: any) {
+    return { provider: "changenow", state: "unknown", detail: e.message };
   }
 }
