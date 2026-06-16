@@ -1,20 +1,14 @@
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
 const API_KEY = process.env.CHANGENOW_API_KEY ?? "";
-const BASE = "https://changenow.io";
+const BASE = "https://api.changenow.io/v2";
 
-/**
- * Extracts and normalizes the base asset identifier to lowercase (e.g., 'hype', 'tao', 'btc').
- */
 function getTicker(asset: CanonicalAsset): string {
-  return (asset.providerIds.changenow?.ticker ?? asset.symbol).toLowerCase();
+  return asset.providerIds.changenow?.ticker ?? asset.symbol.toLowerCase();
 }
 
-/**
- * Extracts and normalizes the required blockchain network parameter to lowercase (e.g., 'hyperevm', 'tao', 'btc').
- */
 function getNetwork(asset: CanonicalAsset): string | undefined {
-  return asset.providerIds.changenow?.network?.toLowerCase();
+  return asset.providerIds.changenow?.network;
 }
 
 export async function getQuote(
@@ -22,7 +16,6 @@ export async function getQuote(
   to: CanonicalAsset,
   req: QuoteRequest
 ): Promise<NormalizedQuote> {
-  // Pass basic standard tickers to the base currency parameters
   const params = new URLSearchParams({
     fromCurrency: getTicker(from),
     toCurrency: getTicker(to),
@@ -30,33 +23,25 @@ export async function getQuote(
     flow: "standard",
     type: "direct",
   });
-
-  // Inject explicit network routing properties for ALL assets uniformly
   const fromNetwork = getNetwork(from);
   const toNetwork = getNetwork(to);
-  
   if (fromNetwork) params.set("fromNetwork", fromNetwork);
   if (toNetwork) params.set("toNetwork", toNetwork);
 
   const res = await fetch(`${BASE}/exchange/estimated-amount?${params.toString()}`, {
     headers: { "x-changenow-api-key": API_KEY },
   });
-  
   const data = await res.json();
   if (!res.ok || data.error) {
     throw new Error("ChangeNOW quote failed: " + (data.error ?? res.status));
   }
-
-  // Handle payload structures for either field schema format
-  const estimatedOut = data.estimatedAmount ?? data.toAmount;
-  if (!estimatedOut || Number(estimatedOut) <= 0) {
-    throw new Error("ChangeNOW debug: " + JSON.stringify(data).slice(0, 300));
+  if (!data.toAmount || Number(data.toAmount) <= 0) {
+    throw new Error("ChangeNOW returned no amount for this pair");
   }
-
   return {
     provider: "changenow",
     providerLabel: "ChangeNOW",
-    expectedOut: Number(estimatedOut),
+    expectedOut: Number(data.toAmount),
     estimatedSeconds: 5 * 60,
     raw: data,
   };
@@ -93,12 +78,10 @@ export async function buildSwap(
     },
     body: JSON.stringify(body),
   });
-  
   const data = await res.json();
   if (!res.ok || data.error) {
     throw new Error("ChangeNOW swap failed: " + (data.error ?? res.status));
   }
-  
   return {
     provider: "changenow",
     depositAddress: data.payinAddress,
