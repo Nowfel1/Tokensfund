@@ -9,6 +9,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   chainflip: "CF",
   near_intents: "NI",
   cce: "CC",
+  changenow: "CN",
 };
 
 function fmt(n: number) {
@@ -21,7 +22,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents", "cce"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "cce", "changenow"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -344,6 +345,7 @@ function label(p: ProviderId) {
   if (p === "thorchain") return "THORChain";
   if (p === "chainflip") return "Chainflip";
   if (p === "cce") return "CCE.Cash";
+  if (p === "changenow") return "ChangeNOW";
   return "NEAR Intents";
 }
 
