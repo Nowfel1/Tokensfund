@@ -64,7 +64,7 @@ export async function buildSwap(
     fromAmount: req.amount,
     address: req.destinationAddress,
     refundAddress: req.refundAddress || req.destinationAddress,
-    flow: "standard",
+    flow: "fixed-rate",
     type: "direct",
   };
   if (fromNetwork) body.fromNetwork = fromNetwork;
