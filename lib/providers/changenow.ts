@@ -20,7 +20,7 @@ export async function getQuote(
     fromCurrency: getTicker(from),
     toCurrency: getTicker(to),
     fromAmount: req.amount,
-    flow: "fixed-rate",
+    flow: "standard",
     type: "direct",
   });
   const fromNetwork = getNetwork(from);
@@ -64,7 +64,7 @@ export async function buildSwap(
     fromAmount: req.amount,
     address: req.destinationAddress,
     refundAddress: req.refundAddress || req.destinationAddress,
-    flow: "fixed-rate",
+    flow: "standard",
     type: "direct",
   };
   if (fromNetwork) body.fromNetwork = fromNetwork;
