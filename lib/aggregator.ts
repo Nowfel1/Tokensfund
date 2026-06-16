@@ -4,12 +4,14 @@ import * as thorchain from "./providers/thorchain";
 import * as chainflip from "./providers/chainflip";
 import * as nearIntents from "./providers/nearIntents";
 import * as cce from "./providers/cce";
+import * as changeNow from "./providers/changenow";   // ← Added
 
 const LABELS: Record<ProviderId, string> = {
   thorchain: "THORChain",
   chainflip: "Chainflip",
   near_intents: "NEAR Intents",
   cce: "CCE.Cash",
+  changenow: "ChangeNOW",           // ← Added
 };
 
 export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuotes> {
@@ -19,17 +21,20 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
   if (fromAsset.id === toAsset.id) throw new Error("Pick two different assets.");
 
   const eligible = providersForPair(fromAsset.id, toAsset.id);
+
   const settled = await Promise.allSettled(
     eligible.map((p) => {
       if (p === "thorchain") return thorchain.getQuote(fromAsset, toAsset, req);
       if (p === "chainflip") return chainflip.getQuote(fromAsset, toAsset, req);
       if (p === "cce") return cce.getQuote(fromAsset, toAsset, req);
+      if (p === "changenow") return changeNow.getQuote(fromAsset, toAsset, req); // ← Added
       return nearIntents.getQuote(fromAsset, toAsset, req);
     })
   );
 
   const quotes: NormalizedQuote[] = settled.map((s, i) => {
     if (s.status === "fulfilled") return s.value;
+
     return {
       provider: eligible[i],
       providerLabel: LABELS[eligible[i]],
@@ -39,7 +44,14 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
     };
   });
 
-  quotes.sort((a, b) => (b.error ? -1 : 0) - (a.error ? -1 : 0) || b.expectedOut - a.expectedOut);
+  // Sort: working quotes first, then by expectedOut (highest first)
+  quotes.sort((a, b) => {
+    if (a.error && !b.error) return 1;
+    if (!a.error && b.error) return -1;
+    return b.expectedOut - a.expectedOut;
+  });
+
   const bestIndex = quotes.findIndex((q) => !q.error && q.expectedOut > 0);
+
   return { request: req, fromAsset, toAsset, quotes, bestIndex };
 }
