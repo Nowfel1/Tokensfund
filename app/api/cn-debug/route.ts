@@ -7,9 +7,9 @@ export async function GET() {
   });
   const data = await res.json();
   const filtered = data.filter((c: any) =>
-    ["tao", "hype"].includes(c.ticker?.toLowerCase()) ||
-    c.name?.toLowerCase().includes("bittensor") ||
-    c.name?.toLowerCase().includes("hyperliquid")
+ c.ticker?.toLowerCase() === "tao" ||
+  c.name?.toLowerCase().includes("bittensor") ||
+  c.name?.toLowerCase().includes("tao")
   );
   return NextResponse.json(filtered);
 }
