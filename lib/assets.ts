@@ -51,22 +51,15 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    id: "USDC",
-    symbol: "USDC",
-    name: "USD Coin (Ethereum)",
-    chain: "Ethereum",
-    decimals: 6,
+    id: "DOGE",
+    symbol: "DOGE",
+    name: "Dogecoin",
+    chain: "Dogecoin",
+    decimals: 8,
     providerIds: {
-      thorchain: {
-        asset: "ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48",
-        decimals: 8,
-      },
-      chainflip: { asset: "USDC", chain: "Ethereum" },
-      near_intents: {
-        asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
-        decimals: 6,
-      },
-      cce: { abbr: "USDC", chain: "Ethereum" },
+      thorchain: { asset: "DOGE.DOGE", decimals: 8 },
+      near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
+      cce: { abbr: "DOGE", chain: "Dogecoin" },
     },
   },
   {
@@ -88,6 +81,25 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+    id: "USDC",
+    symbol: "USDC",
+    name: "USD Coin (Ethereum)",
+    chain: "Ethereum",
+    decimals: 6,
+    providerIds: {
+      thorchain: {
+        asset: "ETH.USDC-0XA0B86991C6218B36C1D19D4A2E9EB0CE3606EB48",
+        decimals: 8,
+      },
+      chainflip: { asset: "USDC", chain: "Ethereum" },
+      near_intents: {
+        asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
+        decimals: 6,
+      },
+      cce: { abbr: "USDC", chain: "Ethereum" },
+    },
+  },
+  {
     id: "LTC",
     symbol: "LTC",
     name: "Litecoin",
@@ -101,15 +113,13 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    id: "DOGE",
-    symbol: "DOGE",
-    name: "Dogecoin",
-    chain: "Dogecoin",
-    decimals: 8,
+    id: "TON",
+    symbol: "TON",
+    name: "Toncoin",
+    chain: "TON",
+    decimals: 9,
     providerIds: {
-      thorchain: { asset: "DOGE.DOGE", decimals: 8 },
-      near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
-      cce: { abbr: "DOGE", chain: "Dogecoin" },
+      near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
     },
   },
   {
@@ -132,25 +142,6 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
       cce: { abbr: "ZEC", chain: "Zcash" },
-    },
-  },
-  {
-    id: "TAO",
-    symbol: "TAO",
-    name: "Bittensor",
-    chain: "Bittensor",
-    decimals: 9,
-    providerIds: {
-         },
-  },
-  {
-    id: "TON",
-    symbol: "TON",
-    name: "Toncoin",
-    chain: "TON",
-    decimals: 9,
-    providerIds: {
-      near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
     },
   },
   {
