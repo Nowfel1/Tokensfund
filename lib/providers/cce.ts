@@ -141,7 +141,6 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
       provider: "cce",
       state: stateMap[data.status] ?? "unknown",
       detail: data.status,
-      txHash: data.tx_hash || undefined,
     };
   } catch (error: any) {
     return {
