@@ -1,4 +1,19 @@
-export type ProviderId = "thorchain" | "chainflip" | "near_intents" | "cce";
+export type ProviderId =
+  | "thorchain"
+  | "chainflip"
+  | "near_intents"
+  | "cce"
+  | "changenow"; // ← Added
+
+export interface ProviderAssetRef {
+  asset?: string;
+  chain?: string;
+  decimals?: number;
+  coin?: string;
+  network?: string;
+  abbr?: string;     // Used by CCE.Cash
+  ticker?: string;   // Used by ChangeNOW (and future providers)
+}
 
 export interface CanonicalAsset {
   id: string;
@@ -7,15 +22,6 @@ export interface CanonicalAsset {
   chain: string;
   decimals: number;
   providerIds: Partial<Record<ProviderId, ProviderAssetRef>>;
-}
-
-export interface ProviderAssetRef {
-  asset?: string;
-  chain?: string;
-  decimals?: number;
-  coin?: string;
-  network?: string;
-  abbr?: string; // CCE.Cash ticker
 }
 
 export interface QuoteRequest {
