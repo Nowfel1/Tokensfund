@@ -5,6 +5,8 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
+// 💡 Import your ChangeNOW provider wrapper
+import * as changenow from "@/lib/providers/changenow"; 
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -37,6 +39,13 @@ export async function POST(req: NextRequest) {
       const quote = await cce.getQuote(from, to, body);
       return NextResponse.json(await cce.buildSwap(quote, body, from, to));
     }
+    
+    // 🛠️ ADD THE CHANGENOW CONDITION WORKFLOW HERE
+    if (body.provider === "changenow") {
+      const quote = await changenow.getQuote(from, to, body);
+      return NextResponse.json(await changenow.buildSwap(quote, body, from, to));
+    }
+
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
   } catch (e: any) {
     console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
