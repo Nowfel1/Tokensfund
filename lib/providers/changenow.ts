@@ -35,9 +35,9 @@ export async function getQuote(
   if (!res.ok || data.error) {
     throw new Error("ChangeNOW quote failed: " + (data.error ?? res.status));
   }
-  if (!data.toAmount || Number(data.toAmount) <= 0) {
-    throw new Error("ChangeNOW returned no amount for this pair");
-  }
+    if (!data.toAmount || Number(data.toAmount) <= 0) {
+    throw new Error("ChangeNOW debug: " + JSON.stringify(data).slice(0, 300));
+    }
   return {
     provider: "changenow",
     providerLabel: "ChangeNOW",
