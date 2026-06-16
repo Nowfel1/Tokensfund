@@ -45,8 +45,8 @@ async function requestQuote(
   const toRef = to.providerIds.near_intents!;
   const fromDecimals = fromRef.decimals ?? from.decimals;
 
-  const recipient = req.destinationAddress || dummyAddress(to);
-  const refundTo = req.refundAddress || req.destinationAddress || dummyAddress(from);
+const recipient = req.destinationAddress || dummyAddress(to);
+  const refundTo = req.refundAddress || dummyAddress(from);
 
   const body = {
     dry,
