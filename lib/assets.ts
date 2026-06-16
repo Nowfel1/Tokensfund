@@ -150,8 +150,8 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "TON",
     decimals: 9,
     providerIds: {
-    near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 18 },
-     },
+      near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
+    },
   },
   {
     id: "NEAR",
