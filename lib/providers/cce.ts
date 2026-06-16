@@ -5,12 +5,13 @@ const BASE = "https://cce.cash/api/v1";
 const API_KEY = process.env.CCE_API_KEY ?? "";
 const API_SECRET = process.env.CCE_API_SECRET ?? "";
 
+// ==================== AUTH HELPERS ====================
 function sign(nonce: string, timestamp: string, bodyString: string): string {
   const payload = API_KEY + nonce + timestamp + bodyString;
   return createHmac("sha256", API_SECRET).update(payload).digest("hex");
 }
 
-function authHeaders(body: object): Record<string, string> {
+function getAuthHeaders(body: object): Record<string, string> {
   const nonce = randomBytes(16).toString("hex");
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const bodyString = JSON.stringify(body);
@@ -26,7 +27,7 @@ function authHeaders(body: object): Record<string, string> {
 }
 
 async function post<T>(path: string, body: object): Promise<T> {
-  const headers = authHeaders(body);
+  const headers = getAuthHeaders(body);
   const res = await fetch(`${BASE}${path}`, {
     method: "POST",
     headers,
@@ -68,28 +69,31 @@ export async function getQuote(
   const data = await post<any>("/openapi/order/calculate", body);
   const toData = data.to?.[0];
 
-  if (!toData) throw new Error("CCE returned no quote data.");
+  if (!toData) {
+    throw new Error("CCE returned no quote data.");
+  }
 
   return {
     provider: "cce",
     providerLabel: "CCE.Cash",
     expectedOut: Number(toData.to_quantity),
-    estimatedSeconds: 600, // 10 minutes
-    minAmount: data.min_amount,
-    maxAmount: data.max_amount,
+    estimatedSeconds: 600, // ~10 minutes average
+    // Add these only if your NormalizedQuote interface supports them:
+    // minOut: data.min_amount ? Number(data.min_amount) : undefined,
+    // maxOut: data.max_amount ? Number(data.max_amount) : undefined,
     raw: data,
   };
 }
 
 // ==================== BUILD SWAP ====================
 export async function buildSwap(
-  quote: NormalizedQuote,
+  _quote: NormalizedQuote,
   req: QuoteRequest,
   from: CanonicalAsset,
   to: CanonicalAsset
 ): Promise<SwapInstruction> {
   if (!req.destinationAddress) {
-    throw new Error("Destination address is required for CCE");
+    throw new Error("Destination address is required for CCE.Cash");
   }
 
   const fromRef = from.providerIds.cce!;
@@ -108,7 +112,6 @@ export async function buildSwap(
         to_ratio: 1,
       },
     ],
-    // refund_address: req.refundAddress, // Uncomment if you support it
   };
 
   const data = await post<any>("/openapi/order/place", body);
@@ -118,7 +121,7 @@ export async function buildSwap(
     depositAddress: data.address,
     depositAmount: req.amount,
     trackingId: data.order_no,
-    notes: `CCE.Cash Order: ${data.order_no} | Query Code: ${data.query_code}`,
+    notes: `CCE.Cash Order #${data.order_no}`,
     extra: {
       queryCode: data.query_code,
     },
@@ -146,11 +149,11 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
       detail: data.status,
       txHash: data.tx_hash || undefined,
     };
-  } catch (e: any) {
+  } catch (error: any) {
     return {
       provider: "cce",
       state: "unknown",
-      detail: e.message,
+      detail: error.message,
     };
   }
 }
