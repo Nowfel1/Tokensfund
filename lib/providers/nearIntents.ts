@@ -30,7 +30,7 @@ function dummyAddress(asset: CanonicalAsset): string {
   if (chain === "litecoin") return "LX2LMYXtuv5JcznS617SKUwpEBK2rUkdND";
   if (chain === "dogecoin") return "D7Y55Jr7bPaxSHpFZFDEoCJaQF6FwxMXbs";
   if (chain === "zcash") return "t1KzZ5n2TPEGYXTZ3WYGL1AYEumEQaRoHaL";
-  if (chain === "ton") return "EQD2NmD_lH5f5u1Kj3KfGyTvhZSX0Eg6qp2a5IQUKXxOG3f";
+  if (chain === "ton") return "0:0000000000000000000000000000000000000000000000000000000000000000";
   if (chain === "xrp ledger") return "rHb9CJAWyB4rj91VRWn96DkukG4bwdtyTh";
   if (chain === "bittensor") return "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY";
    return "0x0000000000000000000000000000000000000001";
