@@ -4,19 +4,20 @@ import * as thorchain from "./providers/thorchain";
 import * as chainflip from "./providers/chainflip";
 import * as nearIntents from "./providers/nearIntents";
 import * as cce from "./providers/cce";
-import * as changeNow from "./providers/changenow";   // ← Added
+import * as changeNow from "./providers/changenow";
 
 const LABELS: Record<ProviderId, string> = {
   thorchain: "THORChain",
   chainflip: "Chainflip",
   near_intents: "NEAR Intents",
   cce: "CCE.Cash",
-  changenow: "ChangeNOW",           // ← Added
+  changenow: "ChangeNOW",
 };
 
 export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuotes> {
   const fromAsset = getAsset(req.fromAssetId);
   const toAsset = getAsset(req.toAssetId);
+
   if (!fromAsset || !toAsset) throw new Error("Unknown asset.");
   if (fromAsset.id === toAsset.id) throw new Error("Pick two different assets.");
 
@@ -27,7 +28,7 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
       if (p === "thorchain") return thorchain.getQuote(fromAsset, toAsset, req);
       if (p === "chainflip") return chainflip.getQuote(fromAsset, toAsset, req);
       if (p === "cce") return cce.getQuote(fromAsset, toAsset, req);
-      if (p === "changenow") return changeNow.getQuote(fromAsset, toAsset, req); // ← Added
+      if (p === "changenow") return changeNow.getQuote(fromAsset, toAsset, req);
       return nearIntents.getQuote(fromAsset, toAsset, req);
     })
   );
@@ -44,7 +45,7 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
     };
   });
 
-  // Sort: working quotes first, then by expectedOut (highest first)
+  // Sort: working quotes first, then by best rate
   quotes.sort((a, b) => {
     if (a.error && !b.error) return 1;
     if (!a.error && b.error) return -1;
