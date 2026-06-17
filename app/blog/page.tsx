@@ -8,6 +8,13 @@ export const metadata = {
 
 const posts = [
   {
+    slug: "buy-xrp-ltc-hype-tao-without-kyc-2026",
+    title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
+    date: "June 17, 2026",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required - best rates across NEAR Intents, THORChain, Chainflip and ChangeNOW.",
+    tag: "Guide",
+  },
+  {
     slug: "btc-to-eth-without-kyc-2026",
     title: "How to Swap BTC to ETH Without KYC in 2026",
     date: "June 14, 2026",
