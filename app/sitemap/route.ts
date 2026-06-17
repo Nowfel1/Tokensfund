@@ -3,6 +3,12 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<url>
+    <loc>https://tokensfund.xyz/blog/buy-xrp-ltc-hype-tao-without-kyc-2026</loc>
+    <lastmod>2026-06-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://tokensfund.xyz/</loc>
     <lastmod>2026-06-14</lastmod>
