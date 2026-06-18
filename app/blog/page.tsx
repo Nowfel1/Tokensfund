@@ -8,6 +8,13 @@ export const metadata = {
 
 const posts = [
   {
+    slug: "spacex-ipo-hyperliquid-perpetuals",
+    title: "SpaceX's $2 Trillion Debut and the Crypto Bets That Called It Early",
+    date: "June 18, 2026",
+    description: "SpaceX listed on Nasdaq as SPCX in the biggest IPO in history. Crypto traders on Hyperliquid were pricing in the outcome through perpetual futures weeks before the debut.",
+    tag: "Markets",
+  },
+  {
     slug: "buy-xrp-ltc-hype-tao-without-kyc-2026",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
     date: "June 17, 2026",
