@@ -5,11 +5,23 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
-// 💡 Import your ChangeNOW provider wrapper
-import * as changenow from "@/lib/providers/changenow"; 
+import * as changenow from "@/lib/providers/changenow";
+import { sql, ensureOrdersTable } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
+
+async function logOrder(result: any, body: any) {
+  try {
+    await ensureOrdersTable();
+    await sql`
+      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id)
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId})
+    `;
+  } catch (e) {
+    console.error("Failed to log order:", e);
+  }
+}
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,30 +35,29 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    let result;
     if (body.provider === "thorchain") {
       const quote = await thorchain.getQuote(from, to, body);
-      return NextResponse.json(await thorchain.buildSwap(quote, body));
-    }
-    if (body.provider === "chainflip") {
+      result = await thorchain.buildSwap(quote, body);
+    } else if (body.provider === "chainflip") {
       const quote = await chainflip.getQuote(from, to, body);
-      return NextResponse.json(await chainflip.buildSwap(quote, body, from, to));
-    }
-    if (body.provider === "near_intents") {
+      result = await chainflip.buildSwap(quote, body, from, to);
+    } else if (body.provider === "near_intents") {
       const quote = await nearIntents.getQuote(from, to, body);
-      return NextResponse.json(await nearIntents.buildSwap(quote, from, to, body));
-    }
-    if (body.provider === "cce") {
+      result = await nearIntents.buildSwap(quote, from, to, body);
+    } else if (body.provider === "cce") {
       const quote = await cce.getQuote(from, to, body);
-      return NextResponse.json(await cce.buildSwap(quote, body, from, to));
-    }
-    
-    // 🛠️ ADD THE CHANGENOW CONDITION WORKFLOW HERE
-    if (body.provider === "changenow") {
+      result = await cce.buildSwap(quote, body, from, to);
+    } else if (body.provider === "changenow") {
       const quote = await changenow.getQuote(from, to, body);
-      return NextResponse.json(await changenow.buildSwap(quote, body, from, to));
+      result = await changenow.buildSwap(quote, body, from, to);
+    } else {
+      return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
     }
 
-    return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
+    await logOrder(result, body);
+    return NextResponse.json(result);
   } catch (e: any) {
     console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
     return NextResponse.json(
