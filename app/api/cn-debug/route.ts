@@ -1,15 +1,30 @@
 import { NextResponse } from "next/server";
+import { createHmac, randomBytes } from "crypto";
 
 export async function GET() {
-  const API_KEY = process.env.CHANGENOW_API_KEY ?? "";
-  const res = await fetch("https://api.changenow.io/v2/exchange/currencies?active=true&flow=fixed-rate&buy=true&sell=true", {
-    headers: { "x-changenow-api-key": API_KEY },
+  const API_KEY = process.env.CCE_API_KEY ?? "";
+  const API_SECRET = process.env.CCE_API_SECRET ?? "";
+  const nonce = randomBytes(16).toString("hex");
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const body = "{}";
+  const sig = createHmac("sha256", API_SECRET)
+    .update(API_KEY + nonce + timestamp + body)
+    .digest("hex");
+
+  const res = await fetch("https://cce.cash/api/v1/openapi/coin/list", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Api-Key": API_KEY,
+      "X-Api-Nonce": nonce,
+      "X-Api-Timestamp": timestamp,
+      "X-Api-Signature": sig,
+    },
+    body,
   });
   const data = await res.json();
-  const filtered = data.filter((c: any) =>
- c.ticker?.toLowerCase() === "tao" ||
-  c.name?.toLowerCase().includes("bittensor") ||
-  c.name?.toLowerCase().includes("tao")
-  );
+  const filtered = JSON.stringify(data).toLowerCase().includes("usdt")
+    ? data.filter((c: any) => c.abbr?.toLowerCase() === "usdt")
+    : data;
   return NextResponse.json(filtered);
 }
