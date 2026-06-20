@@ -21,8 +21,8 @@ export async function GET() {
     },
   });
   const data = await res.json();
-  const filtered = Array.isArray(data?.data)
-    ? data.data.filter((c: any) => c.abbr?.toLowerCase() === "usdt")
-    : data;
+const filtered = Array.isArray(data?.data)
+  ? data.data.filter((c: any) => c.abbr?.toLowerCase() === "trx")
+  : data;
   return NextResponse.json(filtered);
 }
