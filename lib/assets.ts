@@ -93,7 +93,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Tron",
     decimals: 6,
     providerIds: {
-      cce: { abbr: "USDT", chain: "Tron" },
+      cce: { abbr: "USDT", chain: "TRON" },
     },
   },
   {
