@@ -6,22 +6,23 @@ export async function GET() {
   const API_SECRET = process.env.CCE_API_SECRET ?? "";
   const nonce = randomBytes(16).toString("hex");
   const timestamp = Math.floor(Date.now() / 1000).toString();
-  const body = "{}";
+  const body = "";
   const sig = createHmac("sha256", API_SECRET)
     .update(API_KEY + nonce + timestamp + body)
     .digest("hex");
 
-  const res = await fetch("https://cce.cash/api/v1/openapi/coin/list", {
-    method: "POST",
+  const res = await fetch("https://cce.cash/api/v1/openapi/abbr/lists", {
+    method: "GET",
     headers: {
-      "Content-Type": "application/json",
       "X-Api-Key": API_KEY,
       "X-Api-Nonce": nonce,
       "X-Api-Timestamp": timestamp,
       "X-Api-Signature": sig,
     },
-    body,
   });
   const data = await res.json();
-  return NextResponse.json(data);
+  const filtered = Array.isArray(data?.data)
+    ? data.data.filter((c: any) => c.abbr?.toLowerCase() === "usdt")
+    : data;
+  return NextResponse.json(filtered);
 }
