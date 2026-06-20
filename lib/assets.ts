@@ -87,6 +87,16 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+    id: "USDT_TRC20",
+    symbol: "USDT",
+    name: "Tether (Tron)",
+    chain: "Tron",
+    decimals: 6,
+    providerIds: {
+      cce: { abbr: "USDT", chain: "Tron" },
+    },
+  },
+  {
     id: "USDC",
     symbol: "USDC",
     name: "USD Coin (Ethereum)",
