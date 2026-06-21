@@ -1,5 +1,5 @@
 import Logo from "@/components/Logo";
-
+import Link from "next/link";
 
 export const metadata = {
   title: "How to Swap XMR to BTC Without KYC in 2026 | TokensFund",
@@ -17,13 +17,14 @@ export default function Post() {
     <main className="wrap">
       <header className="masthead">
         <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
+          <Link href="/" className="brand">
             <Logo size={34} />
             <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
+          </Link>
+
           <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/blog" className="nav-link">Blog</a>
+            <Link href="/" className="nav-link">Swap</Link>
+            <Link href="/blog" className="nav-link">Blog</Link>
           </nav>
         </div>
       </header>
@@ -37,11 +38,12 @@ export default function Post() {
         <h1>How to Swap XMR to BTC Without KYC in 2026</h1>
 
         <img
-  src="/blog/banner_xmr_btc.png"
-  alt="How to swap XMR to BTC without KYC"
-  className="blog-banner"
-  style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
-/>
+          src="/blog/banner_xmr_btc.png"
+          alt="How to swap XMR to BTC without KYC"
+          className="blog-banner"
+          style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
+        />
+
         <p>
           Monero (XMR) is the leading privacy coin — but swapping it to Bitcoin (BTC)
           without handing over your identity can be tricky. Most centralized exchanges
@@ -64,7 +66,7 @@ export default function Post() {
 
         <h2>Step-by-Step: Swap XMR to BTC on TokensFund</h2>
         <ol>
-          <li>Go to <a href="https://tokensfund.xyz">tokensfund.xyz</a></li>
+          <li>Go to <Link href="/">tokensfund.xyz</Link></li>
           <li>Select <strong>XMR</strong> in the "You send" field</li>
           <li>Select <strong>BTC</strong> in the "You receive" field</li>
           <li>Enter your amount — the live estimated output updates automatically</li>
@@ -101,7 +103,21 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to swap?</p>
-          <a href="/" style={{ display: "inline-block", textDecoration: "none", background: "var(--gold)", color: "#000", fontWeight: "700", padding: "12px 28px", borderRadius: "8px", fontSize: "1rem" }}>Swap XMR to BTC now →</a>
+          <Link 
+            href="/" 
+            style={{ 
+              display: "inline-block", 
+              textDecoration: "none", 
+              background: "var(--gold)", 
+              color: "#000", 
+              fontWeight: "700", 
+              padding: "12px 28px", 
+              borderRadius: "8px", 
+              fontSize: "1rem" 
+            }}
+          >
+            Swap XMR to BTC now →
+          </Link>
         </div>
       </article>
     </main>
