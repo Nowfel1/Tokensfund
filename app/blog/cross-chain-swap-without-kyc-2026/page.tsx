@@ -12,6 +12,29 @@ export const metadata = {
   },
 };
 
+const ctaStyle = {
+  display: "inline-block",
+  textDecoration: "none",
+  background: "var(--gold)",
+  color: "#000",
+  fontWeight: "700",
+  padding: "12px 28px",
+  borderRadius: "8px",
+  fontSize: "1rem",
+};
+
+const brandStyle = {
+  textDecoration: "none",
+  color: "inherit",
+};
+
+const bannerStyle = {
+  width: "100%",
+  height: "auto",
+  borderRadius: "12px",
+  marginBottom: "2rem",
+};
+
 export default function Post() {
   return (
     <main className="wrap">
