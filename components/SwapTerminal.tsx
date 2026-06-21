@@ -12,6 +12,12 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   changenow: "CN",
 };
 
+const COIN_LETTER: Record<string, string> = {
+  BTC: "B", ETH: "E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
+  LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N", TAO: "T", HYPE: "H",
+  ZANO: "Z", TRX: "T",
+};
+
 function fmt(n: number) {
   if (!isFinite(n) || n === 0) return "0";
   if (n < 0.0001) return n.toExponential(2);
@@ -31,6 +37,7 @@ export default function SwapTerminal() {
   const [fromId, setFromId] = useState("BTC");
   const [toId, setToId] = useState("ETH");
   const [amount, setAmount] = useState("0.1");
+  const [maxBalance, setMaxBalance] = useState<number | null>(null);
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
   const [loading, setLoading] = useState(false);
@@ -103,6 +110,18 @@ export default function SwapTerminal() {
     setLiveOut(null);
   }
 
+  function applyPercent(pct: number) {
+    if (maxBalance === null) return;
+    const val = (maxBalance * pct) / 100;
+    setAmount(val.toString());
+    reset();
+  }
+
+  function clearAmount() {
+    setAmount("");
+    reset();
+  }
+
   async function getQuotes() {
     reset();
     setLoading(true);
@@ -173,98 +192,139 @@ export default function SwapTerminal() {
 
   const receiveEmpty = !result && !liveOut && !liveLoading;
 
+  const bestProviderLabel = result
+    ? label(result.quotes[result.bestIndex]?.provider)
+    : liveOut
+    ? "comparing..."
+    : null;
+
   return (
     <div>
       <div className="card">
+        {/* FROM */}
         <div className="leg">
-          <span className="label">You send</span>
-          <input
-            className="amount-input"
-            inputMode="decimal"
-            placeholder="0.0"
-            value={amount}
-            onChange={(e) => { setAmount(e.target.value.replace(/[^0-9.]/g, "")); reset(); }}
-            aria-label="Amount to send"
-          />
-          <select
-            className="token-select"
-            value={fromId}
-            onChange={(e) => { setFromId(e.target.value); setRefund(""); reset(); }}
-            aria-label="Asset to send"
-          >
-            {ASSETS.map((a) => (
-              <option key={a.id} value={a.id}>{a.symbol} - {a.chain}</option>
-            ))}
-          </select>
+          <div className="leg-head">
+            <span className="label">You send</span>
+            <div className="quickfill">
+              <span className="qf-pill" onClick={clearAmount}>Clear</span>
+              <span className="qf-pill" onClick={() => applyPercent(50)}>50%</span>
+              <span className="qf-pill" onClick={() => applyPercent(100)}>100%</span>
+            </div>
+          </div>
+          <div>
+            <input
+              className="amount-input"
+              inputMode="decimal"
+              placeholder="0.0"
+              value={amount}
+              onChange={(e) => { setAmount(e.target.value.replace(/[^0-9.]/g, "")); reset(); }}
+              aria-label="Amount to send"
+            />
+          </div>
+          <div className="token-select-wrap">
+            <div className="token-coin">{COIN_LETTER[fromId] ?? fromId[0]}</div>
+            <select
+              className="token-select"
+              value={fromId}
+              onChange={(e) => { setFromId(e.target.value); setRefund(""); reset(); }}
+              aria-label="Asset to send"
+            >
+              {ASSETS.map((a) => (
+                <option key={a.id} value={a.id}>{a.symbol}</option>
+              ))}
+            </select>
+          </div>
         </div>
 
         <div className="swap-flip">
           <button className="flip-btn" onClick={flip} aria-label="Swap direction">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
               <path d="M5 3v8M5 11l-2.5-2.5M5 11l2.5-2.5M11 13V5M11 5L8.5 7.5M11 5l2.5 2.5"
                 stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
 
+        {/* TO */}
         <div className="leg">
-          <span className="label">You receive (estimated)</span>
-          <div className={receiveEmpty ? "amount-readout empty" : "amount-readout"}>
-            {receiveValue}
+          <div className="leg-head">
+            <span className="label">You receive</span>
           </div>
-          <select
-            className="token-select"
-            value={toId}
-            onChange={(e) => { setToId(e.target.value); reset(); }}
-            aria-label="Asset to receive"
-          >
-            {ASSETS.map((a) => (
-              <option key={a.id} value={a.id}>{a.symbol} - {a.chain}</option>
-            ))}
-          </select>
-        </div>
-
-        <div className="fields">
-          <div className="field">
-            <label htmlFor="dest">{"Destination address (" + toSym + ")"}</label>
-            <input
-              id="dest"
-              value={destination}
-              placeholder={"Where you receive " + toSym}
-              onChange={(e) => { setDestination(e.target.value); }}
-            />
+          <div>
+            <div className={receiveEmpty ? "amount-readout empty" : "amount-readout"}>
+              {receiveValue}
+            </div>
           </div>
-          <div className="field">
-            <label htmlFor="refund">
-              {"Refund address (" + fromSym + ")"}
-              {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> - (required)</span>}
-            </label>
-            <input
-              id="refund"
-              value={refund}
-              placeholder={"Your " + fromSym + " address (returned if swap fails)"}
-              onChange={(e) => { setRefund(e.target.value); }}
-            />
+          <div className="token-select-wrap">
+            <div className="token-coin">{COIN_LETTER[toId] ?? toId[0]}</div>
+            <select
+              className="token-select"
+              value={toId}
+              onChange={(e) => { setToId(e.target.value); reset(); }}
+              aria-label="Asset to receive"
+            >
+              {ASSETS.map((a) => (
+                <option key={a.id} value={a.id}>{a.symbol}</option>
+              ))}
+            </select>
           </div>
         </div>
 
-        <button
-          className="btn-primary"
-          disabled={!canQuote || loading}
-          onClick={getQuotes}
-        >
-          {loading
-            ? "Comparing routes..."
-            : eligible.length === 0
-            ? "No route for this pair"
-            : !destination.trim()
-            ? "Enter destination address"
-            : "Compare routes"}
-        </button>
-
-        {error && <div className="error">{error}</div>}
+        {eligible.length > 0 && (
+          <div className="route-summary">
+            <span>{eligible.length} {eligible.length === 1 ? "route" : "routes"} compared</span>
+            {bestProviderLabel && (
+              <span className="route-best">
+                <span className="route-dot" />
+                Best: {bestProviderLabel}
+              </span>
+            )}
+          </div>
+        )}
       </div>
 
+      {/* addresses */}
+      <div className="fields">
+        <div className="field">
+          <label htmlFor="dest">Destination address ({toSym})</label>
+          <input
+            id="dest"
+            value={destination}
+            placeholder={"Where you receive " + toSym}
+            onChange={(e) => { setDestination(e.target.value); }}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor="refund">
+            Refund address ({fromSym})
+            {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> - (required)</span>}
+          </label>
+          <input
+            id="refund"
+            value={refund}
+            placeholder={"Your " + fromSym + " address (returned if swap fails)"}
+            onChange={(e) => { setRefund(e.target.value); }}
+          />
+        </div>
+      </div>
+
+      <button
+        className="btn-primary"
+        disabled={!canQuote || loading}
+        onClick={getQuotes}
+      >
+        {loading
+          ? "Comparing routes..."
+          : eligible.length === 0
+          ? "No route for this pair"
+          : !destination.trim()
+          ? "Enter destination address"
+          : "Compare routes"}
+      </button>
+
+      {error && <div className="error">{error}</div>}
+
+      {/* QUOTE RACE */}
       {(loading || result) && (
         <div className="race">
           <div className="race-head">
@@ -304,6 +364,7 @@ export default function SwapTerminal() {
         </div>
       )}
 
+      {/* DEPOSIT INSTRUCTIONS */}
       {deposit && (
         <div className="deposit">
           <h3>
@@ -341,7 +402,8 @@ export default function SwapTerminal() {
   );
 }
 
-function label(p: ProviderId) {
+function label(p?: ProviderId) {
+  if (!p) return "";
   if (p === "thorchain") return "THORChain";
   if (p === "chainflip") return "Chainflip";
   if (p === "cce") return "CCE.Cash";
