@@ -2,25 +2,14 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Cross Chain Swap Without KYC in 2026 | TokensFund",
-  description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, and NEAR Intents. No account, no KYC, best rates.",
-  keywords: ["cross chain swap without KYC", "swap crypto no KYC 2026", "THORChain Chainflip NEAR Intents", "non custodial cross chain swap"],
+  title: "How to Swap XMR to BTC Without KYC in 2026 | TokensFund",
+  description: "Step-by-step guide to swap Monero (XMR) to Bitcoin (BTC) without KYC, no account, and at the best rate using THORChain, Chainflip and Exolix.",
+  keywords: ["swap XMR to BTC", "monero to bitcoin no KYC", "XMR BTC swap 2026", "monero swap without account"],
   openGraph: {
-    title: "Cross Chain Swap Without KYC in 2026",
-    description: "Swap between any chains without KYC using THORChain, Chainflip and NEAR Intents — no account required.",
-    images: [{ url: "https://tokensfund.xyz/blog/cross-chain-swap.png", width: 1200, height: 400 }],
+    title: "How to Swap XMR to BTC Without KYC in 2026",
+    description: "Get the best Monero to Bitcoin rate across THORChain, Chainflip and Exolix — no account, no KYC.",
+    images: [{ url: "https://tokensfund.xyz/blog/xmr-btc-swap.png", width: 1200, height: 400 }],
   },
-};
-
-const ctaStyle = {
-  display: "inline-block",
-  textDecoration: "none",
-  background: "var(--gold)",
-  color: "#000",
-  fontWeight: "700",
-  padding: "12px 28px",
-  borderRadius: "8px",
-  fontSize: "1rem",
 };
 
 export default function Post() {
@@ -28,13 +17,11 @@ export default function Post() {
     <main className="wrap">
       <header className="masthead">
         <div className="header-inner">
-          {/* Logo - Now using Next.js Link */}
           <Link href="/" className="brand">
             <Logo size={34} />
             <span>tokensfund<span className="tld">.xyz</span></span>
           </Link>
 
-          {/* Simple Navigation */}
           <nav className="main-nav">
             <Link href="/" className="nav-link">Swap</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
@@ -45,82 +32,91 @@ export default function Post() {
       <article className="blog-post">
         <div className="blog-post-meta">
           <span className="blog-tag">Guide</span>
-          <span className="blog-date">June 13, 2026</span>
+          <span className="blog-date">June 12, 2026</span>
         </div>
 
-        <h1>Cross Chain Swap Without KYC in 2026</h1>
+        <h1>How to Swap XMR to BTC Without KYC in 2026</h1>
 
         <img
-          src="/blog/banner_cross_chain.png"
-          alt="Cross chain swap without KYC in 2026"
+          src="/blog/banner_xmr_btc.png"
+          alt="How to swap XMR to BTC without KYC"
           className="blog-banner"
           style={{ width: "100%", height: "auto", borderRadius: "12px", marginBottom: "2rem" }}
         />
 
         <p>
-          Cross-chain swaps without KYC have become much more accessible in 2026. 
-          Whether you want to move BTC to SOL, ETH to XMR, or any other combination, 
-          you can now do it directly between wallets using decentralized protocols — 
-          no accounts, no KYC, and no middlemen holding your funds.
+          Monero (XMR) is the leading privacy coin — but swapping it to Bitcoin (BTC)
+          without handing over your identity can be tricky. Most centralized exchanges
+          require KYC, freeze accounts, or have delisted XMR entirely.
         </p>
 
         <p>
-          In this guide, we’ll show you how to perform cross-chain swaps in 2026 using 
-          <strong> THORChain, Chainflip, and NEAR Intents</strong> through TokensFund.
+          In this guide we show you how to swap XMR to BTC in minutes using
+          <strong> decentralized and non-custodial protocols</strong> — no account,
+          no email, no ID required.
         </p>
 
-        <h2>Best Protocols for Cross-Chain Swaps (No KYC)</h2>
-        <p>These are currently the top protocols supporting non-custodial cross-chain swaps:</p>
+        <h2>Which Protocols Support XMR → BTC?</h2>
+        <p>As of 2026, these protocols support Monero swaps:</p>
         <ul>
-          <li><strong>THORChain</strong> — Mature decentralized liquidity protocol with strong BTC and multi-chain support.</li>
-          <li><strong>Chainflip</strong> — Fast and cost-effective swaps between major chains.</li>
-          <li><strong>NEAR Intents</strong> — Newer intent-based system focused on efficiency and speed.</li>
+          <li><strong>THORChain</strong> — decentralized cross-chain liquidity, native XMR support</li>
+          <li><strong>Exolix</strong> — instant swap service, no account required, supports 500+ pairs</li>
         </ul>
+        <p>Chainflip and NEAR Intents do not currently support XMR.</p>
 
-        <h2>Step-by-Step: Cross Chain Swap on TokensFund</h2>
+        <h2>Step-by-Step: Swap XMR to BTC on TokensFund</h2>
         <ol>
           <li>Go to <Link href="/">tokensfund.xyz</Link></li>
-          <li>Select the coin you want to <strong>send</strong></li>
-          <li>Select the coin you want to <strong>receive</strong></li>
-          <li>Enter the amount you want to swap</li>
-          <li>Enter your destination wallet address</li>
-          <li>Enter a refund address (used only if the swap fails)</li>
-          <li>Click <strong>"Compare routes"</strong> to see live quotes from THORChain, Chainflip and NEAR Intents</li>
-          <li>Choose the best rate and click <strong>"Swap"</strong></li>
-          <li>Send the exact amount to the one-time deposit address</li>
-          <li>Receive the swapped crypto directly in your wallet</li>
+          <li>Select <strong>XMR</strong> in the "You send" field</li>
+          <li>Select <strong>BTC</strong> in the "You receive" field</li>
+          <li>Enter your amount — the live estimated output updates automatically</li>
+          <li>Enter your Bitcoin destination address</li>
+          <li>Enter your Monero refund address (used only if the swap fails)</li>
+          <li>Click <strong>"Compare routes"</strong> — TokensFund fetches quotes from THORChain and Exolix simultaneously</li>
+          <li>Pick the best rate and click <strong>"Swap"</strong></li>
+          <li>Send your XMR to the one-time deposit address shown</li>
+          <li>Receive BTC at your wallet automatically — no further action needed</li>
         </ol>
 
         <h2>Why Use TokensFund?</h2>
         <ul>
-          <li>✅ Compares multiple protocols at once and shows the best rate</li>
-          <li>✅ Fully non-custodial — you never lose control of your funds</li>
-          <li>✅ No KYC, no account, no email required</li>
-          <li>✅ Automatic refund if something goes wrong</li>
-          <li>✅ Supports major chains including BTC, ETH, SOL, and more</li>
+          <li>✅ Compares multiple protocols in one click — always get the best rate</li>
+          <li>✅ Non-custodial — funds go directly between wallets</li>
+          <li>✅ No account, no email, no KYC</li>
+          <li>✅ Automatic refund if swap fails</li>
+          <li>✅ Works for XMR → BTC, BTC → XMR, and 50+ other pairs</li>
         </ul>
 
         <h2>Is It Safe?</h2>
         <p>
-          Yes. <strong>TokensFund never holds your funds.</strong> You send crypto directly 
-          to a one-time deposit address. The swapped amount is sent straight to your 
-          destination wallet. If the swap fails for any reason, your original funds are 
-          automatically refunded.
+          TokensFund never holds your funds. When you swap, you send directly to a
+          one-time deposit address generated by the underlying protocol (THORChain or Exolix).
+          If anything goes wrong, your funds are automatically returned to your refund address.
         </p>
 
-        <h2>Fees for Cross-Chain Swaps</h2>
-        <p>Fees depend on the protocol and network conditions:</p>
-        <ul>
-          <li><strong>THORChain:</strong> Usually 0.1% – 0.3% liquidity fee</li>
-          <li><strong>Chainflip:</strong> Generally very competitive</li>
-          <li><strong>NEAR Intents:</strong> Efficient pricing with fast execution</li>
-        </ul>
-        <p>TokensFund shows you all available quotes so you can choose the cheapest and fastest option.</p>
+        <h2>XMR to BTC Fees</h2>
+        <p>
+          Fees vary by protocol and network conditions. THORChain charges a liquidity fee
+          based on pool depth, typically 0.1–0.3%. Exolix charges a flat spread of around
+          0.4–0.5%. TokensFund shows you both quotes so you always pick the cheapest option.
+        </p>
 
         <div className="blog-cta">
-          <p>Ready to do a cross-chain swap?</p>
-          <Link href="/" style={ctaStyle}>
-            Start Cross Chain Swap →
+          <p>Ready to swap?</p>
+          <Link 
+            href="/" 
+            style={{ 
+              display: "inline-block", 
+              textDecoration: "none", 
+              background: "var(--gold)", 
+              color: "#000", 
+              fontWeight: "700", 
+              padding: "12px 28px", 
+              borderRadius: "8px", 
+              fontSize: "1rem" 
+            }}
+          >
+            Swap XMR to BTC now →
           </Link>
         </div>
       </article>
