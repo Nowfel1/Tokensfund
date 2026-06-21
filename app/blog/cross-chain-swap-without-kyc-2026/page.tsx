@@ -16,9 +16,15 @@ export default function Post() {
   return (
     <main className="wrap">
       <header className="masthead">
-        <div className="brand">
-          <Logo size={34} />
-          <span>tokensfund<span className="tld">.xyz</span></span>
+        <div className="header-inner">
+          <a href="/" className="brand" style={brandStyle}>
+            <Logo size={34} />
+            <span>tokensfund<span className="tld">.xyz</span></span>
+          </a>
+          <nav className="main-nav">
+            <a href="/" className="nav-link">Swap</a>
+            <a href="/blog" className="nav-link">Blog</a>
+          </nav>
         </div>
       </header>
 
