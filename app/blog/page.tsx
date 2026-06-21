@@ -6,6 +6,13 @@ export const metadata = {
 };
 const posts = [
   {
+    slug: "why-non-custodial-swaps-protect-privacy-2026",
+    title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
+    date: "June 20, 2026",
+    description: "Real data on exchange breaches, how non-custodial swaps remove the identity honeypot, and self-custody basics that actually matter.",
+    tag: "Privacy",
+  },
+  {
     slug: "best-crypto-to-buy-june-2026-without-kyc",
     title: "Best Crypto to Buy in June 2026 Without KYC",
     date: "June 19, 2026",
