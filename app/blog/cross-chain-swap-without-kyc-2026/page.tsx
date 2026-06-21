@@ -23,30 +23,21 @@ const ctaStyle = {
   fontSize: "1rem",
 };
 
-const brandStyle = {
-  textDecoration: "none",
-  color: "inherit",
-};
-
-const bannerStyle = {
-  width: "100%",
-  height: "auto",
-  borderRadius: "12px",
-  marginBottom: "2rem",
-};
-
 export default function Post() {
   return (
     <main className="wrap">
       <header className="masthead">
         <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
+          {/* Logo - Now using Next.js Link */}
+          <Link href="/" className="brand">
             <Logo size={34} />
             <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
+          </Link>
+
+          {/* Simple Navigation */}
           <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/blog" className="nav-link">Blog</a>
+            <Link href="/" className="nav-link">Swap</Link>
+            <Link href="/blog" className="nav-link">Blog</Link>
           </nav>
         </div>
       </header>
@@ -88,7 +79,7 @@ export default function Post() {
 
         <h2>Step-by-Step: Cross Chain Swap on TokensFund</h2>
         <ol>
-          <li>Go to <a href="https://tokensfund.xyz">tokensfund.xyz</a></li>
+          <li>Go to <Link href="/">tokensfund.xyz</Link></li>
           <li>Select the coin you want to <strong>send</strong></li>
           <li>Select the coin you want to <strong>receive</strong></li>
           <li>Enter the amount you want to swap</li>
@@ -111,16 +102,14 @@ export default function Post() {
 
         <h2>Is It Safe?</h2>
         <p>
-          Yes. TokensFund does not hold your funds at any point. You send crypto directly 
+          Yes. <strong>TokensFund never holds your funds.</strong> You send crypto directly 
           to a one-time deposit address. The swapped amount is sent straight to your 
           destination wallet. If the swap fails for any reason, your original funds are 
           automatically refunded.
         </p>
 
         <h2>Fees for Cross-Chain Swaps</h2>
-        <p>
-          Fees depend on the protocol and network conditions:
-        </p>
+        <p>Fees depend on the protocol and network conditions:</p>
         <ul>
           <li><strong>THORChain:</strong> Usually 0.1% – 0.3% liquidity fee</li>
           <li><strong>Chainflip:</strong> Generally very competitive</li>
@@ -130,21 +119,9 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to do a cross-chain swap?</p>
-          <a 
-            href="/" 
-            style={{ 
-              display: "inline-block", 
-              textDecoration: "none", 
-              background: "var(--gold)", 
-              color: "#000", 
-              fontWeight: "700", 
-              padding: "12px 28px", 
-              borderRadius: "8px", 
-              fontSize: "1rem" 
-            }}
-          >
+          <Link href="/" style={ctaStyle}>
             Start Cross Chain Swap →
-          </a>
+          </Link>
         </div>
       </article>
     </main>
