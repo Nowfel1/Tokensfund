@@ -3,22 +3,54 @@ import { ProviderId } from "@/lib/types";
 import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
+import * as cce from "@/lib/providers/cce";
+import * as changenow from "@/lib/providers/changenow";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
+// Map each provider to its module. Some providers may not export getStatus;
+// we guard for that below so a missing function never breaks the build or request.
+const PROVIDERS: Record<string, any> = {
+  thorchain,
+  chainflip,
+  near_intents: nearIntents,
+  cce,
+  changenow,
+};
+
 export async function GET(req: NextRequest) {
-  const provider = req.nextUrl.searchParams.get("provider") as ProviderId | null;
-  const id = req.nextUrl.searchParams.get("id");
-  if (!provider || !id) {
-    return NextResponse.json({ error: "provider and id are required." }, { status: 400 });
+  const { searchParams } = new URL(req.url);
+  const provider = searchParams.get("provider") as ProviderId | null;
+  const trackingId = searchParams.get("id");
+
+  if (!provider || !trackingId) {
+    return NextResponse.json({ error: "Missing provider or id." }, { status: 400 });
   }
-  try {
-    if (provider === "thorchain") return NextResponse.json(await thorchain.getStatus(id));
-    if (provider === "chainflip") return NextResponse.json(await chainflip.getStatus(id));
-    if (provider === "near_intents") return NextResponse.json(await nearIntents.getStatus(id));
+
+  const mod = PROVIDERS[provider];
+  if (!mod) {
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
+  }
+
+  if (typeof mod.getStatus !== "function") {
+    return NextResponse.json(
+      {
+        provider,
+        state: "unknown",
+        detail: "Live tracking is not available for this provider yet. Check your wallet or the provider's explorer.",
+      },
+      { status: 200 }
+    );
+  }
+
+  try {
+    const status = await mod.getStatus(trackingId);
+    return NextResponse.json(status, { status: 200 });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message ?? "Status check failed" }, { status: 500 });
+    return NextResponse.json(
+      { provider, state: "unknown", detail: e.message ?? "Status lookup failed" },
+      { status: 200 }
+    );
   }
 }
