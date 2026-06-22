@@ -12,6 +12,7 @@ export default function Home() {
           </div>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
