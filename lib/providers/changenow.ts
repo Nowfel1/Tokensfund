@@ -88,7 +88,7 @@ export async function buildSwap(
     depositAmount: String(data.fromAmount),
     memo: data.payinExtraId || undefined,
     trackingId: data.id,
-    notes: "Track your swap at changenow.io/track/" + data.id,
+    notes: "Track your swap at changenow.io/exchange/txs/" + data.id,
   };
 }
 
