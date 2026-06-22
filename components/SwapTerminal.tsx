@@ -127,7 +127,8 @@ export default function SwapTerminal() {
         const res = await fetch(
           "/api/status?provider=" + selected + "&id=" + encodeURIComponent(deposit!.trackingId)
         );
-        const data = await res.json();
+        const text = await res.text();
+        const data = text ? JSON.parse(text) : null;
         if (!stop && data) setStatus(data);
         const st = STATE_META[data?.state]?.step ?? 0;
         if (st >= 3 && statusTimer.current) clearInterval(statusTimer.current);
@@ -418,9 +419,6 @@ export default function SwapTerminal() {
           )}
         </div>
       )}
-
-      {/* MANUAL TRACKER */}
-      <ManualTracker />
     </div>
   );
 }
@@ -448,68 +446,6 @@ function StatusTracker({ status }: { status: SwapStatus | null }) {
         ))}
       </div>
       <p className="status-hint">Status updates automatically every 15s.</p>
-    </div>
-  );
-}
-
-function ManualTracker() {
-  const [provider, setProvider] = useState<ProviderId>("changenow");
-  const [id, setId] = useState("");
-  const [status, setStatus] = useState<SwapStatus | null>(null);
-  const [busy, setBusy] = useState(false);
-  const [open, setOpen] = useState(false);
-
-  async function lookup() {
-    if (!id.trim()) return;
-    setBusy(true);
-    setStatus(null);
-    try {
-      const res = await fetch("/api/status?provider=" + provider + "&id=" + encodeURIComponent(id.trim()));
-      const data = await res.json();
-      setStatus(data);
-    } catch (e: any) {
-      setStatus({ provider, state: "unknown", detail: e.message });
-    } finally {
-      setBusy(false);
-    }
-  }
-
-  const meta = status ? (STATE_META[status.state] ?? STATE_META.unknown) : null;
-
-  return (
-    <div className="track-wrap">
-      <button className="track-toggle" onClick={() => setOpen(!open)}>
-        {open ? "- Hide swap tracker" : "+ Track an existing swap"}
-      </button>
-      {open && (
-        <div className="track-panel">
-          <div className="track-row">
-            <select className="track-select" value={provider} onChange={(e) => setProvider(e.target.value as ProviderId)}>
-              <option value="changenow">ChangeNOW</option>
-              <option value="near_intents">NEAR Intents</option>
-              <option value="chainflip">Chainflip</option>
-              <option value="thorchain">THORChain</option>
-              <option value="cce">CCE.Cash</option>
-            </select>
-            <input
-              className="track-input"
-              placeholder="Deposit address or tracking ID"
-              value={id}
-              onChange={(e) => setId(e.target.value)}
-              onKeyDown={(e) => { if (e.key === "Enter") lookup(); }}
-            />
-            <button className="track-btn" onClick={lookup} disabled={busy || !id.trim()}>
-              {busy ? "..." : "Check"}
-            </button>
-          </div>
-          {meta && (
-            <div className="track-result">
-              <span className={"status-pill tone-" + meta.tone}><span className="status-pulse" />{meta.label}</span>
-              {status?.detail && <span className="track-detail">{status.detail}</span>}
-            </div>
-          )}
-        </div>
-      )}
     </div>
   );
 }
