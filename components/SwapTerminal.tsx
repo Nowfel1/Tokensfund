@@ -18,6 +18,17 @@ const COIN_LETTER: Record<string, string> = {
   ZANO: "Z", TRX: "T",
 };
 
+const COIN_COLOR: Record<string, string> = {
+  BTC: "#f7931a", ETH: "#9b9cf5", SOL: "#14f1b2", XRP: "#5fb8e8", DOGE: "#cfa84e",
+  USDT: "#26a17b", USDC: "#2775ca", LTC: "#b8b8c0", TON: "#3aa0e8", XMR: "#e06f6f",
+  ZEC: "#f4c64e", NEAR: "#9b9cf5", TAO: "#1ec0d6", HYPE: "#5fb8e8",
+  ZANO: "#e06f6f", TRX: "#e83b3b", USDT_TRC20: "#26a17b",
+};
+
+function coinColor(id: string) {
+  return COIN_COLOR[id] ?? "#8a93b8";
+}
+
 function fmt(n: number) {
   if (!isFinite(n) || n === 0) return "0";
   if (n < 0.0001) return n.toExponential(2);
@@ -222,7 +233,7 @@ export default function SwapTerminal() {
             />
           </div>
           <div className="token-select-wrap">
-            <div className="token-coin">{COIN_LETTER[fromId] ?? fromId[0]}</div>
+            <div className="token-coin" style={{ background: coinColor(fromId) + "22", color: coinColor(fromId) }}>{COIN_LETTER[fromId] ?? fromId[0]}</div>
             <select
               className="token-select"
               value={fromId}
@@ -256,7 +267,7 @@ export default function SwapTerminal() {
             </div>
           </div>
           <div className="token-select-wrap">
-            <div className="token-coin">{COIN_LETTER[toId] ?? toId[0]}</div>
+            <div className="token-coin" style={{ background: coinColor(toId) + "22", color: coinColor(toId) }}>{COIN_LETTER[toId] ?? toId[0]}</div>
             <select
               className="token-select"
               value={toId}
@@ -271,56 +282,60 @@ export default function SwapTerminal() {
         </div>
 
         {eligible.length > 0 && (
+          <>
+            <div className="card-divider" />
+            <div className="addr-rows">
+              <div className="addr-row">
+                <label className="addr-row-label" htmlFor="dest">
+                  Destination ({toSym})
+                </label>
+                <input
+                  id="dest"
+                  value={destination}
+                  placeholder={"Where you receive " + toSym}
+                  onChange={(e) => { setDestination(e.target.value); }}
+                />
+              </div>
+              <div className="addr-row">
+                <label className="addr-row-label" htmlFor="refund">
+                  Refund ({fromSym}){needsRefund && <span className="req-tag"> - required</span>}
+                </label>
+                <input
+                  id="refund"
+                  value={refund}
+                  placeholder={"Your " + fromSym + " address (if swap fails)"}
+                  onChange={(e) => { setRefund(e.target.value); }}
+                />
+              </div>
+            </div>
+            <div className="route-summary">
+              <span>{eligible.length} {eligible.length === 1 ? "route" : "routes"} compared</span>
+              {bestProviderLabel && (
+                <span className="route-best">
+                  <span className="route-dot" />
+                  Best: {bestProviderLabel}
+                </span>
+              )}
+            </div>
+            <button
+              className="btn-primary"
+              disabled={!canQuote || loading}
+              onClick={getQuotes}
+            >
+              {loading
+                ? "Comparing routes..."
+                : !destination.trim()
+                ? "Enter destination address"
+                : "Compare routes"}
+            </button>
+          </>
+        )}
+        {eligible.length === 0 && (
           <div className="route-summary">
-            <span>{eligible.length} {eligible.length === 1 ? "route" : "routes"} compared</span>
-            {bestProviderLabel && (
-              <span className="route-best">
-                <span className="route-dot" />
-                Best: {bestProviderLabel}
-              </span>
-            )}
+            <span>No route for this pair</span>
           </div>
         )}
       </div>
-
-      {/* addresses */}
-      <div className="fields">
-        <div className="field">
-          <label htmlFor="dest">Destination address ({toSym})</label>
-          <input
-            id="dest"
-            value={destination}
-            placeholder={"Where you receive " + toSym}
-            onChange={(e) => { setDestination(e.target.value); }}
-          />
-        </div>
-        <div className="field">
-          <label htmlFor="refund">
-            Refund address ({fromSym})
-            {needsRefund && <span style={{ color: "var(--muted-2)", fontWeight: 400 }}> - (required)</span>}
-          </label>
-          <input
-            id="refund"
-            value={refund}
-            placeholder={"Your " + fromSym + " address (returned if swap fails)"}
-            onChange={(e) => { setRefund(e.target.value); }}
-          />
-        </div>
-      </div>
-
-      <button
-        className="btn-primary"
-        disabled={!canQuote || loading}
-        onClick={getQuotes}
-      >
-        {loading
-          ? "Comparing routes..."
-          : eligible.length === 0
-          ? "No route for this pair"
-          : !destination.trim()
-          ? "Enter destination address"
-          : "Compare routes"}
-      </button>
 
       {error && <div className="error">{error}</div>}
 
