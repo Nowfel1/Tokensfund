@@ -1,17 +1,12 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+
 export const metadata = {
-  title: "Blog — Crypto Swap Guides | TokensFund",
-  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, NEAR Intents and Exolix.",
+  title: "Blog - Crypto Swap Guides | TokensFund",
+  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, NEAR Intents, ChangeNOW and CCE.Cash.",
 };
+
 const posts = [
-  {
-    slug: "why-non-custodial-swaps-protect-privacy-2026",
-    title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
-    date: "June 20, 2026",
-    description: "Real data on exchange breaches, how non-custodial swaps remove the identity honeypot, and self-custody basics that actually matter.",
-    tag: "Privacy",
-  },
   {
     slug: "best-crypto-to-buy-june-2026-without-kyc",
     title: "Best Crypto to Buy in June 2026 Without KYC",
@@ -37,7 +32,7 @@ const posts = [
     slug: "btc-to-eth-without-kyc-2026",
     title: "How to Swap BTC to ETH Without KYC in 2026",
     date: "June 14, 2026",
-    description: "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap Bitcoin to Ethereum at the best rate — no account, no KYC.",
+    description: "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap Bitcoin to Ethereum at the best rate - no account, no KYC.",
     tag: "Guide",
   },
   {
@@ -47,30 +42,39 @@ const posts = [
     description: "Learn how to swap between any chains (BTC, ETH, SOL, etc.) without KYC using THORChain, Chainflip, and NEAR Intents.",
     tag: "Guide",
   },
-    {
+  {
     slug: "swap-xmr-btc-no-kyc",
     title: "How to Swap XMR to BTC Without KYC in 2026",
     date: "June 12, 2026",
-    description: "Compare THORChain, Chainflip and Exolix — get the best Monero to Bitcoin rate in seconds, no account required.",
+    description: "Compare THORChain, Chainflip and Exolix - get the best Monero to Bitcoin rate in seconds, no account required.",
     tag: "Guide",
   },
 ];
+
 export default function Blog() {
   return (
     <main className="wrap">
       <header className="masthead">
-        <Link href="/" className="brand">
-          <Logo size={34} />
-          <span>tokensfund<span className="tld">.xyz</span></span>
-        </Link>
+        <div className="header-inner">
+          <Link href="/" className="brand">
+            <Logo size={34} />
+            <span>tokensfund<span className="tld">.xyz</span></span>
+          </Link>
+          <nav className="main-nav">
+            <Link href="/" className="nav-link">Swap</Link>
+            <Link href="/track" className="nav-link">Track</Link>
+            <Link href="/blog" className="nav-link">Blog</Link>
+          </nav>
+        </div>
       </header>
+
       <section className="blog-index">
         <h1 className="blog-index-title">Blog</h1>
         <p className="blog-index-sub">Crypto swap guides, tips and updates.</p>
-        
+
         <div className="blog-list">
           {posts.map((p) => (
-            <Link key={p.slug} href={`/blog/${p.slug}`} className="blog-card">
+            <Link key={p.slug} href={"/blog/" + p.slug} className="blog-card">
               <span className="blog-tag">{p.tag}</span>
               <h2>{p.title}</h2>
               <p>{p.description}</p>
