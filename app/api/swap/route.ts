@@ -1,68 +1,56 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAsset } from "@/lib/assets";
-import { ProviderId, QuoteRequest } from "@/lib/types";
+import { ProviderId } from "@/lib/types";
 import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
 import * as changenow from "@/lib/providers/changenow";
-import { sql, ensureOrdersTable } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-async function logOrder(result: any, body: any) {
-  try {
-    await ensureOrdersTable();
-    await sql`
-      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId})
-    `;
-  } catch (e) {
-    console.error("Failed to log order:", e);
+// Map each provider to its module. Some providers may not export getStatus;
+// we guard for that below so a missing function never breaks the build or request.
+const PROVIDERS: Record<string, any> = {
+  thorchain,
+  chainflip,
+  near_intents: nearIntents,
+  cce,
+  changenow,
+};
+
+export async function GET(req: NextRequest) {
+  const { searchParams } = new URL(req.url);
+  const provider = searchParams.get("provider") as ProviderId | null;
+  const trackingId = searchParams.get("id");
+
+  if (!provider || !trackingId) {
+    return NextResponse.json({ error: "Missing provider or id." }, { status: 400 });
   }
-}
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = (await req.json()) as QuoteRequest & { provider: ProviderId };
-    const from = getAsset(body.fromAssetId);
-    const to = getAsset(body.toAssetId);
-    if (!from || !to) return NextResponse.json({ error: "Unknown asset." }, { status: 400 });
-    if (!body.destinationAddress) {
-      return NextResponse.json(
-        { error: "A destination address is required to open a deposit address." },
-        { status: 400 }
-      );
-    }
+  const mod = PROVIDERS[provider];
+  if (!mod) {
+    return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
+  }
 
-    let result;
-    if (body.provider === "thorchain") {
-      const quote = await thorchain.getQuote(from, to, body);
-      result = await thorchain.buildSwap(quote, body);
-    } else if (body.provider === "chainflip") {
-      const quote = await chainflip.getQuote(from, to, body);
-      result = await chainflip.buildSwap(quote, body, from, to);
-    } else if (body.provider === "near_intents") {
-      const quote = await nearIntents.getQuote(from, to, body);
-      result = await nearIntents.buildSwap(quote, from, to, body);
-    } else if (body.provider === "cce") {
-      const quote = await cce.getQuote(from, to, body);
-      result = await cce.buildSwap(quote, body, from, to);
-    } else if (body.provider === "changenow") {
-      const quote = await changenow.getQuote(from, to, body);
-      result = await changenow.buildSwap(quote, body, from, to);
-    } else {
-      return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
-    }
-
-    await logOrder(result, body);
-    return NextResponse.json(result);
-  } catch (e: any) {
-    console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
+  if (typeof mod.getStatus !== "function") {
     return NextResponse.json(
-      { error: e.message ?? "Could not open deposit address" },
-      { status: 500 }
+      {
+        provider,
+        state: "unknown",
+        detail: "Live tracking is not available for this provider yet. Check your wallet or the provider's explorer.",
+      },
+      { status: 200 }
+    );
+  }
+
+  try {
+    const status = await mod.getStatus(trackingId);
+    return NextResponse.json(status, { status: 200 });
+  } catch (e: any) {
+    return NextResponse.json(
+      { provider, state: "unknown", detail: e.message ?? "Status lookup failed" },
+      { status: 200 }
     );
   }
 }
