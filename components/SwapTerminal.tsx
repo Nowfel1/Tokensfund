@@ -13,26 +13,35 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
 };
 
 const COIN_LETTER: Record<string, string> = {
-  BTC: "B", ETH: "E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
+  BTC: "\u20BF", ETH: "\u039E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
   LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N", TAO: "T", HYPE: "H",
   ZANO: "Z", TRX: "T", USDT_TRC20: "T",
 };
 
-const COIN_COLOR: Record<string, string> = {
-  BTC: "#f7931a", ETH: "#9b9cf5", SOL: "#14f1b2", XRP: "#5fb8e8", DOGE: "#cfa84e",
-  USDT: "#26a17b", USDC: "#2775ca", LTC: "#b8b8c0", TON: "#3aa0e8", XMR: "#e06f6f",
-  ZEC: "#f4c64e", NEAR: "#9b9cf5", TAO: "#1ec0d6", HYPE: "#5fb8e8",
-  ZANO: "#e06f6f", TRX: "#e83b3b", USDT_TRC20: "#26a17b",
+// gradient pairs per coin for the icon
+const COIN_GRAD: Record<string, [string, string]> = {
+  BTC: ["#f7931a", "#ffb347"], ETH: ["#7b7cf0", "#a5a6f8"], SOL: ["#14f1b2", "#19fb9b"],
+  XRP: ["#4aa8e0", "#7cc8f0"], DOGE: ["#c2a633", "#e0c860"], USDT: ["#26a17b", "#3fd69b"],
+  USDC: ["#2775ca", "#4f9be8"], LTC: ["#9aa0aa", "#c4c8d0"], TON: ["#0098ea", "#3ab8f5"],
+  XMR: ["#ff6600", "#ff8c42"], ZEC: ["#f4b728", "#f4cd5e"], NEAR: ["#7b7cf0", "#a5a6f8"],
+  TAO: ["#1ec0d6", "#52d8e8"], HYPE: ["#4aa8e0", "#7cc8f0"], ZANO: ["#e06f6f", "#f09595"],
+  TRX: ["#e83b3b", "#ff6b6b"], USDT_TRC20: ["#26a17b", "#3fd69b"],
 };
 
-function coinColor(id: string) {
-  return COIN_COLOR[id] ?? "#8a93b8";
+function coinGrad(id: string): string {
+  const g = COIN_GRAD[id] ?? ["#3a4460", "#565f80"];
+  return "linear-gradient(135deg," + g[0] + "," + g[1] + ")";
 }
 
 function fmt(n: number) {
   if (!isFinite(n) || n === 0) return "0";
   if (n < 0.0001) return n.toExponential(2);
   return n.toLocaleString(undefined, { maximumFractionDigits: 8 });
+}
+
+function fmtUsd(n: number) {
+  if (!isFinite(n) || n <= 0) return null;
+  return "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
 function pairProviders(fromId: string, toId: string): ProviderId[] {
@@ -53,7 +62,6 @@ function label(p?: ProviderId) {
   return "NEAR Intents";
 }
 
-// human-friendly status labels + the step they map to (0-3) for the progress bar
 const STATE_META: Record<string, { label: string; step: number; tone: string }> = {
   awaiting_deposit: { label: "Awaiting your deposit", step: 0, tone: "wait" },
   deposit_detected: { label: "Deposit detected", step: 1, tone: "go" },
@@ -70,7 +78,6 @@ export default function SwapTerminal() {
   const [fromId, setFromId] = useState("BTC");
   const [toId, setToId] = useState("ETH");
   const [amount, setAmount] = useState("0.1");
-  const [maxBalance] = useState<number | null>(null);
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
   const [loading, setLoading] = useState(false);
@@ -79,18 +86,29 @@ export default function SwapTerminal() {
   const [error, setError] = useState<string | null>(null);
   const [opening, setOpening] = useState(false);
   const [deposit, setDeposit] = useState<SwapInstruction | null>(null);
+  const [showAllRoutes, setShowAllRoutes] = useState(false);
 
   const [liveOut, setLiveOut] = useState<number | null>(null);
   const [liveLoading, setLiveLoading] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  // live status of the active swap
+  const [prices, setPrices] = useState<Record<string, number>>({});
   const [status, setStatus] = useState<SwapStatus | null>(null);
   const statusTimer = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const eligible = useMemo(() => pairProviders(fromId, toId), [fromId, toId]);
   const toSym = ASSETS.find((a) => a.id === toId)?.symbol ?? toId;
   const fromSym = ASSETS.find((a) => a.id === fromId)?.symbol ?? fromId;
+  const fromName = ASSETS.find((a) => a.id === fromId)?.name ?? "";
+  const toName = ASSETS.find((a) => a.id === toId)?.name ?? "";
+
+  // load prices once
+  useEffect(() => {
+    fetch("/api/prices")
+      .then((r) => r.text())
+      .then((t) => { if (t) setPrices(JSON.parse(t)); })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     setLiveOut(null);
@@ -117,16 +135,12 @@ export default function SwapTerminal() {
     }, 600);
   }, [amount, fromId, toId]);
 
-  // poll status once a deposit is open
   useEffect(() => {
     if (!deposit || !selected) return;
     let stop = false;
-
     async function check() {
       try {
-        const res = await fetch(
-          "/api/status?provider=" + selected + "&id=" + encodeURIComponent(deposit!.trackingId)
-        );
+        const res = await fetch("/api/status?provider=" + selected + "&id=" + encodeURIComponent(deposit!.trackingId));
         const text = await res.text();
         const data = text ? JSON.parse(text) : null;
         if (!stop && data) setStatus(data);
@@ -136,13 +150,9 @@ export default function SwapTerminal() {
         // silent
       }
     }
-
     check();
     statusTimer.current = setInterval(check, 15000);
-    return () => {
-      stop = true;
-      if (statusTimer.current) clearInterval(statusTimer.current);
-    };
+    return () => { stop = true; if (statusTimer.current) clearInterval(statusTimer.current); };
   }, [deposit, selected]);
 
   const needsRefund = selected === "chainflip" || (!selected && eligible.includes("chainflip"));
@@ -165,18 +175,8 @@ export default function SwapTerminal() {
     setError(null);
     setLiveOut(null);
     setStatus(null);
+    setShowAllRoutes(false);
     if (statusTimer.current) clearInterval(statusTimer.current);
-  }
-
-  function applyPercent(pct: number) {
-    if (maxBalance === null) return;
-    setAmount(((maxBalance * pct) / 100).toString());
-    reset();
-  }
-
-  function clearAmount() {
-    setAmount("");
-    reset();
   }
 
   async function getQuotes() {
@@ -209,10 +209,7 @@ export default function SwapTerminal() {
 
   async function openDeposit() {
     if (!selected) return;
-    if (!destination) {
-      setError("Enter the address where you want to receive funds first.");
-      return;
-    }
+    if (!destination) { setError("Enter the address where you want to receive funds first."); return; }
     if (selected === "chainflip" && !refund) {
       setError("Enter a " + fromSym + " refund address - required by Chainflip in case the swap fails.");
       return;
@@ -243,84 +240,84 @@ export default function SwapTerminal() {
     }
   }
 
-  const receiveValue =
-    result && selected
-      ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
-      : liveLoading
-      ? "..."
-      : liveOut
-      ? fmt(liveOut)
-      : "0.0";
+  const sendUsd = prices[fromId] && Number(amount) > 0 ? fmtUsd(prices[fromId] * Number(amount)) : null;
 
+  const outVal = result && selected
+    ? (result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
+    : liveOut ?? 0;
+  const receiveValue = result && selected
+    ? fmt(result.quotes.find((q) => q.provider === selected)?.expectedOut ?? 0)
+    : liveLoading ? "..." : liveOut ? fmt(liveOut) : "0.0";
   const receiveEmpty = !result && !liveOut && !liveLoading;
-  const bestProviderLabel = result ? label(result.quotes[result.bestIndex]?.provider) : liveOut ? "comparing..." : null;
+  const receiveUsd = prices[toId] && outVal > 0 ? fmtUsd(prices[toId] * outVal) : null;
+
+  const bestQuote = result ? result.quotes[result.bestIndex] : null;
+  const otherQuotes = result ? result.quotes.filter((_, i) => i !== result.bestIndex) : [];
 
   return (
     <div>
-      <div className="card">
-        {/* FROM */}
+      {/* tab header */}
+      <div className="sw-header">
+        <div className="sw-tabs">
+          <span className="sw-tab active">Swap</span>
+          <span className="sw-tab">Limit</span>
+        </div>
+        <div className="sw-header-right">
+          <span className="sw-live"><span className="sw-live-dot" />{eligible.length} routes live</span>
+        </div>
+      </div>
+
+      <div className="card pro">
+        {/* PAY */}
         <div className="leg">
           <div className="leg-head">
-            <span className="label">You send</span>
+            <span className="label">You pay</span>
             <div className="quickfill">
-              <span className="qf-pill" onClick={clearAmount}>Clear</span>
-              <span className="qf-pill" onClick={() => applyPercent(50)}>50%</span>
-              <span className="qf-pill" onClick={() => applyPercent(100)}>100%</span>
+              <span className="qf-pill">25%</span>
+              <span className="qf-pill">50%</span>
+              <span className="qf-pill max">MAX</span>
             </div>
           </div>
-          <div>
-            <input
-              className="amount-input"
-              inputMode="decimal"
-              placeholder="0.0"
-              value={amount}
-              onChange={(e) => { setAmount(e.target.value.replace(/[^0-9.]/g, "")); reset(); }}
-              aria-label="Amount to send"
-            />
-          </div>
-          <div className="token-select-wrap">
-            <div className="token-coin" style={{ background: coinColor(fromId) + "22", color: coinColor(fromId) }}>{COIN_LETTER[fromId] ?? fromId[0]}</div>
-            <select
-              className="token-select"
-              value={fromId}
-              onChange={(e) => { setFromId(e.target.value); setRefund(""); reset(); }}
-              aria-label="Asset to send"
-            >
-              {ASSETS.map((a) => (<option key={a.id} value={a.id}>{a.symbol}</option>))}
-            </select>
+          <div className="leg-body">
+            <div className="leg-amount">
+              <input
+                className="amount-input"
+                inputMode="decimal"
+                placeholder="0.0"
+                value={amount}
+                onChange={(e) => { setAmount(e.target.value.replace(/[^0-9.]/g, "")); reset(); }}
+                aria-label="Amount to send"
+              />
+              {sendUsd && <div className="fiat-hint">{"\u2248 " + sendUsd}</div>}
+            </div>
+            <TokenButton id={fromId} name={fromName} onChange={(v) => { setFromId(v); setRefund(""); reset(); }} exclude={toId} />
           </div>
         </div>
 
         <div className="swap-flip">
           <button className="flip-btn" onClick={flip} aria-label="Swap direction">
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+            <svg width="15" height="15" viewBox="0 0 16 16" fill="none">
               <path d="M5 3v8M5 11l-2.5-2.5M5 11l2.5-2.5M11 13V5M11 5L8.5 7.5M11 5l2.5 2.5"
-                stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
           </button>
         </div>
 
-        {/* TO */}
+        {/* RECEIVE */}
         <div className="leg">
           <div className="leg-head">
             <span className="label">You receive</span>
           </div>
-          <div>
-            <div className={receiveEmpty ? "amount-readout empty" : "amount-readout"}>{receiveValue}</div>
-          </div>
-          <div className="token-select-wrap">
-            <div className="token-coin" style={{ background: coinColor(toId) + "22", color: coinColor(toId) }}>{COIN_LETTER[toId] ?? toId[0]}</div>
-            <select
-              className="token-select"
-              value={toId}
-              onChange={(e) => { setToId(e.target.value); reset(); }}
-              aria-label="Asset to receive"
-            >
-              {ASSETS.map((a) => (<option key={a.id} value={a.id}>{a.symbol}</option>))}
-            </select>
+          <div className="leg-body">
+            <div className="leg-amount">
+              <div className={receiveEmpty ? "amount-readout empty" : "amount-readout"}>{receiveValue}</div>
+              {receiveUsd && <div className="fiat-hint">{"\u2248 " + receiveUsd}</div>}
+            </div>
+            <TokenButton id={toId} name={toName} onChange={(v) => { setToId(v); reset(); }} exclude={fromId} />
           </div>
         </div>
 
+        {/* address fields */}
         {eligible.length > 0 && (
           <>
             <div className="card-divider" />
@@ -338,62 +335,93 @@ export default function SwapTerminal() {
                   onChange={(e) => { setRefund(e.target.value); }} />
               </div>
             </div>
-            <div className="route-summary">
-              <span>{eligible.length} {eligible.length === 1 ? "route" : "routes"} compared</span>
-              {bestProviderLabel && (
-                <span className="route-best"><span className="route-dot" />Best: {bestProviderLabel}</span>
-              )}
-            </div>
-            <button className="btn-primary" disabled={!canQuote || loading} onClick={getQuotes}>
-              {loading ? "Comparing routes..." : !destination.trim() ? "Enter destination address" : "Compare routes"}
-            </button>
           </>
         )}
-        {eligible.length === 0 && (
-          <div className="route-summary"><span>No route for this pair</span></div>
+
+        {/* best route strip (live estimate, before compare) */}
+        {eligible.length > 0 && !result && (
+          <div className="route-strip">
+            <div className="route-strip-left">
+              <span className="route-strip-mark">{liveLoading ? "\u00B7\u00B7" : PROVIDER_INITIAL[eligible[0]]}</span>
+              <div>
+                <div className="route-strip-name">{liveLoading ? "Finding best route..." : "Best of " + eligible.length + " routes"}</div>
+                <div className="route-strip-meta">Compare to lock in the top rate</div>
+              </div>
+            </div>
+          </div>
         )}
+
+        {/* best route strip (after compare) */}
+        {bestQuote && !bestQuote.error && (
+          <div className="route-strip best">
+            <div className="route-strip-left">
+              <span className="route-strip-mark gold">{PROVIDER_INITIAL[bestQuote.provider]}</span>
+              <div>
+                <div className="route-strip-name">
+                  {bestQuote.providerLabel}
+                  <span className="route-strip-tag">BEST</span>
+                </div>
+                <div className="route-strip-meta">
+                  {bestQuote.estimatedSeconds ? "~" + Math.round(bestQuote.estimatedSeconds / 60) + " min" : "intent-based"}
+                  {bestQuote.feeOut ? " \u00B7 fee " + fmt(bestQuote.feeOut) + " " + toSym : ""}
+                </div>
+              </div>
+            </div>
+            {otherQuotes.length > 0 && (
+              <button className="route-strip-more" onClick={() => setShowAllRoutes(!showAllRoutes)}>
+                {showAllRoutes ? "hide" : otherQuotes.length + " more"} {showAllRoutes ? "\u25B4" : "\u25BE"}
+              </button>
+            )}
+          </div>
+        )}
+
+        {/* expanded other routes */}
+        {showAllRoutes && bestQuote && (
+          <div className="route-extra">
+            {otherQuotes.map((q) => (
+              <div key={q.provider} className={"route-extra-row" + (selected === q.provider ? " sel" : "") + (q.error ? " err" : "")}
+                onClick={() => !q.error && setSelected(q.provider)}>
+                <span className="route-extra-mark">{PROVIDER_INITIAL[q.provider]}</span>
+                <span className="route-extra-name">{q.providerLabel}</span>
+                <span className="route-extra-out">
+                  {q.error ? <span className="route-extra-fail">unavailable</span> : fmt(q.expectedOut) + " " + toSym}
+                </span>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {eligible.length === 0 && (
+          <div className="route-strip"><div className="route-strip-left"><div className="route-strip-name">No route for this pair</div></div></div>
+        )}
+
+        {/* CTA */}
+        {eligible.length > 0 && !result && (
+          <button className="btn-primary" disabled={!canQuote || loading} onClick={getQuotes}>
+            {loading ? "Comparing routes..." : !destination.trim() ? "Enter destination address" : "Compare routes"}
+          </button>
+        )}
+        {result && selected && !deposit && (
+          <button className="btn-primary" disabled={opening} onClick={openDeposit}>
+            {opening ? "Opening deposit address..." : "Swap via " + label(selected)}
+          </button>
+        )}
+      </div>
+
+      {/* trust line */}
+      <div className="trust-line">
+        <span><CheckIcon />Non-custodial</span>
+        <span><CheckIcon />No account</span>
+        <span><CheckIcon />No KYC</span>
       </div>
 
       {error && <div className="error">{error}</div>}
 
-      {/* QUOTE RACE */}
-      {(loading || result) && (
-        <div className="race">
-          <div className="race-head">
-            <h2>Routes</h2>
-            <span className="count">
-              {loading
-                ? eligible.length + " networks quoting..."
-                : result?.quotes.filter((q) => !q.error).length + "/" + result?.quotes.length + " routed"}
-            </span>
-          </div>
-          {loading
-            ? eligible.map((p) => (
-                <div className="quote" key={p}>
-                  <div className="pmark">{PROVIDER_INITIAL[p]}</div>
-                  <div><div className="pname">{label(p)}</div><div className="pmeta">requesting quote</div></div>
-                  <div className="shimmer" />
-                </div>
-              ))
-            : result?.quotes.map((q, i) => (
-                <QuoteCard key={q.provider} q={q} best={i === result.bestIndex}
-                  selected={selected === q.provider} sym={toSym}
-                  onSelect={() => !q.error && setSelected(q.provider)} />
-              ))}
-          {result && selected && !deposit && (
-            <button className="btn-primary" disabled={opening} onClick={openDeposit}>
-              {opening ? "Opening deposit address..." : "Swap via " + label(selected)}
-            </button>
-          )}
-        </div>
-      )}
-
-      {/* DEPOSIT + LIVE STATUS */}
+      {/* DEPOSIT + STATUS */}
       {deposit && (
         <div className="deposit">
-          <h3>{"Send " + deposit.depositAmount + " " + (ASSETS.find((a) => a.id === fromId)?.symbol ?? "") + " to complete your swap"}</h3>
+          <h3>{"Send " + deposit.depositAmount + " " + fromSym + " to complete your swap"}</h3>
           <p className="sub">{"One-time address from " + label(deposit.provider) + ". The swap starts automatically once your deposit confirms."}</p>
-
           <div className="kv">
             <div className="row">
               <span className="k">Deposit address</span>
@@ -406,10 +434,7 @@ export default function SwapTerminal() {
               </div>
             )}
           </div>
-
-          {/* live status tracker */}
           <StatusTracker status={status} />
-
           {deposit.memo && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
@@ -423,19 +448,42 @@ export default function SwapTerminal() {
   );
 }
 
+function TokenButton({ id, name, onChange, exclude }: {
+  id: string; name: string; onChange: (v: string) => void; exclude: string;
+}) {
+  return (
+    <div className="token-btn">
+      <span className="token-coin-grad" style={{ background: coinGrad(id) }}>{COIN_LETTER[id] ?? id[0]}</span>
+      <span className="token-btn-text">
+        <span className="token-btn-sym">{ASSETS.find((a) => a.id === id)?.symbol ?? id}</span>
+        <span className="token-btn-name">{name}</span>
+      </span>
+      <span className="token-btn-chev">{"\u25BE"}</span>
+      <select className="token-btn-select" value={id} onChange={(e) => onChange(e.target.value)} aria-label="Select asset">
+        {ASSETS.filter((a) => a.id !== exclude).map((a) => (
+          <option key={a.id} value={a.id}>{a.symbol} - {a.name}</option>
+        ))}
+      </select>
+    </div>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#5fd6a6" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 6L9 17l-5-5" />
+    </svg>
+  );
+}
+
 function StatusTracker({ status }: { status: SwapStatus | null }) {
   const meta = STATE_META[status?.state ?? "unknown"] ?? STATE_META.unknown;
   const steps = ["Deposit", "Detected", "Processing", "Done"];
   return (
     <div className="status-box">
       <div className="status-head">
-        <span className={"status-pill tone-" + meta.tone}>
-          <span className="status-pulse" />
-          {meta.label}
-        </span>
-        {status?.outboundTxHash && (
-          <span className="status-tx">tx: {status.outboundTxHash.slice(0, 10)}...</span>
-        )}
+        <span className={"status-pill tone-" + meta.tone}><span className="status-pulse" />{meta.label}</span>
+        {status?.outboundTxHash && <span className="status-tx">tx: {status.outboundTxHash.slice(0, 10)}...</span>}
       </div>
       <div className="status-track">
         {steps.map((s, i) => (
@@ -446,31 +494,6 @@ function StatusTracker({ status }: { status: SwapStatus | null }) {
         ))}
       </div>
       <p className="status-hint">Status updates automatically every 15s.</p>
-    </div>
-  );
-}
-
-function QuoteCard({ q, best, selected, sym, onSelect }: {
-  q: NormalizedQuote; best: boolean; selected: boolean; sym: string; onSelect: () => void;
-}) {
-  const cls = "quote" + (best ? " best" : "") + (q.error ? " failed" : " selectable") + (selected ? " selected" : "");
-  return (
-    <div className={cls} onClick={onSelect} role={q.error ? undefined : "button"} tabIndex={q.error ? undefined : 0}
-      onKeyDown={(e) => { if (!q.error && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); onSelect(); } }}>
-      {best && <span className="tag-best">Best route</span>}
-      <div className="pmark">{PROVIDER_INITIAL[q.provider]}</div>
-      <div>
-        <div className="pname">{q.providerLabel}</div>
-        <div className="pmeta">
-          {q.error ? q.error.slice(0, 60)
-            : q.estimatedSeconds ? "~" + Math.round(q.estimatedSeconds / 60) + " min" + (q.feeOut ? " - fee " + fmt(q.feeOut) + " " + sym : "")
-            : "intent-based"}
-        </div>
-      </div>
-      <div className="out">
-        {q.error ? (<div className="num" style={{ color: "var(--muted-2)" }}>-</div>)
-          : (<div><div className="num">{fmt(q.expectedOut)}</div><div className="sym">{sym}</div></div>)}
-      </div>
     </div>
   );
 }
