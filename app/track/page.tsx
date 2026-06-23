@@ -17,7 +17,7 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
 };
 
 export default function TrackPage() {
-  const [provider, setProvider] = useState<ProviderId>("changenow");
+  const [provider, setProvider] = useState<ProviderId>("changee");
   const [id, setId] = useState("");
   const [status, setStatus] = useState<SwapStatus | null>(null);
   const [busy, setBusy] = useState(false);
@@ -70,7 +70,7 @@ export default function TrackPage() {
       <div className="card" style={{ padding: 18 }}>
         <div className="track-row">
           <select className="track-select" value={provider} onChange={(e) => setProvider(e.target.value as ProviderId)}>
-            <option value="changenow">ChangeNOW</option>
+            <option value="changee">Changee</option>
             <option value="near_intents">NEAR Intents</option>
             <option value="chainflip">Chainflip</option>
             <option value="thorchain">THORChain</option>
