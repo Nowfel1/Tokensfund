@@ -9,12 +9,12 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   chainflip: "CF",
   near_intents: "NI",
   cce: "CC",
-  changenow: "CN",
+  changee: "CG",
 };
 
 const COIN_LETTER: Record<string, string> = {
   BTC: "\u20BF", ETH: "\u039E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
-  LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N", TAO: "T", HYPE: "H",
+  LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N",
   ZANO: "Z", TRX: "T", USDT_TRC20: "T",
 };
 
@@ -24,7 +24,7 @@ const COIN_GRAD: Record<string, [string, string]> = {
   XRP: ["#4aa8e0", "#7cc8f0"], DOGE: ["#c2a633", "#e0c860"], USDT: ["#26a17b", "#3fd69b"],
   USDC: ["#2775ca", "#4f9be8"], LTC: ["#9aa0aa", "#c4c8d0"], TON: ["#0098ea", "#3ab8f5"],
   XMR: ["#ff6600", "#ff8c42"], ZEC: ["#f4b728", "#f4cd5e"], NEAR: ["#7b7cf0", "#a5a6f8"],
-  TAO: ["#1ec0d6", "#52d8e8"], HYPE: ["#4aa8e0", "#7cc8f0"], ZANO: ["#e06f6f", "#f09595"],
+  ZANO: ["#e06f6f", "#f09595"],
   TRX: ["#e83b3b", "#ff6b6b"], USDT_TRC20: ["#26a17b", "#3fd69b"],
 };
 
@@ -48,7 +48,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents", "cce", "changenow"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "near_intents", "cce", "changee"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -58,7 +58,7 @@ function label(p?: ProviderId) {
   if (p === "thorchain") return "THORChain";
   if (p === "chainflip") return "Chainflip";
   if (p === "cce") return "CCE.Cash";
-  if (p === "changenow") return "ChangeNOW";
+  if (p === "changee") return "Changee";
   return "NEAR Intents";
 }
 
