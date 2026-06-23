@@ -5,7 +5,7 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
-import * as changenow from "@/lib/providers/changenow";
+import * as changee from "@/lib/providers/changee";
 import { sql, ensureOrdersTable } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -49,9 +49,9 @@ export async function POST(req: NextRequest) {
     } else if (body.provider === "cce") {
       const quote = await cce.getQuote(from, to, body);
       result = await cce.buildSwap(quote, body, from, to);
-    } else if (body.provider === "changenow") {
-      const quote = await changenow.getQuote(from, to, body);
-      result = await changenow.buildSwap(quote, body, from, to);
+    } else if (body.provider === "changee") {
+      const quote = await changee.getQuote(from, to, body);
+      result = await changee.buildSwap(quote, body, from, to);
     } else {
       return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
     }
