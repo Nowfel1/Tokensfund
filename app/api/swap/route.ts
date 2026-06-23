@@ -51,3 +51,18 @@ export async function POST(req: NextRequest) {
       result = await cce.buildSwap(quote, body, from, to);
     } else if (body.provider === "changee") {
       const quote = await changee.getQuote(from, to, body);
+      result = await changee.buildSwap(quote, body, from, to);
+    } else {
+      return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
+    }
+
+    await logOrder(result, body);
+    return NextResponse.json(result);
+  } catch (e: any) {
+    console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
+    return NextResponse.json(
+      { error: e.message ?? "Could not open deposit address" },
+      { status: 500 }
+    );
+  }
+}
