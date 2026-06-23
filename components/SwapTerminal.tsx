@@ -272,11 +272,6 @@ export default function SwapTerminal() {
         <div className="leg">
           <div className="leg-head">
             <span className="label">You pay</span>
-            <div className="quickfill">
-              <span className="qf-pill">25%</span>
-              <span className="qf-pill">50%</span>
-              <span className="qf-pill max">MAX</span>
-            </div>
           </div>
           <div className="leg-body">
             <div className="leg-amount">
