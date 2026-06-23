@@ -13,7 +13,7 @@ export const ASSETS: CanonicalAsset[] = [
       chainflip: { asset: "BTC", chain: "Bitcoin" },
       near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
       cce: { abbr: "BTC", chain: "Bitcoin" },
-      changenow: { ticker: "btc" },
+      changee: { ticker: "BTC" },
     },
   },
   {
@@ -27,7 +27,7 @@ export const ASSETS: CanonicalAsset[] = [
       chainflip: { asset: "ETH", chain: "Ethereum" },
       near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
       cce: { abbr: "ETH", chain: "Ethereum" },
-      changenow: { ticker: "eth" },
+      changee: { ticker: "ETH" },
     },
   },
   {
@@ -46,7 +46,7 @@ export const ASSETS: CanonicalAsset[] = [
         decimals: 6,
       },
       cce: { abbr: "USDT", chain: "Ethereum" },
-      changenow: { ticker: "usdt" },
+      changee: { ticker: "USDT" },
     },
   },
   {
@@ -58,7 +58,7 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       thorchain: { asset: "XMR.XMR", decimals: 8 },
       cce: { abbr: "XMR", chain: "Monero" },
-      changenow: { ticker: "xmr" },
+      changee: { ticker: "XMR" },
     },
   },
   {
@@ -70,7 +70,7 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
       cce: { abbr: "ZEC", chain: "Zcash" },
-      changenow: { ticker: "zec" },
+      changee: { ticker: "ZEC" },
     },
   },
   {
@@ -83,7 +83,7 @@ export const ASSETS: CanonicalAsset[] = [
       chainflip: { asset: "SOL", chain: "Solana" },
       near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
       cce: { abbr: "SOL", chain: "Solana" },
-      changenow: { ticker: "sol" },
+      changee: { ticker: "SOL" },
     },
   },
   {
@@ -94,7 +94,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 6,
     providerIds: {
       near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
-      changenow: { ticker: "xrp" },
+      changee: { ticker: "XRP" },
     },
   },
   {
@@ -107,7 +107,7 @@ export const ASSETS: CanonicalAsset[] = [
       thorchain: { asset: "DOGE.DOGE", decimals: 8 },
       near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
       cce: { abbr: "DOGE", chain: "Dogecoin" },
-      changenow: { ticker: "doge" },
+      changee: { ticker: "DOGE" },
     },
   },
   {
@@ -137,7 +137,7 @@ export const ASSETS: CanonicalAsset[] = [
         decimals: 6,
       },
       cce: { abbr: "USDC", chain: "Ethereum" },
-      changenow: { ticker: "usdc" },
+      changee: { ticker: "USDC" },
     },
   },
   {
@@ -151,7 +151,7 @@ export const ASSETS: CanonicalAsset[] = [
       chainflip: { asset: "LTC", chain: "Litecoin" },
       near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
       cce: { abbr: "LTC", chain: "Litecoin" },
-      changenow: { ticker: "ltc" },
+      changee: { ticker: "LTC" },
     },
   },
   {
@@ -162,7 +162,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 9,
     providerIds: {
       near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
-      changenow: { ticker: "ton" },
+      changee: { ticker: "TON" },
     },
   },
   {
@@ -173,27 +173,6 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 24,
     providerIds: {
       near_intents: { asset: "nep141:wrap.near", decimals: 24 },
-      changenow: { ticker: "near" },
-    },
-  },
-  {
-    id: "TAO",
-    symbol: "TAO",
-    name: "Bittensor",
-    chain: "Bittensor",
-    decimals: 9,
-    providerIds: {
-      changenow: { ticker: "tao", network: "tao" },
-    },
-  },
-  {
-    id: "HYPE",
-    symbol: "HYPE",
-    name: "Hyperliquid",
-    chain: "Hyperliquid",
-    decimals: 8,
-    providerIds: {
-      changenow: { ticker: "hype", network: "hyperevm" },
     },
   },
 ];
@@ -213,7 +192,7 @@ export function providersForPair(fromId: string, toId: string) {
     "chainflip",
     "near_intents",
     "cce",
-    "changenow",
+    "changee",
   ];
   return ids.filter((p) => from.providerIds[p] && to.providerIds[p]);
 }
