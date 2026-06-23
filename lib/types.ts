@@ -3,7 +3,7 @@ export type ProviderId =
   | "chainflip"
   | "near_intents"
   | "cce"
-  | "changenow"; // ← Added
+  | "changee";
 
 export interface ProviderAssetRef {
   asset?: string;
