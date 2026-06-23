@@ -18,40 +18,46 @@ export default function Home() {
         </div>
       </header>
 
-      <section className="hero">
-        <div className="hero-badge">
-          <span className="dot" />
-          <span className="txt">NON-CUSTODIAL SWAP AGGREGATOR</span>
+      <section className="hero-2col">
+        <div className="hero-2col-text">
+          <div className="hero-badge">
+            <span className="dot" />
+            <span className="txt">NON-CUSTODIAL AGGREGATOR</span>
+          </div>
+
+          <h1>
+            One swap.<br />
+            Every protocol.<br />
+            <span className="accent">Best rate.</span>
+          </h1>
+
+          <p className="sub">
+            TokensFund compares THORChain, Chainflip and NEAR Intents live, then routes your swap
+            to the best price. No account. No KYC. Funds never touch our hands.
+          </p>
+
+          <div className="hero-2col-stats">
+            <div className="h2c-stat">
+              <span className="num">5</span>
+              <span className="lbl">protocols</span>
+            </div>
+            <span className="h2c-div" />
+            <div className="h2c-stat">
+              <span className="num">15+</span>
+              <span className="lbl">assets</span>
+            </div>
+            <span className="h2c-div" />
+            <div className="h2c-stat">
+              <span className="num ok">0</span>
+              <span className="lbl">accounts</span>
+            </div>
+          </div>
         </div>
 
-        <h1>
-          Stop guessing which<br />
-          protocol gives the<br />
-          <span className="accent">best rate.</span>
-        </h1>
-
-        <p className="sub">
-          TokensFund compares THORChain, Chainflip and NEAR Intents live, every time you swap.
-          No account. No KYC. Funds never touch our hands.
-        </p>
-
-        <div className="hero-stats">
-          <div className="hero-stat">
-            <span className="num">5</span>
-            <span className="lbl">protocols compared</span>
-          </div>
-          <div className="hero-stat">
-            <span className="num">15+</span>
-            <span className="lbl">assets supported</span>
-          </div>
-          <div className="hero-stat">
-            <span className="num ok">0</span>
-            <span className="lbl">accounts required</span>
-          </div>
+        <div className="hero-2col-card">
+          <SwapTerminal />
         </div>
       </section>
-
-      <SwapTerminal />
 
       <p className="foot">
         Non-custodial. You send to a one-time deposit address and receive at your own wallet,
