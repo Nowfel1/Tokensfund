@@ -3,23 +3,59 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
+  <url>
+    <loc>https://tokensfund.xyz/</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/track</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/how-to-swap-crypto-anonymously-2026</loc>
+    <lastmod>2026-06-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/why-non-custodial-swaps-protect-privacy-2026</loc>
+    <lastmod>2026-06-20</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/best-crypto-to-buy-june-2026-without-kyc</loc>
+    <lastmod>2026-06-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/spacex-ipo-hyperliquid-perpetuals</loc>
+    <lastmod>2026-06-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tokensfund.xyz/blog/buy-xrp-ltc-hype-tao-without-kyc-2026</loc>
     <lastmod>2026-06-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://tokensfund.xyz/</loc>
+    <loc>https://tokensfund.xyz/blog/btc-to-eth-without-kyc-2026</loc>
     <lastmod>2026-06-14</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://tokensfund.xyz/blog/cross-chain-swap-without-kyc-2026</loc>
@@ -30,12 +66,6 @@ export async function GET() {
   <url>
     <loc>https://tokensfund.xyz/blog/swap-xmr-btc-no-kyc</loc>
     <lastmod>2026-06-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/btc-to-eth-without-kyc-2026</loc>
-    <lastmod>2026-06-14</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
