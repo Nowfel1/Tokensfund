@@ -4,19 +4,17 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
-import * as changenow from "@/lib/providers/changenow";
+import * as changee from "@/lib/providers/changee";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Map each provider to its module. Some providers may not export getStatus;
-// we guard for that below so a missing function never breaks the build or request.
 const PROVIDERS: Record<string, any> = {
   thorchain,
   chainflip,
   near_intents: nearIntents,
   cce,
-  changenow,
+  changee,
 };
 
 export async function GET(req: NextRequest) {
