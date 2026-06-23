@@ -31,6 +31,49 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+    id: "USDT",
+    symbol: "USDT",
+    name: "Tether (Ethereum)",
+    chain: "Ethereum",
+    decimals: 6,
+    providerIds: {
+      thorchain: {
+        asset: "ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7",
+        decimals: 8,
+      },
+      near_intents: {
+        asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
+        decimals: 6,
+      },
+      cce: { abbr: "USDT", chain: "Ethereum" },
+      changenow: { ticker: "usdt" },
+    },
+  },
+  {
+    id: "XMR",
+    symbol: "XMR",
+    name: "Monero",
+    chain: "Monero",
+    decimals: 12,
+    providerIds: {
+      thorchain: { asset: "XMR.XMR", decimals: 8 },
+      cce: { abbr: "XMR", chain: "Monero" },
+      changenow: { ticker: "xmr" },
+    },
+  },
+  {
+    id: "ZEC",
+    symbol: "ZEC",
+    name: "Zcash",
+    chain: "Zcash",
+    decimals: 8,
+    providerIds: {
+      near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
+      cce: { abbr: "ZEC", chain: "Zcash" },
+      changenow: { ticker: "zec" },
+    },
+  },
+  {
     id: "SOL",
     symbol: "SOL",
     name: "Solana",
@@ -65,25 +108,6 @@ export const ASSETS: CanonicalAsset[] = [
       near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
       cce: { abbr: "DOGE", chain: "Dogecoin" },
       changenow: { ticker: "doge" },
-    },
-  },
-  {
-    id: "USDT",
-    symbol: "USDT",
-    name: "Tether (Ethereum)",
-    chain: "Ethereum",
-    decimals: 6,
-    providerIds: {
-      thorchain: {
-        asset: "ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7",
-        decimals: 8,
-      },
-      near_intents: {
-        asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
-        decimals: 6,
-      },
-      cce: { abbr: "USDT", chain: "Ethereum" },
-      changenow: { ticker: "usdt" },
     },
   },
   {
@@ -142,30 +166,6 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    id: "XMR",
-    symbol: "XMR",
-    name: "Monero",
-    chain: "Monero",
-    decimals: 12,
-    providerIds: {
-      thorchain: { asset: "XMR.XMR", decimals: 8 },
-      cce: { abbr: "XMR", chain: "Monero" },
-      changenow: { ticker: "xmr" },
-    },
-  },
-  {
-    id: "ZEC",
-    symbol: "ZEC",
-    name: "Zcash",
-    chain: "Zcash",
-    decimals: 8,
-    providerIds: {
-      near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-      cce: { abbr: "ZEC", chain: "Zcash" },
-      changenow: { ticker: "zec" },
-    },
-  },
-  {
     id: "NEAR",
     symbol: "NEAR",
     name: "NEAR",
@@ -183,7 +183,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Bittensor",
     decimals: 9,
     providerIds: {
-   changenow: { ticker: "tao", network: "tao" },
+      changenow: { ticker: "tao", network: "tao" },
     },
   },
   {
