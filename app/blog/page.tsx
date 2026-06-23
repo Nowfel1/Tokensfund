@@ -8,6 +8,13 @@ export const metadata = {
 
 const posts = [
   {
+    slug: "how-to-swap-crypto-anonymously-2026",
+    title: "How to Swap Crypto Anonymously in 2026",
+    date: "June 22, 2026",
+    description: "What anonymity really means on-chain, why non-custodial swaps protect your privacy, and how to swap with no account and no KYC.",
+    tag: "Privacy",
+  },
+  {
     slug: "best-crypto-to-buy-june-2026-without-kyc",
     title: "Best Crypto to Buy in June 2026 Without KYC",
     date: "June 19, 2026",
