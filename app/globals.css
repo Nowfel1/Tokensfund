@@ -307,3 +307,57 @@ a { color: inherit; }
 .main-nav { display: flex; gap: 0.5rem; align-items: center; }
 .nav-link { color: var(--muted); text-decoration: none; font-size: 0.9rem; font-weight: 600; padding: 6px 16px; border-radius: 999px; border: 1px solid transparent; transition: color 0.2s, border-color 0.2s; }
 .nav-link:hover { color: var(--gold); border-color: var(--border-soft); }
+
+/* ---- two-column hero ---- */
+.hero-2col {
+  display: flex;
+  gap: 48px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: 36px 0 56px;
+  max-width: 1040px;
+  margin: 0 auto;
+}
+.hero-2col-text { flex: 1; min-width: 300px; }
+.hero-2col-text .hero-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: var(--gold-soft); border: 1px solid var(--gold-ring);
+  border-radius: 999px; padding: 6px 15px; margin-bottom: 24px;
+}
+.hero-2col-text .hero-badge .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+.hero-2col-text .hero-badge .txt { font-family: var(--mono); font-size: 11px; color: var(--gold); letter-spacing: 0.08em; font-weight: 700; }
+.hero-2col-text h1 {
+  font-size: 52px; font-weight: 800; color: var(--text);
+  letter-spacing: -0.03em; line-height: 1.04; margin: 0 0 20px;
+}
+.hero-2col-text h1 .accent { color: var(--gold); }
+.hero-2col-text p.sub {
+  font-size: 17px; color: var(--muted); line-height: 1.6;
+  margin: 0 0 28px; max-width: 420px;
+}
+.hero-2col-stats { display: flex; gap: 28px; flex-wrap: wrap; align-items: center; }
+.h2c-stat { display: flex; flex-direction: column; }
+.h2c-stat .num { font-family: var(--mono); font-size: 26px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.h2c-stat .num.ok { color: var(--ok); }
+.h2c-stat .lbl { font-family: var(--mono); font-size: 10.5px; color: var(--muted-2); margin-top: 2px; }
+.h2c-div { width: 1px; align-self: stretch; background: var(--border-soft); }
+
+/* swap card sits in the right column - override its own centering/width */
+.hero-2col-card { flex: 0 0 400px; max-width: 400px; }
+.hero-2col-card .sw-header,
+.hero-2col-card .card.pro,
+.hero-2col-card .deposit,
+.hero-2col-card .error,
+.hero-2col-card .race { max-width: 100%; margin-left: 0; margin-right: 0; }
+
+@media (max-width: 920px) {
+  .hero-2col { gap: 36px; justify-content: center; }
+  .hero-2col-text { flex-basis: 100%; text-align: center; }
+  .hero-2col-text p.sub { margin-left: auto; margin-right: auto; }
+  .hero-2col-stats { justify-content: center; }
+  .hero-2col-card { flex-basis: 100%; max-width: 480px; width: 100%; }
+}
+@media (max-width: 560px) {
+  .hero-2col-text h1 { font-size: 38px; }
+  .hero-2col-text p.sub { font-size: 15px; }
+}
