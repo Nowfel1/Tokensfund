@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026 | TokensFund",
+  title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
   description: "Learn how to buy XRP, Litecoin, Hyperliquid and Bittensor without KYC in 2026. No account, no verification - best rates across multiple protocols.",
   keywords: ["buy XRP without KYC", "buy LTC without KYC", "buy HYPE without KYC", "buy TAO without KYC", "no KYC crypto 2026"],
+  alternates: { canonical: "/blog/buy-xrp-ltc-hype-tao-without-kyc-2026" },
   openGraph: {
+    type: "article",
+    url: "/blog/buy-xrp-ltc-hype-tao-without-kyc-2026",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, NEAR Intents and ChangeNOW.",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, NEAR Intents and Changee.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, NEAR Intents and Changee.",
+    images: ["https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png"],
   },
 };
 
@@ -45,6 +54,7 @@ export default function Post() {
           </a>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
@@ -73,7 +83,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you how to swap into XRP, LTC, HYPE and TAO without KYC
-          using <strong>NEAR Intents, Chainflip, THORChain and ChangeNOW</strong> through TokensFund.
+          using <strong>NEAR Intents, Chainflip, THORChain and Changee</strong> through TokensFund.
         </p>
 
         <h2>Why Buy These Assets Without KYC?</h2>
@@ -85,7 +95,7 @@ export default function Post() {
 
         <h2>How to Buy XRP Without KYC</h2>
         <p>
-          XRP runs on the XRP Ledger and is supported via NEAR Intents and ChangeNOW on TokensFund.
+          XRP runs on the XRP Ledger and is supported via NEAR Intents and Changee on TokensFund.
           To receive XRP you need an XRP wallet address. Popular options include Trust Wallet,
           Exodus, or any wallet that supports the XRP Ledger.
         </p>
@@ -102,7 +112,7 @@ export default function Post() {
         <h2>How to Buy Litecoin (LTC) Without KYC</h2>
         <p>
           Litecoin is one of the most widely supported assets across decentralized protocols.
-          On TokensFund it is available via THORChain, Chainflip, NEAR Intents and ChangeNOW,
+          On TokensFund it is available via THORChain, Chainflip, NEAR Intents and Changee,
           giving you the most routes and best rates of any asset on the platform.
         </p>
         <ol>
@@ -118,34 +128,34 @@ export default function Post() {
         <p>
           HYPE is the native token of Hyperliquid, one of the fastest growing decentralized
           perpetuals exchanges in 2026. It runs on HyperEVM. TokensFund supports HYPE swaps
-          via ChangeNOW with no account required.
+          via Changee with no account required.
         </p>
         <ol>
           <li>Go to <a href="https://tokensfund.xyz">tokensfund.xyz</a></li>
           <li>Select your source asset (BTC, ETH, SOL, etc.)</li>
           <li>Select <strong>HYPE</strong> as the destination</li>
           <li>Enter your HyperEVM wallet address</li>
-          <li>Select the ChangeNOW route</li>
+          <li>Select the Changee route</li>
           <li>Send and receive HYPE automatically</li>
         </ol>
 
         <h2>How to Buy Bittensor (TAO) Without KYC</h2>
         <p>
           TAO is the native token of Bittensor, the decentralized AI network. It runs on its own
-          Substrate-based chain. TokensFund supports TAO swaps via ChangeNOW with no KYC required.
+          Substrate-based chain. TokensFund supports TAO swaps via Changee with no KYC required.
         </p>
         <ol>
           <li>Go to <a href="https://tokensfund.xyz">tokensfund.xyz</a></li>
           <li>Select your source asset</li>
           <li>Select <strong>TAO</strong> as the destination</li>
           <li>Enter your Bittensor wallet address</li>
-          <li>Select the ChangeNOW route</li>
+          <li>Select the Changee route</li>
           <li>Send and receive TAO automatically</li>
         </ol>
 
         <h2>Why Use TokensFund?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, NEAR Intents and ChangeNOW in one click</li>
+          <li>Compares THORChain, Chainflip, NEAR Intents and Changee in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>
