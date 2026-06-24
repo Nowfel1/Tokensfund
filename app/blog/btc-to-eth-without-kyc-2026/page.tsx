@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "How to Swap BTC to ETH Without KYC in 2026 | TokensFund",
-  description: "Learn how to swap BTC to ETH without KYC in 2026. No account, no verification - best rates across THORChain, Chainflip, NEAR Intents and Exolix.",
+  title: "How to Swap BTC to ETH Without KYC in 2026",
+  description: "Learn how to swap BTC to ETH without KYC in 2026. No account, no verification - best rates across THORChain, Chainflip, NEAR Intents and Changee.",
   keywords: ["swap BTC to ETH without KYC", "BTC to ETH no KYC 2026", "bitcoin to ethereum swap", "non custodial BTC ETH swap"],
+  alternates: { canonical: "/blog/btc-to-eth-without-kyc-2026" },
   openGraph: {
+    type: "article",
+    url: "/blog/btc-to-eth-without-kyc-2026",
     title: "How to Swap BTC to ETH Without KYC in 2026",
-    description: "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
+    description: "Compare THORChain, Chainflip, NEAR Intents and Changee in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_btc_eth.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How to Swap BTC to ETH Without KYC in 2026",
+    description: "Compare THORChain, Chainflip, NEAR Intents and Changee in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
+    images: ["https://tokensfund.xyz/blog/banner_btc_eth.png"],
   },
 };
 
@@ -45,6 +54,7 @@ export default function Post() {
           </a>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
@@ -74,7 +84,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you exactly how to swap BTC to ETH without KYC using
-          <strong> THORChain, Chainflip, NEAR Intents, and Exolix</strong> through TokensFund.
+          <strong> THORChain, Chainflip, NEAR Intents, and Changee</strong> through TokensFund.
         </p>
 
         <h2>Why Swap BTC to ETH Without KYC?</h2>
@@ -92,7 +102,7 @@ export default function Post() {
           <li><strong>THORChain</strong> - The most established decentralized cross-chain protocol. Native BTC support, strong liquidity, and a long track record.</li>
           <li><strong>Chainflip</strong> - Built specifically for cross-chain swaps with fast settlement and competitive rates.</li>
           <li><strong>NEAR Intents</strong> - Intent-based architecture that finds the most efficient route automatically.</li>
-          <li><strong>Exolix</strong> - Non-custodial exchange with no account required and support for hundreds of pairs.</li>
+          <li><strong>Changee</strong> - Instant non-custodial swap service with no account required and broad asset support.</li>
         </ul>
 
         <h2>Step-by-Step: Swap BTC to ETH on TokensFund</h2>
@@ -113,7 +123,7 @@ export default function Post() {
 
         <h2>Why Use TokensFund for BTC to ETH?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, NEAR Intents and Exolix in one click</li>
+          <li>Compares THORChain, Chainflip, NEAR Intents and Changee in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>
@@ -135,7 +145,7 @@ export default function Post() {
           <li><strong>THORChain:</strong> Typically 0.1% to 0.3% liquidity fee plus network fees</li>
           <li><strong>Chainflip:</strong> Competitive flat fees, generally lower for larger amounts</li>
           <li><strong>NEAR Intents:</strong> Low fees with fast settlement</li>
-          <li><strong>Exolix:</strong> Float or fixed rate options with no hidden fees</li>
+          <li><strong>Changee:</strong> Competitive rates with the exact expected output shown upfront</li>
         </ul>
         <p>
           TokensFund shows you the exact expected output from each protocol before you commit,
