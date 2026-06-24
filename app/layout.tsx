@@ -66,9 +66,6 @@ export const metadata: Metadata = {
       "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap BTC, ETH, XMR, USDC and more at the best price. No account. No KYC.",
     images: ["/og-image.png"],
   },
-  alternates: {
-    canonical: "https://tokensfund.xyz",
-  },
   verification: {
     google: "dkCQwdhLf8UawPA0TTEZgCZ3ia8BxBitcvXoTD5cVXo",
   },
