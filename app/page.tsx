@@ -6,6 +6,30 @@ export const metadata: Metadata = {
   alternates: { canonical: "/" },
 };
 
+const poweredProtocols = [
+  {
+    mark: "TC",
+    name: "THORChain",
+    bg: "linear-gradient(135deg,#13e8a8,#0fb37e)",
+    fg: "#04121f",
+    blurb: "Native cross-chain swaps — no wrapping, no custodian.",
+  },
+  {
+    mark: "NI",
+    name: "NEAR Intents",
+    bg: "linear-gradient(135deg,#7b7cf0,#a5a6f8)",
+    fg: "#0f1033",
+    blurb: "Intent-based settlement sourced across chains.",
+  },
+  {
+    mark: "CF",
+    name: "Chainflip",
+    bg: "linear-gradient(135deg,#2775ca,#46a3ff)",
+    fg: "#04121f",
+    blurb: "Native swaps via on-chain just-in-time liquidity.",
+  },
+];
+
 export default function Home() {
   return (
     <main className="wrap">
@@ -125,6 +149,54 @@ export default function Home() {
               <p>Funds land in your destination wallet automatically. Track it live.</p>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="powered" style={{ margin: "3.5rem 0" }}>
+        <div style={{ textAlign: "center", marginBottom: "1.75rem" }}>
+          <span style={{ display: "block", fontSize: "12px", fontWeight: 600, letterSpacing: "1.6px", color: "#f4c64e", marginBottom: "12px" }}>
+            POWERED BY
+          </span>
+          <h2 style={{ fontSize: "1.75rem", fontWeight: 700, color: "#fff", margin: "0 0 12px", lineHeight: 1.25 }}>
+            The protocols behind every swap
+          </h2>
+          <p style={{ fontSize: "14px", lineHeight: 1.6, color: "#97a0b5", maxWidth: "470px", margin: "0 auto" }}>
+            TokensFund holds nothing and runs no order book. Every swap is executed by established,
+            non-custodial protocols you already know and trust.
+          </p>
+        </div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(190px, 1fr))", gap: "14px" }}>
+          {poweredProtocols.map((p) => (
+            <div
+              key={p.name}
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(255,255,255,0.08)",
+                borderRadius: "14px",
+                padding: "22px",
+              }}
+            >
+              <span
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  width: "42px",
+                  height: "42px",
+                  borderRadius: "50%",
+                  background: p.bg,
+                  color: p.fg,
+                  fontWeight: 800,
+                  fontSize: "13px",
+                  marginBottom: "14px",
+                }}
+              >
+                {p.mark}
+              </span>
+              <div style={{ fontSize: "16px", fontWeight: 700, color: "#fff", marginBottom: "6px" }}>{p.name}</div>
+              <div style={{ fontSize: "13px", lineHeight: 1.55, color: "#8a93a8" }}>{p.blurb}</div>
+            </div>
+          ))}
         </div>
       </section>
 
