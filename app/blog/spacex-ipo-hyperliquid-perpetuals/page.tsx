@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "SpaceX's $2 Trillion IPO and the Hyperliquid Bets That Called It Early | TokensFund",
+  title: "SpaceX's $2 Trillion IPO and the Hyperliquid Bets That Called It Early",
   description: "SpaceX listed on Nasdaq as SPCX in the biggest IPO in history. Crypto traders on Hyperliquid were pricing in the outcome through perpetual futures weeks before the debut.",
   keywords: ["SpaceX IPO", "SPCX stock", "Hyperliquid perpetuals", "SpaceX Hyperliquid", "crypto IPO trading"],
+  alternates: { canonical: "/blog/spacex-ipo-hyperliquid-perpetuals" },
   openGraph: {
+    type: "article",
+    url: "/blog/spacex-ipo-hyperliquid-perpetuals",
     title: "SpaceX's $2 Trillion Debut and the Crypto Bets That Called It Early",
     description: "The biggest IPO in history, priced on-chain weeks in advance through Hyperliquid perpetual futures.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_spacex_ipo.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "SpaceX's $2 Trillion Debut and the Crypto Bets That Called It Early",
+    description: "The biggest IPO in history, priced on-chain weeks in advance through Hyperliquid perpetual futures.",
+    images: ["https://tokensfund.xyz/blog/banner_spacex_ipo.png"],
   },
 };
 
@@ -45,6 +54,7 @@ export default function Post() {
           </a>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
