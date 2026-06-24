@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "buy-privacy-coins-without-kyc-2026",
+  title: "Privacy Coins Are 2026's Top Performers — Buy XMR and ZEC Without KYC",
+  date: "June 24, 2026",
+  description: "Zcash and Monero are among 2026's best-performing assets — and the hardest to buy on regulated exchanges. Why they're running, why they keep getting delisted, and how to swap into them with no account and no KYC.",
+  tag: "Privacy",
+},
+  {
     slug: "how-to-swap-crypto-anonymously-2026",
     title: "How to Swap Crypto Anonymously in 2026",
     date: "June 22, 2026",
