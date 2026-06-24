@@ -2,8 +2,9 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "Blog - Crypto Swap Guides | TokensFund",
+  title: "Blog - Crypto Swap Guides",
   description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, NEAR Intents, ChangeNOW and CCE.Cash.",
+  alternates: { canonical: "/blog" },
 };
 
 const posts = [
@@ -74,11 +75,9 @@ export default function Blog() {
           </nav>
         </div>
       </header>
-
       <section className="blog-index">
         <h1 className="blog-index-title">Blog</h1>
         <p className="blog-index-sub">Crypto swap guides, tips and updates.</p>
-
         <div className="blog-list">
           {posts.map((p) => (
             <Link key={p.slug} href={"/blog/" + p.slug} className="blog-card">
