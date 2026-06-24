@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "Best Crypto to Buy in June 2026 Without KYC | TokensFund",
+  title: "Best Crypto to Buy in June 2026 Without KYC",
   description: "The best cryptocurrencies to buy in June 2026 without KYC verification. Compare Bitcoin, Ethereum, Solana, XRP, Hyperliquid and TON - all swappable with no account required.",
   keywords: ["best crypto to buy June 2026", "buy crypto without KYC", "no KYC crypto 2026", "best crypto no verification"],
+  alternates: { canonical: "/blog/best-crypto-to-buy-june-2026-without-kyc" },
   openGraph: {
+    type: "article",
+    url: "/blog/best-crypto-to-buy-june-2026-without-kyc",
     title: "Best Crypto to Buy in June 2026 Without KYC",
     description: "Compare the top cryptocurrencies for June 2026, all swappable without KYC or account creation.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_best_crypto_june_2026.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Best Crypto to Buy in June 2026 Without KYC",
+    description: "Compare the top cryptocurrencies for June 2026, all swappable without KYC or account creation.",
+    images: ["https://tokensfund.xyz/blog/banner_best_crypto_june_2026.png"],
   },
 };
 
@@ -45,6 +54,7 @@ export default function Post() {
           </a>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
@@ -170,7 +180,7 @@ export default function Post() {
         <p>
           All ten assets above are swappable on TokensFund without creating an account or
           submitting any identity verification. TokensFund compares live rates across
-          THORChain, Chainflip, NEAR Intents, ChangeNOW and CCE.Cash, so you always get routed
+          THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash, so you always get routed
           to the best available price for your specific pair and amount.
         </p>
         <ol>
