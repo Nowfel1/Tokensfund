@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "How to Swap Crypto Anonymously in 2026 (Honest Guide) | TokensFund",
+  title: "How to Swap Crypto Anonymously in 2026 (Honest Guide)",
   description: "How to swap crypto privately in 2026 without KYC. What anonymity really means on-chain, why non-custodial swaps protect you, and how to swap with no account.",
   keywords: ["swap crypto anonymously 2026", "anonymous crypto swap", "no KYC crypto swap", "private crypto exchange", "non custodial swap"],
+  alternates: { canonical: "/blog/how-to-swap-crypto-anonymously-2026" },
   openGraph: {
+    type: "article",
+    url: "/blog/how-to-swap-crypto-anonymously-2026",
     title: "How to Swap Crypto Anonymously in 2026",
     description: "What anonymity really means on-chain, and how non-custodial swaps keep your identity off centralized databases.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_swap_anonymously_2026.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How to Swap Crypto Anonymously in 2026",
+    description: "What anonymity really means on-chain, and how non-custodial swaps keep your identity off centralized databases.",
+    images: ["https://tokensfund.xyz/blog/banner_swap_anonymously_2026.png"],
   },
 };
 
@@ -117,7 +126,7 @@ export default function Post() {
         <h2>How to Swap Crypto Privately, Step by Step</h2>
         <p>
           TokensFund is a non-custodial swap aggregator. It compares live rates across THORChain,
-          Chainflip, NEAR Intents, ChangeNOW and CCE.Cash, then routes your swap to the best
+          Chainflip, NEAR Intents, Changee and CCE.Cash, then routes your swap to the best
           available price, all without an account or KYC.
         </p>
         <ol>
