@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 
 export const metadata = {
   title: "Blog - Crypto Swap Guides",
-  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, NEAR Intents, ChangeNOW and CCE.Cash.",
+  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash.",
   alternates: { canonical: "/blog" },
 };
 
@@ -33,14 +33,14 @@ const posts = [
     slug: "buy-xrp-ltc-hype-tao-without-kyc-2026",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
     date: "June 17, 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required - best rates across NEAR Intents, THORChain, Chainflip and ChangeNOW.",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required - best rates across NEAR Intents, THORChain, Chainflip and Changee.",
     tag: "Guide",
   },
   {
     slug: "btc-to-eth-without-kyc-2026",
     title: "How to Swap BTC to ETH Without KYC in 2026",
     date: "June 14, 2026",
-    description: "Compare THORChain, Chainflip, NEAR Intents and Exolix in one click. Swap Bitcoin to Ethereum at the best rate - no account, no KYC.",
+    description: "Compare THORChain, Chainflip, NEAR Intents and Changee in one click. Swap Bitcoin to Ethereum at the best rate - no account, no KYC.",
     tag: "Guide",
   },
   {
@@ -54,7 +54,7 @@ const posts = [
     slug: "swap-xmr-btc-no-kyc",
     title: "How to Swap XMR to BTC Without KYC in 2026",
     date: "June 12, 2026",
-    description: "Compare THORChain, Chainflip and Exolix - get the best Monero to Bitcoin rate in seconds, no account required.",
+    description: "Compare THORChain, Chainflip and Changee - get the best Monero to Bitcoin rate in seconds, no account required.",
     tag: "Guide",
   },
 ];
