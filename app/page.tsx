@@ -1,5 +1,10 @@
+import type { Metadata } from "next";
 import SwapTerminal from "@/components/SwapTerminal";
 import Logo from "@/components/Logo";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (
