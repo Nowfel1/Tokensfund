@@ -69,8 +69,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 8,
     providerIds: {
       near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-      cce: { abbr: "ZEC", chain: "Zcash" },
-      changee: { ticker: "ZEC" },
+     thorchain: { asset: "ZEC.ZEC", decimals: 8 },
     },
   },
   {
