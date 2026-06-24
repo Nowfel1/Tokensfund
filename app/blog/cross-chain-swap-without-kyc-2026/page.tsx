@@ -2,13 +2,22 @@ import Logo from "@/components/Logo";
 import Link from "next/link";
 
 export const metadata = {
-  title: "Cross Chain Swap Without KYC in 2026 | TokensFund",
+  title: "Cross Chain Swap Without KYC in 2026",
   description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, and NEAR Intents. No account, no KYC, best rates.",
   keywords: ["cross chain swap without KYC", "swap crypto no KYC 2026", "THORChain Chainflip NEAR Intents", "non custodial cross chain swap"],
+  alternates: { canonical: "/blog/cross-chain-swap-without-kyc-2026" },
   openGraph: {
+    type: "article",
+    url: "/blog/cross-chain-swap-without-kyc-2026",
     title: "Cross Chain Swap Without KYC in 2026",
     description: "Swap between any chains without KYC using THORChain, Chainflip and NEAR Intents — no account required.",
     images: [{ url: "https://tokensfund.xyz/blog/cross-chain-swap.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Cross Chain Swap Without KYC in 2026",
+    description: "Swap between any chains without KYC using THORChain, Chainflip and NEAR Intents — no account required.",
+    images: ["https://tokensfund.xyz/blog/cross-chain-swap.png"],
   },
 };
 
@@ -24,6 +33,7 @@ export default function Post() {
 
           <nav className="main-nav">
             <Link href="/" className="nav-link">Swap</Link>
+            <Link href="/track" className="nav-link">Track</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
           </nav>
         </div>
