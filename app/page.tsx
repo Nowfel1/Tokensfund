@@ -19,7 +19,7 @@ export default function Home() {
             <a href="/" className="nav-link">Swap</a>
             <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
-            <a href="/faq" className="nav-link">FAQ</a>
+            <a href="/FAQ" className="nav-link">FAQ</a>
           </nav>
         </div>
       </header>
