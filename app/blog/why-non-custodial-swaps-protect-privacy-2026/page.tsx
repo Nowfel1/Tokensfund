@@ -1,13 +1,22 @@
 import Logo from "@/components/Logo";
 
 export const metadata = {
-  title: "Why Non-Custodial Swaps Protect Your Privacy in 2026 | TokensFund",
+  title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
   description: "Why non-custodial crypto swaps protect your privacy better than KYC exchanges, with real data on exchange breaches, self-custody basics, and how to swap without an account.",
   keywords: ["non custodial crypto swap privacy", "why avoid KYC exchanges", "self custody crypto guide", "crypto privacy 2026"],
+  alternates: { canonical: "/blog/why-non-custodial-swaps-protect-privacy-2026" },
   openGraph: {
+    type: "article",
+    url: "/blog/why-non-custodial-swaps-protect-privacy-2026",
     title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
     description: "No account, no identity database, no honeypot. How non-custodial swaps work and why that matters for your privacy.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_privacy_self_custody.png", width: 1200, height: 400 }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
+    description: "No account, no identity database, no honeypot. How non-custodial swaps work and why that matters for your privacy.",
+    images: ["https://tokensfund.xyz/blog/banner_privacy_self_custody.png"],
   },
 };
 
@@ -45,6 +54,7 @@ export default function Post() {
           </a>
           <nav className="main-nav">
             <a href="/" className="nav-link">Swap</a>
+            <a href="/track" className="nav-link">Track</a>
             <a href="/blog" className="nav-link">Blog</a>
           </nav>
         </div>
@@ -167,7 +177,7 @@ export default function Post() {
 
         <h2>How to Swap Without an Account</h2>
         <p>
-          TokensFund compares live rates across THORChain, Chainflip, NEAR Intents, ChangeNOW
+          TokensFund compares live rates across THORChain, Chainflip, NEAR Intents, Changee
           and CCE.Cash, all non-custodial or near-custodial routing protocols that do not require
           identity verification for crypto-to-crypto swaps.
         </p>
