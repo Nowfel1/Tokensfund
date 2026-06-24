@@ -52,7 +52,7 @@ const faqs = [
   {
     section: "The basics",
     q: "Which assets can I swap?",
-    a: "TokensFund supports 15+ assets across multiple chains, including BTC, ETH, XMR, SOL, XRP, DOGE, LTC, TON, NEAR, and USDC and USDT on Ethereum and Tron. The full, current list is always shown in the swap dropdown on the homepage.",
+    a: "TokensFund supports 15+ assets across multiple chains, including BTC, ETH, XMR, ZEC, SOL, XRP, DOGE, LTC, TON, NEAR, and USDC and USDT on Ethereum and Tron. The full, current list is always shown in the swap dropdown on the homepage.",
   },
   {
     section: "The basics",
