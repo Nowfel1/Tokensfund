@@ -38,6 +38,11 @@ export async function GET() {
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
+  <url><loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
+  <lastmod>2026-06-25</lastmod>
+  <changefreq>monthly</changefreq>
+  <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://tokensfund.xyz/blog/buy-privacy-coins-without-kyc-2026</loc>
     <lastmod>2026-06-24</lastmod>
