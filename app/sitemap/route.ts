@@ -1,17 +1,16 @@
 import { NextResponse } from "next/server";
-
 export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://tokensfund.xyz/</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://tokensfund.xyz/blog</loc>
-    <lastmod>2026-06-22</lastmod>
+    <lastmod>2026-06-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -20,6 +19,18 @@ export async function GET() {
     <lastmod>2026-06-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/faq</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/buy-privacy-coins-without-kyc-2026</loc>
+    <lastmod>2026-06-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://tokensfund.xyz/blog/how-to-swap-crypto-anonymously-2026</loc>
@@ -70,7 +81,6 @@ export async function GET() {
     <priority>0.7</priority>
   </url>
 </urlset>`;
-
   return new NextResponse(xml, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
