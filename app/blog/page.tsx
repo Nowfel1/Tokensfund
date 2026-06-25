@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "mica-deadline-swap-without-exchange-2026",
+  title: "The MiCA Deadline Is Here: How to Swap Crypto When Exchanges Get Delisted",
+  date: "June 25, 2026",
+  description: "On July 1, unlicensed exchanges lose access to 450M EU users. What the cull exposes about custodial risk, and how non-custodial swaps keep your access open.",
+  tag: "Regulation",
+},
+  {
   slug: "buy-privacy-coins-without-kyc-2026",
   title: "Privacy Coins Are 2026's Top Performers — Buy XMR and ZEC Without KYC",
   date: "June 24, 2026",
