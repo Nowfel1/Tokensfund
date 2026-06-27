@@ -37,8 +37,14 @@ export async function GET() {
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-  </url>
-  <url><loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
+    <url>
+    <loc>https://tokensfund.xyz/blog/fear-greed-12-self-custody-bear-market-2026</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+    </url>
+   <url>
+  <loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
   <lastmod>2026-06-25</lastmod>
   <changefreq>monthly</changefreq>
   <priority>0.7</priority>
