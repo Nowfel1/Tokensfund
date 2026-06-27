@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "fear-greed-12-self-custody-bear-market-2026",
+  title: "Fear & Greed Hit 12: The Bear-Market Case for Self-Custody",
+  date: "June 25, 2026",
+  description: "The Crypto Fear & Greed Index fell to 12/100 as Bitcoin broke below $60K. Why self-custody and non-custodial swaps matter most when everyone's panicking.",
+  tag: "Markets",
+},
+  {
   slug: "mica-deadline-swap-without-exchange-2026",
   title: "The MiCA Deadline Is Here: How to Swap Crypto When Exchanges Get Delisted",
   date: "June 25, 2026",
