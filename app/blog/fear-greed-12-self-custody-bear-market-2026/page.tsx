@@ -137,7 +137,7 @@ export default function Post() {
         <p>
           Nothing here is financial advice. Crypto is volatile, &quot;extreme fear&quot; can persist
           or deepen, and self-custody carries its own responsibility — if you lose your keys, no one
-          can recover them for you. The market figures above are as of June 25, 2026 and change
+          can recover them for you. The market figures above are as of June 27, 2026 and change
           quickly. Manage your own risk.
         </p>
 
