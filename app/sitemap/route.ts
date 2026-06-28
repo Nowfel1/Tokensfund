@@ -2,27 +2,15 @@ import { NextResponse } from "next/server";
 export async function GET() {
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-<url>
-    <loc>https://tokensfund.xyz/terms</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/privacy</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
   <url>
     <loc>https://tokensfund.xyz/</loc>
-    <lastmod>2026-06-24</lastmod>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://tokensfund.xyz/blog</loc>
-    <lastmod>2026-06-24</lastmod>
+    <lastmod>2026-06-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -37,17 +25,36 @@ export async function GET() {
     <lastmod>2026-06-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
-    <url>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/terms</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/privacy</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>yearly</changefreq>
+    <priority>0.3</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tokensfund.xyz/blog/fear-greed-12-self-custody-bear-market-2026</loc>
     <lastmod>2026-06-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    </url>
-   <url>
-  <loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
-  <lastmod>2026-06-25</lastmod>
-  <changefreq>monthly</changefreq>
-  <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://tokensfund.xyz/blog/coinex-sanctions-exchange-surveillance-2026</loc>
+    <lastmod>2026-06-25</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
     <loc>https://tokensfund.xyz/blog/buy-privacy-coins-without-kyc-2026</loc>
