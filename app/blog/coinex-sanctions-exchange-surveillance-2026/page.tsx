@@ -146,7 +146,7 @@ export default function Post() {
           Nothing here is legal or financial advice. Privacy tools are legal in most places, but
           rules vary and are changing fast — you are responsible for knowing and following the law
           that applies to you. Self-custody also carries its own responsibility: lose your keys and
-          no one can recover your funds. Details referenced here are as of June 25, 2026.
+          no one can recover your funds. Details referenced here are as of June 28, 2026.
         </p>
 
         <div className="blog-cta">
