@@ -9,9 +9,16 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "coinex-sanctions-exchange-surveillance-2026",
+  title: "Your Data Is the Honeypot: Why Custodial Exchanges Are a Privacy Liability",
+  date: "June 28, 2026",
+  description: "A single exchange was linked to $3.84B in flagged flows. The legitimate lesson for law-abiding users: custodial platforms concentrate your data into a target.",
+  tag: "Privacy",
+},
+  {
   slug: "fear-greed-12-self-custody-bear-market-2026",
   title: "Fear & Greed Hit 12: The Bear-Market Case for Self-Custody",
-  date: "June 25, 2026",
+  date: "June 27, 2026",
   description: "The Crypto Fear & Greed Index fell to 12/100 as Bitcoin broke below $60K. Why self-custody and non-custodial swaps matter most when everyone's panicking.",
   tag: "Markets",
 },
