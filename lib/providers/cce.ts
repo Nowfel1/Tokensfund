@@ -172,12 +172,14 @@ const NUMERIC_STATE: Record<number, SwapStatus["state"]> = {
 };
 
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
-  // trackingId is "no~query_code" (stored) or a single pasted code; strip "#"/spaces.
+  // trackingId is "no~query_code" (stored) or a single pasted code. Strip "#",
+  // whitespace, and any dashes — CCE displays codes grouped as "QIC0-5HYH-92XV"
+  // but stores/queries them unformatted ("QIC05HYH92XV").
   const parts = String(trackingId)
     .trim()
     .replace(/^#+/, "")
     .split("~")
-    .map((s) => s.trim())
+    .map((s) => s.replace(/[\s-]/g, "").trim())
     .filter(Boolean);
 
   // 8-char value is the order `no`; 12-char is the `query_code`.
