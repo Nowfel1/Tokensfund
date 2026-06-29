@@ -11,10 +11,9 @@ function sign(nonce: string, timestamp: string, bodyString: string): string {
   return createHmac("sha256", API_SECRET).update(payload).digest("hex");
 }
 
-function getAuthHeaders(body: object): Record<string, string> {
+function getAuthHeadersRaw(bodyString: string): Record<string, string> {
   const nonce = randomBytes(16).toString("hex");
   const timestamp = Math.floor(Date.now() / 1000).toString();
-  const bodyString = JSON.stringify(body);
   const signature = sign(nonce, timestamp, bodyString);
   return {
     "Content-Type": "application/json",
@@ -23,6 +22,10 @@ function getAuthHeaders(body: object): Record<string, string> {
     "X-Api-Timestamp": timestamp,
     "X-Api-Signature": signature,
   };
+}
+
+function getAuthHeaders(body: object): Record<string, string> {
+  return getAuthHeadersRaw(JSON.stringify(body));
 }
 
 async function post<T>(path: string, body: object): Promise<T> {
@@ -37,6 +40,29 @@ async function post<T>(path: string, body: object): Promise<T> {
   // TEMPORARY DEBUG: logs CCE's raw response to your Vercel function logs.
   // Remove once tracking is confirmed working.
   console.log("CCE", path, "→", res.status, JSON.stringify(data));
+
+  if (data.code !== 0) {
+    throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
+  }
+  return data.data;
+}
+
+// CCE's order/query is a GET — params go in the URL query string, not a body.
+async function get<T>(path: string, params: Record<string, string>): Promise<T> {
+  const qs = new URLSearchParams(params).toString();
+  const url = `${BASE}${path}${qs ? `?${qs}` : ""}`;
+
+  // A GET has no body. The signature is most likely computed over an EMPTY body
+  // string here. If CCE returns code 400009 ("Incorrect signature"), the body
+  // string should instead be the query string — set SIGN_BODY = qs below.
+  const SIGN_BODY = "";
+  const headers = getAuthHeadersRaw(SIGN_BODY);
+
+  const res = await fetch(url, { method: "GET", headers });
+  const data = await res.json();
+
+  // TEMPORARY DEBUG: remove once tracking is confirmed working.
+  console.log("CCE GET", path, qs, "→", res.status, JSON.stringify(data));
 
   if (data.code !== 0) {
     throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
@@ -146,61 +172,64 @@ const NUMERIC_STATE: Record<number, SwapStatus["state"]> = {
 };
 
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
-  // trackingId may be "no~query_code" (stored) or a single pasted code.
-  // Strip "#"/whitespace and split into candidate values.
-  const candidates = String(trackingId)
+  // trackingId is "no~query_code" (stored) or a single pasted code; strip "#"/spaces.
+  const parts = String(trackingId)
     .trim()
     .replace(/^#+/, "")
     .split("~")
     .map((s) => s.trim())
     .filter(Boolean);
 
-  const paramNames = ["query_code", "no", "order_no"] as const;
+  // 8-char value is the order `no`; 12-char is the `query_code`.
+  const orderNo = parts.find((p) => p.length <= 8);
+  const queryCode = parts.find((p) => p.length >= 9);
 
-  try {
-    let data: any | undefined;
-    let lastErr: any;
-    outer: for (const value of candidates) {
-      for (const p of paramNames) {
-        try {
-          data = await post<any>("/openapi/order/query", { [p]: value });
-          break outer; // first value+field combo CCE accepts (code 0) wins
-        } catch (e) {
-          lastErr = e;
-        }
-      }
+  // Try only the two natural pairings (no wasteful cross-product / endpoint hammering).
+  const attempts: Array<Record<string, string>> = [];
+  if (queryCode) attempts.push({ query_code: queryCode });
+  if (orderNo) attempts.push({ no: orderNo });
+  if (attempts.length === 0 && parts[0]) attempts.push({ query_code: parts[0] });
+
+  let data: any | undefined;
+  for (const params of attempts) {
+    try {
+      data = await get<any>("/openapi/order/query", params);
+      break; // first pairing CCE accepts (code 0) wins
+    } catch {
+      // try the next pairing
     }
-    if (data === undefined) {
-      throw lastErr ?? new Error("CCE query failed for all id/field combinations.");
-    }
+  }
 
-    const rawStatus = data.status;
-    const mapped =
-      typeof rawStatus === "number" ? NUMERIC_STATE[rawStatus] : undefined;
-
-    // A completed order should have finish_at set — use it as a corroborating
-    // signal so we don't falsely report "completed".
-    const looksFinished = Number(data.finish_at) > 0;
-
-    let state: SwapStatus["state"] = mapped ?? "unknown";
-    if (state === "success" && !looksFinished) {
-      // status says done but no finish timestamp — don't claim completion
-      state = "processing";
-    }
-
-    return {
-      provider: "cce",
-      state,
-      detail:
-        mapped !== undefined
-          ? `status=${rawStatus}${looksFinished ? " (finished)" : ""}`
-          : `Unmapped CCE status: ${JSON.stringify(rawStatus)}`,
-    };
-  } catch (error: any) {
+  // If the query still fails, degrade gracefully and point the user to CCE's own
+  // order page rather than surfacing an error.
+  if (data === undefined) {
+    const code = queryCode ?? orderNo ?? parts[0] ?? "";
     return {
       provider: "cce",
       state: "unknown",
-      detail: error?.message ?? "Status lookup failed",
+      detail: code
+        ? `Track this order on CCE.cash (order code ${code})`
+        : "Track this order on CCE.cash",
     };
   }
+
+  const rawStatus = data.status;
+  const mapped =
+    typeof rawStatus === "number" ? NUMERIC_STATE[rawStatus] : undefined;
+
+  // A completed order should have finish_at set — corroborate so we never
+  // falsely report "completed".
+  const looksFinished = Number(data.finish_at) > 0;
+
+  let state: SwapStatus["state"] = mapped ?? "unknown";
+  if (state === "success" && !looksFinished) state = "processing";
+
+  return {
+    provider: "cce",
+    state,
+    detail:
+      mapped !== undefined
+        ? `status=${rawStatus}${looksFinished ? " (finished)" : ""}`
+        : `Unmapped CCE status: ${JSON.stringify(rawStatus)}`,
+  };
 }
