@@ -33,6 +33,11 @@ async function post<T>(path: string, body: object): Promise<T> {
     body: JSON.stringify(body),
   });
   const data = await res.json();
+
+  // TEMPORARY DEBUG: logs CCE's raw response to your Vercel function logs.
+  // Reproduce the swap/track once, read the logs, then remove this line.
+  console.log("CCE", path, "→", res.status, JSON.stringify(data));
+
   if (data.code !== 0) {
     throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
   }
