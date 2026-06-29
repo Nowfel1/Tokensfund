@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "move-crypto-off-exchange-without-kyc-2026",
+  title: "How to Move Your Crypto Off an Exchange (and Swap It Without KYC)",
+  date: "June 29, 2026",
+  description: "A step-by-step self-custody guide: choosing a wallet, backing up your seed phrase, withdrawing safely, and swapping between assets non-custodially with no account and no KYC.",
+  tag: "Guide",
+},
+  {
   slug: "coinex-sanctions-exchange-surveillance-2026",
   title: "Your Data Is the Honeypot: Why Custodial Exchanges Are a Privacy Liability",
   date: "June 28, 2026",
