@@ -139,12 +139,13 @@ export async function buildSwap(
   // is already COMPLETED), which is why tracking showed "complete" with no deposit.
   const issuedBlock = result.issued_block ?? result.issuedBlock;
   const channelId = result.channel_id ?? result.channelId;
+  if (channelId == null) {
+    throw new Error("Chainflip broker response missing channel_id — cannot build tracking id.");
+  }
   const depositChannelId =
-    issuedBlock != null && channelId != null
+    issuedBlock != null
       ? `${issuedBlock}-${fromRef.chain}-${channelId}`
-      : channelId != null
-        ? String(channelId)
-        : undefined;
+      : String(channelId);
 
   return {
     provider: "chainflip",
