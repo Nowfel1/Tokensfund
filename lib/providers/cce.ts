@@ -109,12 +109,17 @@ export async function buildSwap(
 
   // CCE returns the order number as `no` (NOT `order_no`).
   // `query_code` is the human-facing inquiry code shown on cce.cash.
+  // Read defensively in case the field name differs across endpoints.
+  const orderId = data.no ?? data.order_no ?? data.query_code;
+  if (!orderId) {
+    throw new Error("CCE place response missing order id (no/order_no/query_code).");
+  }
   return {
     provider: "cce",
     depositAddress: data.address,
     depositAmount: req.amount,
-    trackingId: data.no,
-    notes: `CCE.Cash Order #${data.query_code ?? data.no}`,
+    trackingId: String(orderId),
+    notes: `CCE.Cash Order #${data.query_code ?? orderId}`,
   };
 }
 
@@ -139,10 +144,33 @@ const NUMERIC_STATE: Record<number, SwapStatus["state"]> = {
 };
 
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
+  // Users paste the reference exactly as displayed ("#IQ2SN93GW8DE"), so strip
+  // any leading "#" and surrounding whitespace before querying.
+  const cleanId = String(trackingId).trim().replace(/^#+/, "");
+
+  // CCE returns BOTH `no` (8-char order number) and `query_code` (12-char
+  // user-facing code shown on cce.cash). A manually-entered reference is
+  // usually the query_code, so try that first, then fall back to `no`/`order_no`.
+  const attempts = [
+    { query_code: cleanId },
+    { no: cleanId },
+    { order_no: cleanId },
+  ];
+
   try {
-    // CCE's query endpoint expects the order number in `no` (matching what
-    // `place` returns). If your docs show a different field/endpoint, adjust here.
-    const data = await post<any>("/openapi/order/query", { no: trackingId });
+    let data: any | undefined;
+    let lastErr: any;
+    for (const body of attempts) {
+      try {
+        data = await post<any>("/openapi/order/query", body);
+        break; // first one CCE accepts (code 0) wins
+      } catch (e) {
+        lastErr = e;
+      }
+    }
+    if (data === undefined) {
+      throw lastErr ?? new Error("CCE query failed for all id fields.");
+    }
 
     const rawStatus = data.status;
     const mapped =
