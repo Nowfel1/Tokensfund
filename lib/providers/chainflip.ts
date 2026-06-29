@@ -69,7 +69,10 @@ export async function buildSwap(
   const fromRef = from.providerIds.chainflip!;
   const toRef = to.providerIds.chainflip!;
 
-  const brokerUrl = process.env.CHAINFLIP_BROKER_URL!;
+  const brokerUrl = process.env.CHAINFLIP_BROKER_URL;
+  if (!brokerUrl) {
+    throw new Error("CHAINFLIP_BROKER_URL is not set — cannot request a deposit address.");
+  }
   const commissionBps = process.env.CHAINFLIP_COMMISSION_BPS
     ? Number(process.env.CHAINFLIP_COMMISSION_BPS)
     : 0;
@@ -100,9 +103,28 @@ export async function buildSwap(
       body: JSON.stringify(rpcBody),
     });
     debugText = await res.text();
-    rpcRes = JSON.parse(debugText);
+
+    // The broker should return JSON-RPC. If it's down, a reverse proxy returns
+    // an HTML 502/504 page — detect that and fail with a readable message
+    // instead of letting JSON.parse choke on "<html>".
+    if (!res.ok) {
+      const looksHtml = debugText.trimStart().startsWith("<");
+      throw new Error(
+        looksHtml
+          ? `Chainflip broker unavailable (HTTP ${res.status}). The broker service appears to be down — try again shortly.`
+          : `Chainflip broker error (HTTP ${res.status}): ${debugText.slice(0, 200)}`
+      );
+    }
+
+    try {
+      rpcRes = JSON.parse(debugText);
+    } catch {
+      throw new Error(
+        `Chainflip broker returned a non-JSON response: ${debugText.slice(0, 200)}`
+      );
+    }
   } catch (e: any) {
-    throw new Error(`Broker fetch failed: ${e.message} | response was: ${debugText}`);
+    throw new Error(e?.message ?? "Chainflip broker request failed");
   }
 
   if (rpcRes.error) {
