@@ -133,12 +133,25 @@ export async function buildSwap(
 
   const result = rpcRes.result;
 
+  // CRITICAL: getStatusV2 expects the FULL deposit channel id, formatted as
+  // `${issuedBlock}-${chain}-${channelId}` — NOT the bare channel_id. Passing
+  // the bare number makes getStatusV2 resolve an unrelated swap (often one that
+  // is already COMPLETED), which is why tracking showed "complete" with no deposit.
+  const issuedBlock = result.issued_block ?? result.issuedBlock;
+  const channelId = result.channel_id ?? result.channelId;
+  const depositChannelId =
+    issuedBlock != null && channelId != null
+      ? `${issuedBlock}-${fromRef.chain}-${channelId}`
+      : channelId != null
+        ? String(channelId)
+        : undefined;
+
   return {
     provider: "chainflip",
     depositAddress: result.address,
     depositAmount: req.amount,
     expiresAt: result.source_chain_expiry_block ?? undefined,
-    trackingId: result.channel_id?.toString(),
+    trackingId: depositChannelId,
     notes: "Chainflip opens a one-time deposit channel; funds sent there are swapped automatically.",
   };
 }
@@ -146,17 +159,46 @@ export async function buildSwap(
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
     const status: any = await getSdk().getStatusV2({ id: trackingId } as any);
-    const phase = String(status.state ?? status.status ?? "").toUpperCase();
+
+    // TEMP DEBUG: confirm the real shape + state names Chainflip returns.
+    // Remove once tracking is verified against a real swap.
+    console.log("CHAINFLIP STATUS", trackingId, "→", JSON.stringify(status));
+
+    const phase = String(status?.state ?? status?.status ?? "").toUpperCase();
+
+    // Chainflip SDK v2 swap states (with a few legacy aliases for safety).
     const map: Record<string, SwapStatus["state"]> = {
+      WAITING: "awaiting_deposit",
       AWAITING_DEPOSIT: "awaiting_deposit",
+      RECEIVING: "deposit_detected",
       DEPOSIT_RECEIVED: "deposit_detected",
       SWAPPING: "processing",
       SENDING: "processing",
+      SENT: "processing",
       COMPLETED: "success",
       FAILED: "failed",
     };
-    return { provider: "chainflip", state: map[phase] ?? "unknown", detail: phase };
+
+    let state: SwapStatus["state"] = map[phase] ?? "unknown";
+
+    // SAFETY GUARD: never report "success" unless the response actually shows a
+    // deposit/egress occurred. Protects against a malformed id resolving to an
+    // unrelated completed swap, or an empty response being mis-read as done.
+    if (state === "success") {
+      const s = status ?? {};
+      const hasEvidence =
+        s.deposit != null ||
+        s.depositAmount != null ||
+        s.depositTransactionRef != null ||
+        s.swapEgress != null ||
+        s.egress != null ||
+        s.swap != null ||
+        (Array.isArray(s.swaps) && s.swaps.length > 0);
+      if (!hasEvidence) state = "unknown";
+    }
+
+    return { provider: "chainflip", state, detail: phase || "no state" };
   } catch (e: any) {
-    return { provider: "chainflip", state: "unknown", detail: e.message };
+    return { provider: "chainflip", state: "unknown", detail: e?.message ?? "status lookup failed" };
   }
 }
