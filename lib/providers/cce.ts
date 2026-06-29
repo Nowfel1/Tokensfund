@@ -35,7 +35,7 @@ async function post<T>(path: string, body: object): Promise<T> {
   const data = await res.json();
 
   // TEMPORARY DEBUG: logs CCE's raw response to your Vercel function logs.
-  // Reproduce the swap/track once, read the logs, then remove this line.
+  // Remove once tracking is confirmed working.
   console.log("CCE", path, "→", res.status, JSON.stringify(data));
 
   if (data.code !== 0) {
@@ -106,79 +106,65 @@ export async function buildSwap(
     ],
   };
   const data = await post<any>("/openapi/order/place", body);
+
+  // CCE returns the order number as `no` (NOT `order_no`).
+  // `query_code` is the human-facing inquiry code shown on cce.cash.
   return {
     provider: "cce",
     depositAddress: data.address,
     depositAmount: req.amount,
-    trackingId: data.order_no,
-    notes: `CCE.Cash Order #${data.order_no}`,
+    trackingId: data.no,
+    notes: `CCE.Cash Order #${data.query_code ?? data.no}`,
   };
 }
 
 // ==================== STATUS ====================
-// CCE's order lifecycle (from their UI):
+// CCE returns `status` as a NUMBER, and the order lifecycle in their UI is:
 //   Waiting for deposit -> Deposited -> In Exchange -> Exchange completed
+//
+// Observed from real payloads:
+//   status: 1  -> order created, no deposit yet (payfor_at/accept_at/finish_at all 0)
+//   nested output[].status: 2 -> an outbound send completed
+//
+// !!! UNVERIFIED: the exact number for each stage is inferred, not confirmed.
+// Confirm the "Exchange completed" number against a finished order and adjust.
+const NUMERIC_STATE: Record<number, SwapStatus["state"]> = {
+  0: "awaiting_deposit", // created / pending (guess)
+  1: "awaiting_deposit", // confirmed-observed: created, awaiting deposit
+  2: "deposit_detected", // deposit seen / in progress (inferred)
+  3: "processing",       // exchanging (inferred)
+  4: "success",          // completed (inferred — VERIFY)
+  5: "refunded",         // (inferred — VERIFY)
+  6: "failed",           // (inferred — VERIFY)
+};
+
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
-    const data = await post<any>("/openapi/order/query", {
-      order_no: trackingId,
-    });
+    // CCE's query endpoint expects the order number in `no` (matching what
+    // `place` returns). If your docs show a different field/endpoint, adjust here.
+    const data = await post<any>("/openapi/order/query", { no: trackingId });
 
-    // The status field may be `status`, `state`, or `order_status` depending on
-    // the endpoint — read whichever is present, normalized.
-    const rawStatus = String(
-      data.status ?? data.state ?? data.order_status ?? ""
-    )
-      .toLowerCase()
-      .trim();
+    const rawStatus = data.status;
+    const mapped =
+      typeof rawStatus === "number" ? NUMERIC_STATE[rawStatus] : undefined;
 
-    const stateMap: Record<string, SwapStatus["state"]> = {
-      // --- awaiting deposit ---
-      waiting: "awaiting_deposit",
-      waiting_deposit: "awaiting_deposit",
-      pending: "awaiting_deposit",
-      new: "awaiting_deposit",
+    // A completed order should have finish_at set — use it as a corroborating
+    // signal so we don't falsely report "completed".
+    const looksFinished = Number(data.finish_at) > 0;
 
-      // --- deposit detected ---
-      deposited: "deposit_detected",
-      confirming: "deposit_detected",
-      confirmed: "deposit_detected",
-      received: "deposit_detected",
-
-      // --- processing / in exchange ---
-      in_exchange: "processing",
-      exchanging: "processing",
-      exchange: "processing",
-      processing: "processing",
-      sending: "processing",
-
-      // --- completed ---
-      exchange_completed: "success",
-      completed: "success",
-      complete: "success",
-      finished: "success",
-      success: "success",
-      done: "success",
-
-      // --- terminal: failed / refunded ---
-      failed: "failed",
-      fail: "failed",
-      error: "failed",
-      expired: "failed",
-      refunded: "refunded",
-      refund: "refunded",
-    };
-
-    const mapped = stateMap[rawStatus];
+    let state: SwapStatus["state"] = mapped ?? "unknown";
+    if (state === "success" && !looksFinished) {
+      // status says done but no finish timestamp — don't claim completion
+      state = "processing";
+    }
 
     return {
       provider: "cce",
-      state: mapped ?? "unknown",
-      // If we couldn't map it, surface the raw value so the next unmapped
-      // status names itself instead of silently showing the wrong state.
-      detail: mapped
-        ? rawStatus
-        : `Unmapped CCE status: "${rawStatus || JSON.stringify(data)}"`,
+      state,
+      detail:
+        mapped !== undefined
+          ? `status=${rawStatus}${looksFinished ? " (finished)" : ""}`
+          : `Unmapped CCE status: ${JSON.stringify(rawStatus)}`,
     };
   } catch (error: any) {
     return {
