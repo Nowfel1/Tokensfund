@@ -107,10 +107,12 @@ export async function buildSwap(
   };
   const data = await post<any>("/openapi/order/place", body);
 
-  // CCE returns the order number as `no` (NOT `order_no`).
-  // `query_code` is the human-facing inquiry code shown on cce.cash.
-  // Read defensively in case the field name differs across endpoints.
-  const orderId = data.no ?? data.order_no ?? data.query_code;
+  // CCE returns the order number as `no` (8-char) AND `query_code` (12-char,
+  // the code shown on cce.cash). We don't know which the query endpoint keys
+  // off, so store BOTH (joined with "~") and let getStatus try each.
+  const orderNo = data.no ?? data.order_no;
+  const queryCode = data.query_code;
+  const orderId = orderNo ?? queryCode;
   if (!orderId) {
     throw new Error("CCE place response missing order id (no/order_no/query_code).");
   }
@@ -118,8 +120,8 @@ export async function buildSwap(
     provider: "cce",
     depositAddress: data.address,
     depositAmount: req.amount,
-    trackingId: String(orderId),
-    notes: `CCE.Cash Order #${data.query_code ?? orderId}`,
+    trackingId: [orderNo, queryCode].filter(Boolean).map(String).join("~"),
+    notes: `CCE.Cash Order #${queryCode ?? orderId}`,
   };
 }
 
@@ -144,32 +146,32 @@ const NUMERIC_STATE: Record<number, SwapStatus["state"]> = {
 };
 
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
-  // Users paste the reference exactly as displayed ("#IQ2SN93GW8DE"), so strip
-  // any leading "#" and surrounding whitespace before querying.
-  const cleanId = String(trackingId).trim().replace(/^#+/, "");
+  // trackingId may be "no~query_code" (stored) or a single pasted code.
+  // Strip "#"/whitespace and split into candidate values.
+  const candidates = String(trackingId)
+    .trim()
+    .replace(/^#+/, "")
+    .split("~")
+    .map((s) => s.trim())
+    .filter(Boolean);
 
-  // CCE returns BOTH `no` (8-char order number) and `query_code` (12-char
-  // user-facing code shown on cce.cash). A manually-entered reference is
-  // usually the query_code, so try that first, then fall back to `no`/`order_no`.
-  const attempts = [
-    { query_code: cleanId },
-    { no: cleanId },
-    { order_no: cleanId },
-  ];
+  const paramNames = ["query_code", "no", "order_no"] as const;
 
   try {
     let data: any | undefined;
     let lastErr: any;
-    for (const body of attempts) {
-      try {
-        data = await post<any>("/openapi/order/query", body);
-        break; // first one CCE accepts (code 0) wins
-      } catch (e) {
-        lastErr = e;
+    outer: for (const value of candidates) {
+      for (const p of paramNames) {
+        try {
+          data = await post<any>("/openapi/order/query", { [p]: value });
+          break outer; // first value+field combo CCE accepts (code 0) wins
+        } catch (e) {
+          lastErr = e;
+        }
       }
     }
     if (data === undefined) {
-      throw lastErr ?? new Error("CCE query failed for all id fields.");
+      throw lastErr ?? new Error("CCE query failed for all id/field combinations.");
     }
 
     const rawStatus = data.status;
