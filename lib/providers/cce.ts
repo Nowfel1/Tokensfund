@@ -16,7 +16,6 @@ function getAuthHeaders(body: object): Record<string, string> {
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const bodyString = JSON.stringify(body);
   const signature = sign(nonce, timestamp, bodyString);
-
   return {
     "Content-Type": "application/json",
     "X-Api-Key": API_KEY,
@@ -33,13 +32,10 @@ async function post<T>(path: string, body: object): Promise<T> {
     headers,
     body: JSON.stringify(body),
   });
-
   const data = await res.json();
-
   if (data.code !== 0) {
     throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
   }
-
   return data.data;
 }
 
@@ -51,7 +47,6 @@ export async function getQuote(
 ): Promise<NormalizedQuote> {
   const fromRef = from.providerIds.cce!;
   const toRef = to.providerIds.cce!;
-
   const body = {
     exchange_mode: "float",
     from_abbr: fromRef.abbr,
@@ -65,14 +60,11 @@ export async function getQuote(
       },
     ],
   };
-
   const data = await post<any>("/openapi/order/calculate", body);
   const toData = data.to?.[0];
-
   if (!toData) {
     throw new Error("CCE returned no quote data.");
   }
-
   return {
     provider: "cce",
     providerLabel: "CCE.Cash",
@@ -92,10 +84,8 @@ export async function buildSwap(
   if (!req.destinationAddress) {
     throw new Error("Destination address is required for CCE.Cash");
   }
-
   const fromRef = from.providerIds.cce!;
   const toRef = to.providerIds.cce!;
-
   const body = {
     exchange_mode: "float",
     from_abbr: fromRef.abbr,
@@ -110,9 +100,7 @@ export async function buildSwap(
       },
     ],
   };
-
   const data = await post<any>("/openapi/order/place", body);
-
   return {
     provider: "cce",
     depositAddress: data.address,
@@ -123,30 +111,75 @@ export async function buildSwap(
 }
 
 // ==================== STATUS ====================
+// CCE's order lifecycle (from their UI):
+//   Waiting for deposit -> Deposited -> In Exchange -> Exchange completed
 export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
     const data = await post<any>("/openapi/order/query", {
       order_no: trackingId,
     });
 
+    // The status field may be `status`, `state`, or `order_status` depending on
+    // the endpoint — read whichever is present, normalized.
+    const rawStatus = String(
+      data.status ?? data.state ?? data.order_status ?? ""
+    )
+      .toLowerCase()
+      .trim();
+
     const stateMap: Record<string, SwapStatus["state"]> = {
+      // --- awaiting deposit ---
+      waiting: "awaiting_deposit",
+      waiting_deposit: "awaiting_deposit",
       pending: "awaiting_deposit",
+      new: "awaiting_deposit",
+
+      // --- deposit detected ---
+      deposited: "deposit_detected",
+      confirming: "deposit_detected",
+      confirmed: "deposit_detected",
+      received: "deposit_detected",
+
+      // --- processing / in exchange ---
+      in_exchange: "processing",
+      exchanging: "processing",
+      exchange: "processing",
       processing: "processing",
+      sending: "processing",
+
+      // --- completed ---
+      exchange_completed: "success",
       completed: "success",
+      complete: "success",
+      finished: "success",
+      success: "success",
+      done: "success",
+
+      // --- terminal: failed / refunded ---
       failed: "failed",
+      fail: "failed",
+      error: "failed",
+      expired: "failed",
       refunded: "refunded",
+      refund: "refunded",
     };
+
+    const mapped = stateMap[rawStatus];
 
     return {
       provider: "cce",
-      state: stateMap[data.status] ?? "unknown",
-      detail: data.status,
+      state: mapped ?? "unknown",
+      // If we couldn't map it, surface the raw value so the next unmapped
+      // status names itself instead of silently showing the wrong state.
+      detail: mapped
+        ? rawStatus
+        : `Unmapped CCE status: "${rawStatus || JSON.stringify(data)}"`,
     };
   } catch (error: any) {
     return {
       provider: "cce",
       state: "unknown",
-      detail: error.message,
+      detail: error?.message ?? "Status lookup failed",
     };
   }
 }
