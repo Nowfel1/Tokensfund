@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "bitcoin-etf-outflows-paper-btc-vs-real-btc-2026",
+  title: "Bitcoin ETFs Just Had Their Worst Month Ever: Paper BTC vs. Real BTC",
+  date: "July 2, 2026",
+  description: "Spot Bitcoin ETFs bled ~$4.5B in June — their worst month since launch — while BTC hit a 21-month low. What the exodus reveals about paper bitcoin vs. owning the real thing.",
+  tag: "Markets",
+},
+  {
   slug: "move-crypto-off-exchange-without-kyc-2026",
   title: "How to Move Your Crypto Off an Exchange (and Swap It Without KYC)",
   date: "June 29, 2026",
