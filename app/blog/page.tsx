@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "binance-usdt-eu-mica-delisting-2026",
+  title: "Binance and USDT Just Lost the EU: What the Delistings Actually Mean",
+  date: "July 5, 2026",
+  description: "From July 1, Binance suspended EU services after failing to secure a MiCA license, and USDT is off licensed European venues. What's actually banned — less than you think — and what it means for your funds.",
+  tag: "Regulation",
+},
+  {
   slug: "bitcoin-etf-outflows-paper-btc-vs-real-btc-2026",
   title: "Bitcoin ETFs Just Had Their Worst Month Ever: Paper BTC vs. Real BTC",
   date: "July 2, 2026",
