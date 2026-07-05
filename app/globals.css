@@ -45,7 +45,7 @@ a { color: inherit; }
 /* ---- masthead ---- */
 .masthead {
   display: flex; align-items: baseline; justify-content: space-between;
-  gap: 16px; margin-bottom: 16px; flex-wrap: wrap;
+  gap: 16px; margin-bottom: 0; flex-wrap: wrap;
 }
 .brand { font-weight: 700; letter-spacing: -0.02em; font-size: 20px; display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
 .brand .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--gold); box-shadow: 0 0 0 4px var(--gold-soft); }
@@ -314,7 +314,7 @@ a { color: inherit; }
   gap: 56px;
   align-items: center;
   flex-wrap: wrap;
-  padding: 48px 0 64px;
+  padding: 12px 0 56px;
   max-width: 1140px;
   margin: 0 auto;
 }
