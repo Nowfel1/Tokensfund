@@ -84,7 +84,8 @@ export const ASSETS: CanonicalAsset[] = [
       decimals: 8,
     },
   },
-  {
+  },
+      {
     id: "SOL",
     symbol: "SOL",
     name: "Solana",
