@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "ansem-trenches-revival-2026",
+  title: "$ANSEM and the Trenches Revival: One Token Woke the Whole Casino Up",
+  date: "July 5, 2026",
+  description: "Pump.fun just hit an 80-day high in launches and one coin did it — $ANSEM, up ~20,000% in a week on a creator-fee airdrop. What happened, why the trenches came back mid-bear, and how to play it without losing your stack.",
+  tag: "Trenches",
+},
+  {
   slug: "binance-usdt-eu-mica-delisting-2026",
   title: "Binance and USDT Just Lost the EU: What the Delistings Actually Mean",
   date: "July 5, 2026",
