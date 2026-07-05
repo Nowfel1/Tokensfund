@@ -73,6 +73,18 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+  id: "DAI",
+  symbol: "DAI",
+  name: "Dai (Ethereum)",
+  chain: "Ethereum",
+  decimals: 18,
+  providerIds: {
+    thorchain: {
+      asset: "ETH.DAI-0X6B175474E89094C44DA98B954EEDEAC495271D0F",
+      decimals: 8,
+    },
+  },
+  {
     id: "SOL",
     symbol: "SOL",
     name: "Solana",
