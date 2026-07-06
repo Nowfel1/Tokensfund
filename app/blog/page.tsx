@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "best-btc-to-xmr-rate-2026",
+  title: "How to Get the Best BTC to XMR Rate in 2026",
+  date: "July 6, 2026",
+  description: "Rates differ more on BTC→XMR than almost any pair. What actually moves a quote, why sites show different numbers, float vs fixed, and how to compare routes properly — no account, no KYC.",
+  tag: "Guide",
+},
+  {
   slug: "ansem-trenches-revival-2026",
   title: "$ANSEM and the Trenches Revival: One Token Woke the Whole Casino Up",
   date: "July 5, 2026",
