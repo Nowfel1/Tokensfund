@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "stablecoin-flippening-usdc-usdt-2026",
+  title: "The Stablecoin Flippening Is Showing Up in the Data",
+  date: "July 7, 2026",
+  description: "New Visa on-chain data: USDC now carries ~67% of real stablecoin volume vs ~25% for USDT — a complete reversal from 2020. What MiCA's squeeze did to the flows, and why USDT isn't dying anyway.",
+  tag: "Markets",
+},
+  {
   slug: "best-btc-to-xmr-rate-2026",
   title: "How to Get the Best BTC to XMR Rate in 2026",
   date: "July 6, 2026",
