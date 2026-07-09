@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "ascendex-collapse-mica-custody-lesson-2026",
+  title: "AscendEX Died With Its Users' Money Inside. Binance Didn't. The Difference Is the Whole Lesson",
+  date: "July 9, 2026",
+  description: "The first MiCA casualty took user funds down with it — withdrawals under manual review, and the exchange itself warns users may not get everything back. Why the same deadline hit Binance and AscendEX so differently.",
+  tag: "Regulation",
+},
+  {
   slug: "stablecoin-flippening-usdc-usdt-2026",
   title: "The Stablecoin Flippening Is Showing Up in the Data",
   date: "July 7, 2026",
