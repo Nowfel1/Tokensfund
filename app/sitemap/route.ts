@@ -39,6 +39,12 @@ export async function GET() {
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://tokensfund.xyz/blog/stablecoin-flippening-usdc-usdt-2026</loc>
+    <lastmod>2026-07-07</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tokensfund.xyz/blog/best-btc-to-xmr-rate-2026</loc>
     <lastmod>2026-07-06</lastmod>
     <changefreq>monthly</changefreq>
