@@ -6,6 +6,12 @@ const JWT = process.env.NEAR_1CLICK_JWT;
 const FEE_BPS = process.env.NEAR_APP_FEE_BPS ? Number(process.env.NEAR_APP_FEE_BPS) : undefined;
 const FEE_RECIPIENT = process.env.NEAR_FEE_RECIPIENT;
 
+// How long the user has to send their deposit before the quote expires.
+// This must be generous enough for slow chains (BTC confirmations, wallet
+// fumbling). 5 minutes was far too short and strands late deposits in
+// expired intents — 60 minutes is a sane floor.
+const DEPOSIT_WINDOW_MS = 60 * 60 * 1000;
+
 function headers() {
   const h: Record<string, string> = { "Content-Type": "application/json" };
   if (JWT) h["Authorization"] = `Bearer ${JWT}`;
@@ -32,7 +38,7 @@ function dummyAddress(asset: CanonicalAsset): string {
   if (chain === "zcash") return "t1KzZ5n2TPEGYXTZ3WYGL1AYEumEQaRoHaL";
   if (chain === "ton") return "0:0000000000000000000000000000000000000000000000000000000000000000";
   if (chain === "xrp ledger") return "rf1BiGeXwwQoi8Z2ueFYTEXSwuJYfV2Jpn";
- return "0x0000000000000000000000000000000000000001";
+  return "0x0000000000000000000000000000000000000001";
 }
 
 async function requestQuote(
@@ -45,7 +51,7 @@ async function requestQuote(
   const toRef = to.providerIds.near_intents!;
   const fromDecimals = fromRef.decimals ?? from.decimals;
 
-const recipient = req.destinationAddress || dummyAddress(to);
+  const recipient = req.destinationAddress || dummyAddress(to);
   const refundTo = req.refundAddress || dummyAddress(from);
 
   const body = {
@@ -60,7 +66,7 @@ const recipient = req.destinationAddress || dummyAddress(to);
     recipientType: "DESTINATION_CHAIN",
     refundTo,
     refundType: "ORIGIN_CHAIN",
-    deadline: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+    deadline: new Date(Date.now() + DEPOSIT_WINDOW_MS).toISOString(),
     ...(FEE_BPS && FEE_RECIPIENT
       ? { appFees: [{ recipient: FEE_RECIPIENT, fee: FEE_BPS }] }
       : {}),
@@ -123,11 +129,33 @@ export async function buildSwap(
 }
 
 export async function getStatus(depositAddress: string): Promise<SwapStatus> {
-  const res = await fetch(`${BASE}/v0/status?depositAddress=${encodeURIComponent(depositAddress)}`, {
-    headers: headers(),
-  });
-  if (!res.ok) return { provider: "near_intents", state: "unknown", detail: `status ${res.status}` };
+  const addr = String(depositAddress).trim();
+
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}/v0/status?depositAddress=${encodeURIComponent(addr)}`, {
+      headers: headers(),
+    });
+  } catch (e: any) {
+    return { provider: "near_intents", state: "unknown", detail: e?.message ?? "network error" };
+  }
+
+  if (!res.ok) {
+    return { provider: "near_intents", state: "unknown", detail: `status ${res.status}` };
+  }
+
   const data = await res.json();
+
+  // TEMPORARY DEBUG: log the raw status payload so we can see exactly what
+  // 1Click reports for this deposit address. Remove once tracking is verified.
+  console.log("NEAR_INTENTS status", addr, "→", JSON.stringify(data));
+
+  // Status may live at the top level or (in some responses) nested — read both,
+  // normalized to uppercase so casing can never break the mapping.
+  const rawStatus = String(data.status ?? data.swapDetails?.status ?? "")
+    .trim()
+    .toUpperCase();
+
   const map: Record<string, SwapStatus["state"]> = {
     PENDING_DEPOSIT: "awaiting_deposit",
     KNOWN_DEPOSIT_TX: "deposit_detected",
@@ -137,9 +165,14 @@ export async function getStatus(depositAddress: string): Promise<SwapStatus> {
     INCOMPLETE_DEPOSIT: "failed",
     FAILED: "failed",
   };
+
+  const mapped = map[rawStatus];
+
   return {
     provider: "near_intents",
-    state: map[data.status] ?? "unknown",
-    detail: data.status,
+    state: mapped ?? "unknown",
+    // Surface the raw status so an unmapped value names itself in the UI hint
+    // instead of silently showing the wrong state.
+    detail: mapped ? rawStatus : `Unmapped 1Click status: "${rawStatus || "(empty)"}"`,
   };
 }
