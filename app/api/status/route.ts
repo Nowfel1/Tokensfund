@@ -5,6 +5,7 @@ import * as chainflip from "@/lib/providers/chainflip";
 import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
+import * as changenow from "@/lib/providers/changenow";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,6 +16,10 @@ const PROVIDERS: Record<string, any> = {
   near_intents: nearIntents,
   cce,
   changee,
+  // Legacy, status-only: swaps routed via ChangeNOW before the July 2026
+  // provider switch remain trackable. The module has no quote/build functions,
+  // so ChangeNOW cannot be used as a live route.
+  changenow,
 };
 
 export async function GET(req: NextRequest) {
