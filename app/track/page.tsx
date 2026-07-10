@@ -73,7 +73,7 @@ export default function TrackPage() {
       const data = text ? JSON.parse(text) : { provider, state: "unknown", detail: "No response from server." };
       setStatus(data);
     } catch (e: any) {
-      setStatus({ provider, state: "unknown", detail: e.message });
+      setStatus({ provider: provider as SwapStatus["provider"], state: "unknown", detail: e.message });
     } finally {
       setBusy(false);
     }
