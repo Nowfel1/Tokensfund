@@ -15,10 +15,6 @@ const PROVIDERS: Record<string, any> = {
   near_intents: nearIntents,
   cce,
   changee,
-  // Legacy alias: Changee was formerly ChangeNOW. Old trade records, logs and
-  // bookmarked status URLs may still reference the old provider string — keep
-  // both resolving to the same module.
-  changenow: changee,
 };
 
 export async function GET(req: NextRequest) {
