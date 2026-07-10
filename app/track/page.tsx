@@ -16,12 +16,43 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
   unknown: { label: "Status unavailable", step: 0, tone: "wait" },
 };
 
+// Each provider tracks by a DIFFERENT identifier. A generic "address or id"
+// prompt invites users to paste the wrong thing (e.g. a deposit address into
+// Changee, which only knows exchange IDs) — so the input adapts per provider.
+const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> = {
+  changee: {
+    placeholder: "Changee exchange ID (e.g. b221f953d73ec3)",
+    hint: "Use the exchange ID from your swap confirmation — not the deposit address.",
+  },
+  near_intents: {
+    placeholder: "Deposit address you sent funds to",
+    hint: "NEAR Intents swaps are tracked by the deposit address itself.",
+  },
+  chainflip: {
+    placeholder: "Deposit channel ID (e.g. 12345678-Bitcoin-123)",
+    hint: "Use the deposit channel ID shown when your swap was created.",
+  },
+  thorchain: {
+    placeholder: "Your deposit transaction hash",
+    hint: "Paste the TX hash of the deposit you sent — from your wallet or a block explorer.",
+  },
+  cce: {
+    placeholder: "CCE order code (e.g. QIC05HYH92XV)",
+    hint: "Use the order code from your swap — dashes and # are fine, we clean them up.",
+  },
+};
+
 export default function TrackPage() {
   const [provider, setProvider] = useState<ProviderId>("changee");
   const [id, setId] = useState("");
   const [status, setStatus] = useState<SwapStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [touched, setTouched] = useState(false);
+
+  const inputMeta = PROVIDER_INPUT[provider] ?? {
+    placeholder: "Tracking ID",
+    hint: "",
+  };
 
   async function lookup() {
     if (!id.trim()) return;
@@ -62,14 +93,18 @@ export default function TrackPage() {
       <section className="hero" style={{ paddingBottom: 24 }}>
         <h1 style={{ fontSize: 34 }}>Track your <span className="accent">swap</span></h1>
         <p className="sub">
-          Check the live status of any swap. Pick the provider you used and paste your deposit
-          address or tracking ID.
+          Check the live status of any swap. Pick the provider you used — the field below tells you
+          exactly which reference to paste.
         </p>
       </section>
 
       <div className="card" style={{ padding: 18 }}>
         <div className="track-row">
-          <select className="track-select" value={provider} onChange={(e) => setProvider(e.target.value as ProviderId)}>
+          <select
+            className="track-select"
+            value={provider}
+            onChange={(e) => { setProvider(e.target.value as ProviderId); setStatus(null); setTouched(false); }}
+          >
             <option value="changee">Changee</option>
             <option value="near_intents">NEAR Intents</option>
             <option value="chainflip">Chainflip</option>
@@ -78,12 +113,15 @@ export default function TrackPage() {
           </select>
           <input
             className="track-input"
-            placeholder="Deposit address or tracking ID"
+            placeholder={inputMeta.placeholder}
             value={id}
             onChange={(e) => setId(e.target.value)}
             onKeyDown={(e) => { if (e.key === "Enter") lookup(); }}
           />
         </div>
+        {inputMeta.hint && (
+          <p className="status-hint" style={{ textAlign: "left", margin: "8px 2px 0" }}>{inputMeta.hint}</p>
+        )}
         <button className="btn-primary" disabled={busy || !id.trim()} onClick={lookup}>
           {busy ? "Checking..." : "Check status"}
         </button>
@@ -106,8 +144,15 @@ export default function TrackPage() {
                 </div>
               ))}
             </div>
-            {status?.detail && (
-              <p className="status-hint">{status.detail}</p>
+            {status?.provider === "cce" && status.state === "unknown" ? (
+              <p className="status-hint">
+                {status?.detail ?? "Live status unavailable."}{" "}
+                <a href="https://cce.cash" target="_blank" rel="noopener noreferrer" className="status-ext-link">
+                  Track on CCE.cash {"\u2192"}
+                </a>
+              </p>
+            ) : (
+              status?.detail && <p className="status-hint">{status.detail}</p>
             )}
           </div>
         )}
@@ -118,9 +163,9 @@ export default function TrackPage() {
       </div>
 
       <p className="foot">
-        Live tracking depends on each provider's API. Some swaps may show
+        Live tracking depends on each provider&apos;s API. Some swaps may show
         <strong> status unavailable</strong> until funds are sent, or may need to be tracked on
-        the provider's own page.
+        the provider&apos;s own page.
       </p>
     </main>
   );
