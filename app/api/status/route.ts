@@ -15,22 +15,23 @@ const PROVIDERS: Record<string, any> = {
   near_intents: nearIntents,
   cce,
   changee,
+  // Legacy alias: Changee was formerly ChangeNOW. Old trade records, logs and
+  // bookmarked status URLs may still reference the old provider string — keep
+  // both resolving to the same module.
+  changenow: changee,
 };
 
 export async function GET(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const provider = searchParams.get("provider") as ProviderId | null;
   const trackingId = searchParams.get("id");
-
   if (!provider || !trackingId) {
     return NextResponse.json({ error: "Missing provider or id." }, { status: 400 });
   }
-
   const mod = PROVIDERS[provider];
   if (!mod) {
     return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
   }
-
   if (typeof mod.getStatus !== "function") {
     return NextResponse.json(
       {
@@ -41,7 +42,6 @@ export async function GET(req: NextRequest) {
       { status: 200 }
     );
   }
-
   try {
     const status = await mod.getStatus(trackingId);
     return NextResponse.json(status, { status: 200 });
