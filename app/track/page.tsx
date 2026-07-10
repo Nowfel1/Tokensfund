@@ -16,10 +16,14 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
   unknown: { label: "Status unavailable", step: 0, tone: "wait" },
 };
 
+// Legacy providers are trackable but not routable — swaps made through them
+// before a provider switch can still be checked here.
+type TrackProvider = ProviderId | "changenow";
+
 // Each provider tracks by a DIFFERENT identifier. A generic "address or id"
 // prompt invites users to paste the wrong thing (e.g. a deposit address into
 // Changee, which only knows exchange IDs) — so the input adapts per provider.
-const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> = {
+const PROVIDER_INPUT: Record<TrackProvider, { placeholder: string; hint: string }> = {
   changee: {
     placeholder: "Changee exchange ID (e.g. b221f953d73ec3)",
     hint: "Use the exchange ID from your swap confirmation — not the deposit address.",
@@ -40,10 +44,14 @@ const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> 
     placeholder: "CCE order code (e.g. QIC05HYH92XV)",
     hint: "Use the order code from your swap — dashes and # are fine, we clean them up.",
   },
+  changenow: {
+    placeholder: "ChangeNOW transaction ID (14 characters)",
+    hint: "For swaps routed via ChangeNOW before July 2026. Current swaps use Changee and our other providers.",
+  },
 };
 
 export default function TrackPage() {
-  const [provider, setProvider] = useState<ProviderId>("changee");
+  const [provider, setProvider] = useState<TrackProvider>("changee");
   const [id, setId] = useState("");
   const [status, setStatus] = useState<SwapStatus | null>(null);
   const [busy, setBusy] = useState(false);
@@ -103,13 +111,14 @@ export default function TrackPage() {
           <select
             className="track-select"
             value={provider}
-            onChange={(e) => { setProvider(e.target.value as ProviderId); setStatus(null); setTouched(false); }}
+            onChange={(e) => { setProvider(e.target.value as TrackProvider); setStatus(null); setTouched(false); }}
           >
             <option value="changee">Changee</option>
             <option value="near_intents">NEAR Intents</option>
             <option value="chainflip">Chainflip</option>
             <option value="thorchain">THORChain</option>
             <option value="cce">CCE.Cash</option>
+            <option value="changenow">ChangeNOW (legacy)</option>
           </select>
           <input
             className="track-input"
