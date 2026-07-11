@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "crypto-ipo-carnage-casino-vs-chips-2026",
+  title: "Buying the Casino Has Been Worse Than Buying the Chips",
+  date: "July 11, 2026",
+  description: "Gemini −89% from debut, BitGo −77%, Bullish −71%, and the IPO pipeline frozen — while Bitcoin holds up far better than the companies built on top of it. What the crypto-equity carnage says about wrappers vs. the asset.",
+  tag: "Markets",
+},
+  {
   slug: "ascendex-collapse-mica-custody-lesson-2026",
   title: "AscendEX Died With Its Users' Money Inside. Binance Didn't. The Difference Is the Whole Lesson",
   date: "July 9, 2026",
