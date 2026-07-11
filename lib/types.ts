@@ -12,7 +12,7 @@ export interface ProviderAssetRef {
   coin?: string;
   network?: string;
   abbr?: string;     // Used by CCE.Cash
-  ticker?: string;   // Used by ChangeNOW (and future providers)
+  ticker?: string;   // Used by Changee (and future providers)
 }
 
 export interface CanonicalAsset {
@@ -57,6 +57,9 @@ export interface SwapInstruction {
   depositAddress: string;
   memo?: string;
   depositAmount: string;
+  // NOTE: providers put different things here — THORChain a block height,
+  // NEAR Intents a unix timestamp (seconds). UI countdowns assume unix
+  // seconds, so only timestamp-based providers get a meaningful countdown.
   expiresAt?: number;
   trackingId: string;
   notes?: string;
@@ -64,6 +67,10 @@ export interface SwapInstruction {
 
 export interface SwapStatus {
   provider: ProviderId;
+  // NOTE: "completed"/"success" and "pending"/"awaiting_deposit" are treated
+  // identically by the UI (see STATE_META). Kept for backward compatibility
+  // with existing provider mappings — prefer "success" and "awaiting_deposit"
+  // in new code.
   state:
     | "awaiting_deposit"
     | "deposit_detected"
