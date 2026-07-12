@@ -39,6 +39,12 @@ export async function GET() {
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://tokensfund.xyz/blog/bitcoin-307-day-range-2026</loc>
+    <lastmod>2026-07-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://tokensfund.xyz/blog/crypto-ipo-carnage-casino-vs-chips-2026</loc>
     <lastmod>2026-07-11</lastmod>
     <changefreq>monthly</changefreq>
