@@ -332,10 +332,6 @@ export default function SwapTerminal() {
     <div>
       {/* tab header */}
       <div className="sw-header">
-        <div className="sw-tabs">
-          <span className="sw-tab active">Swap</span>
-          <span className="sw-tab">Limit</span>
-        </div>
       </div>
 
       <div className="card pro">
