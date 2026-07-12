@@ -140,7 +140,7 @@ export default function SwapTerminal() {
 
   // load prices once
   useEffect(() => {
-    fetch("/api/prices")
+    fetch("/api/markets")
       .then((r) => r.text())
       .then((t) => { if (t) setPrices(JSON.parse(t)); })
       .catch(() => {});
