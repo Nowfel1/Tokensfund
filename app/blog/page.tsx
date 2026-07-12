@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "bitcoin-307-day-range-2026",
+  title: "Bitcoin Has Spent 307 Days in the Same $10K Box. Here's What Long Consolidations Actually Mean",
+  date: "July 12, 2026",
+  description: "The $60K–$70K band just became the third most-traded range in Bitcoin's history. What happened inside those 307 days, what long consolidations mean, and what holders actually do in the boredom phase.",
+  tag: "Markets",
+},
+  {
   slug: "crypto-ipo-carnage-casino-vs-chips-2026",
   title: "Buying the Casino Has Been Worse Than Buying the Chips",
   date: "July 11, 2026",
