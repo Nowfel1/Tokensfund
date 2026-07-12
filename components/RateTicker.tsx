@@ -24,7 +24,7 @@ export default function RateTicker() {
   const [prices, setPrices] = useState<Record<string, number> | null>(null);
 
   useEffect(() => {
-    fetch("/api/prices")
+    fetch("/api/markets")
       .then((r) => r.text())
       .then((t) => { if (t) setPrices(JSON.parse(t)); })
       .catch(() => {});
