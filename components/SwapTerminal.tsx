@@ -336,9 +336,6 @@ export default function SwapTerminal() {
           <span className="sw-tab active">Swap</span>
           <span className="sw-tab">Limit</span>
         </div>
-        <div className="sw-header-right">
-          <span className="sw-live"><span className="sw-live-dot" />{eligible.length} routes live</span>
-        </div>
       </div>
 
       <div className="card pro">
