@@ -25,8 +25,12 @@ export async function getQuote(
   if (!res.ok || data.result !== true || typeof data.rate !== "number") {
     throw new Error("Changee quote unavailable for this pair");
   }
-  // rate is the exchange rate excluding withdrawal fee. Output = rate * amount.
-  const gross = data.rate * Number(req.amount);
+  // IMPORTANT: Changee's /rate returns the TOTAL estimated output for the
+  // requested amount (e.g. 1.85 ETH for 0.1 BTC), NOT a per-unit rate.
+  // Multiplying by amount again double-applies it (the 10x-off bug).
+  // Verify after any API change: quoting 0.1 then 0.2 BTC should double the
+  // output while the displayed unit rate stays ~constant.
+  const gross = data.rate;
   // withdrawalFee comes as a string like "0.00119 ETH" - parse the leading number if present.
   let feeOut: number | undefined;
   if (typeof data.withdrawalFee === "string") {
@@ -62,16 +66,31 @@ export async function buildSwap(
   if (req.refundAddress) params.set("refundAddress", req.refundAddress);
   const res = await fetch(`${BASE}/exchange-create?${params.toString()}`);
   const data = await res.json();
+
+  // TEMPORARY DEBUG: log the raw create response so the actual id field (if
+  // any) names itself. Remove once the tracking id is confirmed.
+  console.log("CHANGEE create →", res.status, JSON.stringify(data));
+
   if (!res.ok || data.result !== true || !data.depositAddress) {
     throw new Error("Changee could not create the exchange. " + (data.message ?? ""));
   }
+
+  // Changee's create response may name its exchange id differently (or omit
+  // it). Try the likely candidates; fall back to the deposit address so
+  // trackingId is never undefined — with a note that Changee itself is the
+  // place to track in that case (their status endpoint can't query by address).
+  const exchangeId =
+    data.id ?? data.exchangeId ?? data.exchange_id ?? data.orderId ?? data.order_id;
+
   return {
     provider: "changee",
     depositAddress: data.depositAddress,
     memo: data.depositTag || undefined,
     depositAmount: req.amount,
-    trackingId: data.id,
-    notes: "Track your swap at changee.com",
+    trackingId: String(exchangeId ?? data.depositAddress),
+    notes: exchangeId
+      ? "Track your swap at changee.com with exchange ID " + exchangeId
+      : "Changee did not return an exchange ID — track this swap on changee.com using your deposit details.",
   };
 }
 
