@@ -28,6 +28,36 @@ export function CopyText({ text }: { text: string | null }) {
   );
 }
 
+// CCE stores a composite tracking id: "{orderNo}~{queryCode}" (both identifiers,
+// since status lookups may need either). For display, show the human query code
+// grouped like CCE's own UI (UBBP-BTVM-NIKS) with the internal no beneath.
+// The RAW composite must keep flowing to status lookups — format display only.
+function parseCceTracking(text: string): { code: string; no: string } | null {
+  const parts = text.split("~");
+  if (parts.length !== 2) return null;
+  const [no, raw] = parts;
+  const code = raw.replace(/(.{4})(?=.)/g, "$1-");
+  return { code, no };
+}
+
+export function TrackingCell({ provider, text }: { provider: string; text: string | null }) {
+  if (!text) return <span style={{ color: "#565f80" }}>—</span>;
+  if (provider === "cce") {
+    const parsed = parseCceTracking(text);
+    if (parsed) {
+      return (
+        <span>
+          <CopyText text={parsed.code} />
+          <span style={{ display: "block", fontSize: 10, color: "#565f80", marginTop: 2 }}>
+            no: {parsed.no}
+          </span>
+        </span>
+      );
+    }
+  }
+  return <CopyText text={text} />;
+}
+
 const STATE_COLOR: Record<string, string> = {
   awaiting_deposit: "#8a95b8",
   pending: "#8a95b8",
