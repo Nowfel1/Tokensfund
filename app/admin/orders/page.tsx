@@ -1,5 +1,5 @@
 import { sql, ensureOrdersTable } from "@/lib/db";
-import { CopyText, StatusCell } from "@/components/AdminCells";
+import { CopyText, StatusCell, TrackingCell } from "@/components/AdminCells";
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +54,7 @@ export default async function AdminOrders({
               <td style={{ padding: "8px" }}>{o.amount}</td>
               <td style={{ padding: "8px" }}><CopyText text={o.destination_address} /></td>
               <td style={{ padding: "8px" }}><CopyText text={o.deposit_address} /></td>
-              <td style={{ padding: "8px" }}><CopyText text={o.tracking_id} /></td>
+              <td style={{ padding: "8px" }}><TrackingCell provider={o.provider} text={o.tracking_id} /></td>
               <td style={{ padding: "8px" }}><StatusCell provider={o.provider} trackingId={o.tracking_id} /></td>
             </tr>
           ))}
