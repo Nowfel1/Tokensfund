@@ -52,22 +52,26 @@ async function get<T>(path: string, params: Record<string, string>): Promise<T> 
   const qs = new URLSearchParams(params).toString();
   const url = `${BASE}${path}${qs ? `?${qs}` : ""}`;
 
-  // A GET has no body. The signature is most likely computed over an EMPTY body
-  // string here. If CCE returns code 400009 ("Incorrect signature"), the body
-  // string should instead be the query string — set SIGN_BODY = qs below.
-  const SIGN_BODY = "";
-  const headers = getAuthHeadersRaw(SIGN_BODY);
+  // A GET has no body, and CCE's docs don't specify what the signature is
+  // computed over for GETs. Try signing over an EMPTY string first; if CCE
+  // rejects the signature (code 400009), retry signing over the query string.
+  // Whichever the server accepts (code 0) wins.
+  const signCandidates = ["", qs];
+  let lastData: any;
+  for (const signBody of signCandidates) {
+    const headers = getAuthHeadersRaw(signBody);
+    const res = await fetch(url, { method: "GET", headers });
+    const data = await res.json();
 
-  const res = await fetch(url, { method: "GET", headers });
-  const data = await res.json();
+    // TEMPORARY DEBUG: remove once tracking is confirmed working.
+    console.log("CCE GET", path, qs, `sign=${signBody === "" ? "empty" : "qs"}`, "→", res.status, JSON.stringify(data));
 
-  // TEMPORARY DEBUG: remove once tracking is confirmed working.
-  console.log("CCE GET", path, qs, "→", res.status, JSON.stringify(data));
-
-  if (data.code !== 0) {
-    throw new Error(`CCE Error: ${data.msg || "Unknown error"}`);
+    if (data.code === 0) return data.data;
+    lastData = data;
+    // Only a signature error is worth retrying with the other body; bail otherwise.
+    if (data.code !== 400009) break;
   }
-  return data.data;
+  throw new Error(`CCE Error: ${lastData?.msg || "Unknown error"} (code ${lastData?.code})`);
 }
 
 // ==================== QUOTE ====================
@@ -147,8 +151,16 @@ export async function buildSwap(
     depositAddress: data.address,
     depositAmount: req.amount,
     trackingId: [orderNo, queryCode].filter(Boolean).map(String).join("~"),
-    notes: `CCE.Cash Order #${queryCode ?? orderId}`,
+    notes: `CCE.Cash Order #${dashCode(queryCode ?? orderId)}`,
   };
+}
+
+// CCE displays codes grouped in 4s (0FV4-O1T1-APR9) but stores/accepts them
+// without dashes. Format for DISPLAY ONLY — never for API params or trackingId.
+function dashCode(code: string | undefined | null): string {
+  const c = String(code ?? "").trim();
+  if (!c || c.includes("-")) return c;
+  return c.replace(/(.{4})(?=.)/g, "$1-");
 }
 
 // ==================== STATUS ====================
@@ -193,12 +205,13 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
   if (attempts.length === 0 && parts[0]) attempts.push({ query_code: parts[0] });
 
   let data: any | undefined;
+  let lastErr: any;
   for (const params of attempts) {
     try {
       data = await get<any>("/openapi/order/query", params);
       break; // first pairing CCE accepts (code 0) wins
-    } catch {
-      // try the next pairing
+    } catch (e) {
+      lastErr = e; // remember why it failed
     }
   }
 
@@ -206,12 +219,15 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
   // order page rather than surfacing an error.
   if (data === undefined) {
     const code = queryCode ?? orderNo ?? parts[0] ?? "";
+    // TEMPORARY: surface CCE's actual error in the hint so the failure reason is
+    // visible on the page. Remove the ` [debug: ...]` part once tracking works.
+    const dbg = lastErr?.message ? ` [debug: ${lastErr.message}]` : "";
     return {
       provider: "cce",
       state: "unknown",
       detail: code
-        ? `Track this order on CCE.cash (order code ${code})`
-        : "Track this order on CCE.cash",
+        ? `Track this order on CCE.cash (order code ${dashCode(code)})${dbg}`
+        : `Track this order on CCE.cash${dbg}`,
     };
   }
 
