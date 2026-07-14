@@ -2,7 +2,7 @@
 
 import { useMemo, useState, useEffect, useRef } from "react";
 import { ASSETS } from "@/lib/assets";
-import { AggregatedQuotes, NormalizedQuote, ProviderId, SwapInstruction, SwapStatus } from "@/lib/types";
+import { AggregatedQuotes, ProviderId, SwapInstruction, SwapStatus } from "@/lib/types";
 
 const PROVIDER_INITIAL: Record<ProviderId, string> = {
   thorchain: "TC",
@@ -15,7 +15,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
 const COIN_LETTER: Record<string, string> = {
   BTC: "\u20BF", ETH: "\u039E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
   LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N",
-  ZANO: "Z", TRX: "T", USDT_TRC20: "T",
+  TRX: "T", USDT_TRC20: "T",
 };
 
 // gradient pairs per coin for the icon
@@ -24,7 +24,6 @@ const COIN_GRAD: Record<string, [string, string]> = {
   XRP: ["#4aa8e0", "#7cc8f0"], DOGE: ["#c2a633", "#e0c860"], USDT: ["#26a17b", "#3fd69b"],
   USDC: ["#2775ca", "#4f9be8"], LTC: ["#9aa0aa", "#c4c8d0"], TON: ["#0098ea", "#3ab8f5"],
   XMR: ["#ff6600", "#ff8c42"], ZEC: ["#f4b728", "#f4cd5e"], NEAR: ["#7b7cf0", "#a5a6f8"],
-  ZANO: ["#e06f6f", "#f09595"],
   TRX: ["#e83b3b", "#ff6b6b"], USDT_TRC20: ["#26a17b", "#3fd69b"],
 };
 
@@ -330,10 +329,6 @@ export default function SwapTerminal() {
 
   return (
     <div>
-      {/* tab header */}
-      <div className="sw-header">
-      </div>
-
       <div className="card pro">
         {/* PAY */}
         <div className="leg">
