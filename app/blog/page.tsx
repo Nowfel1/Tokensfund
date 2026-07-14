@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "privacy-coins-bull-market-xmr-zec-2026",
+  title: "While Bitcoin Slept in Its Box, Privacy Coins Had a Bull Market",
+  date: "July 14, 2026",
+  description: "XMR set new all-time highs this year. ZEC ran 110% in a month before a vulnerability scare cut it 40%. Privacy is 2026's strongest sector — and the hardest one to buy on a big exchange. The drivers, the risks, and the Ironwood test ahead.",
+  tag: "Privacy",
+},
+  {
   slug: "bitcoin-307-day-range-2026",
   title: "Bitcoin Has Spent 307 Days in the Same $10K Box. Here's What Long Consolidations Actually Mean",
   date: "July 12, 2026",
