@@ -23,12 +23,23 @@ const CG_IDS: Record<string, string> = {
   USDT_TRC20: "tether",
 };
 
-// Optional CoinGecko Demo API key (free — raises the rate limit substantially).
-// Set COINGECKO_API_KEY in Vercel; without it we use the anonymous endpoint.
+// CoinGecko Demo API key (free — dramatically higher rate limits).
+// Set COINGECKO_API_KEY in Vercel (PRODUCTION scope) and redeploy.
 const CG_KEY = process.env.COINGECKO_API_KEY;
 
 let cache: { at: number; data: Record<string, number> } | null = null;
-const TTL = 60 * 1000; // 60s
+// 5 min: for a ticker + fiat hints this is indistinguishable from 60s, and it
+// cuts CoinGecko usage ~5x (each warm serverless instance fetches on its own
+// schedule, so short TTLs multiply across instances).
+const TTL = 5 * 60 * 1000;
+// Ceiling on serving stale data during upstream failures: beyond this age,
+// return {} (components hide gracefully) rather than present old prices as
+// live. Hours-old prices in a moving market are worse than no prices.
+const MAX_STALE = 15 * 60 * 1000;
+
+function staleOk() {
+  return cache !== null && Date.now() - cache.at < MAX_STALE;
+}
 
 function corsJson(data: Record<string, number>) {
   return NextResponse.json(data, { headers: { "Access-Control-Allow-Origin": "*" } });
@@ -63,15 +74,14 @@ export async function GET() {
     }
 
     // If the call failed OR returned no usable prices (rate limit, error body,
-    // outage), DO NOT cache the empty result — serve the last good data and
-    // let the next request retry. Caching {} here is what blanks the ticker
-    // and fiat hints for a full TTL.
+    // outage), DO NOT cache the empty result — serve the last good data while
+    // it's acceptably fresh, and let the next request retry.
     if (!res.ok || Object.keys(out).length === 0) {
       console.warn(
-        "MARKETS: no usable data (status " + res.status + "). Body:",
+        "MARKETS: no usable data (status " + res.status + ", key " + (CG_KEY ? "present" : "MISSING") + "). Body:",
         JSON.stringify(raw)?.slice(0, 200)
       );
-      if (cache) return corsJson(cache.data);
+      if (staleOk()) return corsJson(cache!.data);
       return corsJson({});
     }
 
@@ -79,8 +89,7 @@ export async function GET() {
     return corsJson(out);
   } catch (e: any) {
     console.warn("MARKETS: fetch threw:", e?.message);
-    // On failure, return last cache if we have it, else empty
-    if (cache) return corsJson(cache.data);
+    if (staleOk()) return corsJson(cache!.data);
     return corsJson({});
   }
 }
