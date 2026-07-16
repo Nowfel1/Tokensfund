@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "japan-crypto-bill-regulations-two-blades-2026",
+  title: "Japan Is Doing the Opposite of Europe. Regulation Has Two Blades",
+  date: "July 15, 2026",
+  description: "The same month MiCA culled 93% of Europe's crypto firms, Japan advanced a bill reclassifying crypto as financial instruments, cutting taxes from up to 55% to a flat 20%, and clearing a path for spot ETFs by 2027. Neither blade changes what's in your own wallet.",
+  tag: "Regulation",
+},
+  {
   slug: "privacy-coins-bull-market-xmr-zec-2026",
   title: "While Bitcoin Slept in Its Box, Privacy Coins Had a Bull Market",
   date: "July 14, 2026",
