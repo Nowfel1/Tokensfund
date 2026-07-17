@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "clarity-act-us-crypto-limbo-2026",
+  title: "Europe Chose Walls. Japan Chose Doors. America Still Can't Choose",
+  date: "July 17, 2026",
+  description: "Today's CLARITY Act hearing is the last real shot at US market-structure law before summer recess — a year after the bill passed the House and stalled. Why indecision is also a policy, and the one position it can't touch.",
+  tag: "Regulation",
+},
+  {
   slug: "japan-crypto-bill-regulations-two-blades-2026",
   title: "Japan Is Doing the Opposite of Europe. Regulation Has Two Blades",
   date: "July 15, 2026",
