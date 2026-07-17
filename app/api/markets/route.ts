@@ -23,19 +23,13 @@ const CG_IDS: Record<string, string> = {
   USDT_TRC20: "tether",
 };
 
-// CoinGecko Demo API key (free — dramatically higher rate limits).
-// Set COINGECKO_API_KEY in Vercel (PRODUCTION scope) and redeploy.
+// CoinGecko Demo API key (free). Set COINGECKO_API_KEY in Vercel
+// (Production scope) and redeploy after adding it.
 const CG_KEY = process.env.COINGECKO_API_KEY;
 
 let cache: { at: number; data: Record<string, number> } | null = null;
-// 5 min: for a ticker + fiat hints this is indistinguishable from 60s, and it
-// cuts CoinGecko usage ~5x (each warm serverless instance fetches on its own
-// schedule, so short TTLs multiply across instances).
-const TTL = 5 * 60 * 1000;
-// Ceiling on serving stale data during upstream failures: beyond this age,
-// return {} (components hide gracefully) rather than present old prices as
-// live. Hours-old prices in a moving market are worse than no prices.
-const MAX_STALE = 15 * 60 * 1000;
+const TTL = 5 * 60 * 1000; // 5 min — plenty fresh for ticker + fiat hints
+const MAX_STALE = 15 * 60 * 1000; // during outages, serve last-good up to this age
 
 function staleOk() {
   return cache !== null && Date.now() - cache.at < MAX_STALE;
@@ -55,6 +49,11 @@ export async function GET() {
     const res = await fetch(
       "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd",
       {
+        // CRITICAL: Next.js caches fetch() bodies in Vercel's Data Cache by
+        // default — that platform-level cache (visible as "Using cache" in
+        // request traces) served stale prices for days despite our in-memory
+        // TTL. no-store bypasses it. Do not remove.
+        cache: "no-store",
         headers: {
           accept: "application/json",
           ...(CG_KEY ? { "x-cg-demo-api-key": CG_KEY } : {}),
@@ -73,9 +72,9 @@ export async function GET() {
       }
     }
 
-    // If the call failed OR returned no usable prices (rate limit, error body,
-    // outage), DO NOT cache the empty result — serve the last good data while
-    // it's acceptably fresh, and let the next request retry.
+    // Failed call or no usable prices (rate limit, error body, outage):
+    // never cache the empty result — serve last-good while acceptably
+    // fresh, then hide. Components render nothing on {} by design.
     if (!res.ok || Object.keys(out).length === 0) {
       console.warn(
         "MARKETS: no usable data (status " + res.status + ", key " + (CG_KEY ? "present" : "MISSING") + "). Body:",
