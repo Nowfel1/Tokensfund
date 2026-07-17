@@ -124,7 +124,10 @@ export async function buildSwap(
     depositAmount: req.amount,
     expiresAt: q.deadline ? Math.floor(new Date(q.deadline).getTime() / 1000) : undefined,
     trackingId: depositAddress,
-    notes: "After the user sends funds, optionally POST /v0/deposit/submit with the txHash to speed up processing.",
+    // Dev note (not for UI): 1Click supports POST /v0/deposit/submit with the
+    // txHash to make deposit detection near-instant instead of scan-based.
+    // Worth wiring as an optional "paste your tx hash" affordance someday.
+    notes: "After you send, detection usually takes a minute or two once your transaction confirms on-chain.",
   };
 }
 
