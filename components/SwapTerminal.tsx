@@ -18,6 +18,7 @@ const COIN_LETTER: Record<string, string> = {
   TRX: "T", USDT_TRC20: "T",
 };
 
+// gradient pairs per coin for the icon
 const COIN_GRAD: Record<string, [string, string]> = {
   BTC: ["#f7931a", "#ffb347"], ETH: ["#7b7cf0", "#a5a6f8"], SOL: ["#14f1b2", "#19fb9b"],
   XRP: ["#4aa8e0", "#7cc8f0"], DOGE: ["#c2a633", "#e0c860"], USDT: ["#26a17b", "#3fd69b"],
@@ -48,6 +49,10 @@ function fmtUsd(n: number) {
   return "$" + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 }
 
+// ---- lightweight, ADVISORY address plausibility check ----
+// Green tick = looks like a valid address format for that chain.
+// Amber = doesn't match the usual pattern (still allowed — never blocks a swap,
+// since exotic-but-valid formats exist). No pattern for a coin = no indicator.
 const ADDR_PATTERNS: Record<string, RegExp> = {
   BTC: /^(bc1[a-z0-9]{20,80}|[13][a-km-zA-HJ-NP-Z1-9]{25,40})$/,
   ETH: /^0x[a-fA-F0-9]{40}$/,
@@ -105,7 +110,7 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
 
 export default function SwapTerminal() {
   const [fromId, setFromId] = useState("BTC");
-  const [toId, setToId] = useState("XMR"); // ← Changed to XMR
+  const [toId, setToId] = useState("ETH");
   const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
@@ -132,6 +137,7 @@ export default function SwapTerminal() {
   const fromName = ASSETS.find((a) => a.id === fromId)?.name ?? "";
   const toName = ASSETS.find((a) => a.id === toId)?.name ?? "";
 
+  // load prices once
   useEffect(() => {
     fetch("/api/markets")
       .then((r) => r.text())
@@ -139,6 +145,7 @@ export default function SwapTerminal() {
       .catch(() => {});
   }, []);
 
+  // ticking clock only while a quote-expiry countdown is on screen
   useEffect(() => {
     if (!deposit?.expiresAt) return;
     const t = setInterval(() => setNow(Date.now()), 1000);
@@ -162,8 +169,9 @@ export default function SwapTerminal() {
           const best = data.quotes[data.bestIndex];
           if (best?.expectedOut) setLiveOut(best.expectedOut);
         }
-      } catch {}
-      finally {
+      } catch {
+        // silent
+      } finally {
         setLiveLoading(false);
       }
     }, 600);
@@ -180,7 +188,9 @@ export default function SwapTerminal() {
         if (!stop && data) setStatus(data);
         const st = STATE_META[data?.state]?.step ?? 0;
         if (st >= 3 && statusTimer.current) clearInterval(statusTimer.current);
-      } catch {}
+      } catch {
+        // silent
+      }
     }
     check();
     statusTimer.current = setInterval(check, 15000);
@@ -276,7 +286,9 @@ export default function SwapTerminal() {
     try {
       const t = await navigator.clipboard?.readText();
       if (t) setter(t.trim());
-    } catch {}
+    } catch {
+      // clipboard permission denied — user can paste manually
+    }
   }
 
   const sendUsd = prices[fromId] && Number(amount) > 0 ? fmtUsd(prices[fromId] * Number(amount)) : null;
@@ -290,6 +302,7 @@ export default function SwapTerminal() {
   const receiveEmpty = !result && !liveOut && !liveLoading;
   const receiveUsd = prices[toId] && outVal > 0 ? fmtUsd(prices[toId] * outVal) : null;
 
+  // effective rate line: 1 FROM = X TO
   const rate = Number(amount) > 0 && outVal > 0 ? outVal / Number(amount) : null;
   const rateStr = rate ? fmtRate(rate) : null;
 
@@ -300,6 +313,7 @@ export default function SwapTerminal() {
   const destCheck = addrCheck(toId, destination);
   const refundCheck = addrCheck(fromId, refund);
 
+  // CTA label always names the next action
   const ctaLabel = loading
     ? "Comparing routes..."
     : !amount || Number(amount) <= 0
@@ -411,7 +425,7 @@ export default function SwapTerminal() {
           </>
         )}
 
-        {/* best route strip (live estimate) */}
+        {/* best route strip (live estimate, before compare) */}
         {eligible.length > 0 && !result && (
           <div className="route-strip">
             <div className="route-strip-left">
@@ -449,6 +463,7 @@ export default function SwapTerminal() {
           </div>
         )}
 
+        {/* expanded other routes, with delta vs best */}
         {showAllRoutes && bestQuote && (
           <div className="route-extra">
             {otherQuotes.map((q) => {
@@ -489,6 +504,7 @@ export default function SwapTerminal() {
         )}
       </div>
 
+      {/* trust line */}
       <div className="trust-line">
         <span><CheckIcon />Non-custodial</span>
         <span><CheckIcon />No account</span>
@@ -497,6 +513,7 @@ export default function SwapTerminal() {
 
       {error && <div className="error">{error}</div>}
 
+      {/* DEPOSIT + STATUS */}
       {deposit && (
         <div className="deposit">
           <div className="deposit-head">
@@ -566,7 +583,11 @@ function CheckIcon() {
 }
 
 function StatusTracker({ status, provider }: { status: SwapStatus | null; provider?: ProviderId }) {
-  const meta = STATE_META[status?.state ?? "unknown"] ?? STATE_META.unknown;
+  // Before the first status result arrives (or while the provider can't see
+  // the deposit yet), the factually correct state on a fresh deposit screen is
+  // "awaiting your deposit" — not "status unavailable", which reads like an
+  // error to someone who hasn't even sent funds yet.
+  const meta = STATE_META[status?.state ?? "awaiting_deposit"] ?? STATE_META.unknown;
   const steps = ["Deposit", "Detected", "Processing", "Done"];
   return (
     <div className="status-box">
