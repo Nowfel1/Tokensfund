@@ -122,6 +122,57 @@ export default function Home() {
         ))}
         <Link href="/blog" className="blog-chip more">All posts →</Link>
       </div>
+
+      {/* Independent reviews — links out to third-party listings so visitors
+          can verify on neutral ground. No scores hardcoded on purpose:
+          ratings live (and change) on the review sites, not here. */}
+      <section className="reviews-strip">
+        <p className="reviews-strip-label">INDEPENDENTLY LISTED &amp; REVIEWED</p>
+        <div className="reviews-strip-row">
+          {/* Official Monerica badge (their sanctioned embed, converted to JSX).
+              rel is "noopener" WITHOUT noreferrer on purpose — their snippet
+              keeps the referrer so Monerica can see the traffic source. */}
+          <a
+            href="https://monerica.com/site/tokensfund"
+            target="_blank"
+            rel="noopener"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "10px",
+              padding: "8px 14px",
+              fontFamily: "Arial,Helvetica,sans-serif",
+              fontSize: "14px",
+              fontWeight: "bold",
+              lineHeight: 1.2,
+              color: "#ffffff",
+              backgroundColor: "#1d1d1d",
+              border: "1px solid #ff6600",
+              borderRadius: "8px",
+              textDecoration: "none",
+            }}
+          >
+            <span
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                background: "#ffffff",
+                borderRadius: "4px",
+                padding: "3px 5px",
+                lineHeight: 0,
+              }}
+            >
+              <img
+                src="https://cdn.monerica.com/directorycontent/images/monerica-logo.png"
+                alt="Monerica"
+                height={18}
+                style={{ height: "18px", width: "auto", display: "block", border: 0 }}
+              />
+            </span>
+            Review Tokensfund on Monerica
+          </a>
+        </div>
+      </section>
     </main>
   );
 }
