@@ -40,7 +40,7 @@ body {
 }
 a { color: inherit; }
 
-.wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 80px; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 32px 24px 40px; }
 
 /* ---- masthead ---- */
 .masthead {
@@ -490,3 +490,9 @@ a { color: inherit; }
 .blog-chip:hover { color: var(--text); border-color: var(--gold-ring); }
 .blog-chip-tag { color: var(--gold); font-weight: 700; }
 .blog-chip.more { color: var(--muted-2); }
+
+/* ==== independent reviews strip (official badges only) ==== */
+.reviews-strip { text-align: center; margin: 2rem auto 0; }
+.reviews-strip-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+/* Badges themselves are official third-party embeds with their own inline
+   styling — no custom badge styles needed. */
