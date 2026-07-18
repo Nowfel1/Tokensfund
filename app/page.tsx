@@ -122,7 +122,16 @@ export default function Home() {
         ))}
         <Link href="/blog" className="blog-chip more">All posts →</Link>
       </div>
-         <a
+
+      {/* Independent reviews — links out to third-party listings so visitors
+          can verify on neutral ground. No scores hardcoded on purpose:
+          ratings live (and change) on the review sites, not here. */}
+      <section className="reviews-strip">
+        <div className="reviews-strip-row">
+          {/* Official Monerica badge (their sanctioned embed, converted to JSX).
+              rel is "noopener" WITHOUT noreferrer on purpose — their snippet
+              keeps the referrer so Monerica can see the traffic source. */}
+          <a
             href="https://monerica.com/site/tokensfund"
             target="_blank"
             rel="noopener"
