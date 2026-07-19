@@ -9,6 +9,13 @@ export const metadata = {
 
 const posts = [
   {
+  slug: "bear-market-builders-alpenglow-2026",
+  title: "The Market Is in Extreme Fear. The Chains Are Having Their Best Shipping Year",
+  date: "July 19, 2026",
+  description: "Solana's Alpenglow could cut finality from 12.8s to 150ms as early as Q3 — announced with SOL down 74%. Monero shipped its biggest upgrade ever, Zcash's Ironwood lands this month. Why shipping and price run out of phase, and what that does and doesn't promise.",
+  tag: "Markets",
+},
+  {
   slug: "clarity-act-us-crypto-limbo-2026",
   title: "Europe Chose Walls. Japan Chose Doors. America Still Can't Choose",
   date: "July 17, 2026",
