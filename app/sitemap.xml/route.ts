@@ -1,198 +1,64 @@
 import { NextResponse } from "next/server";
+import { POSTS } from "@/lib/posts";
+
+// XML sitemap, generated from the same lib/posts.ts that drives the blog
+// index and the human /sitemap page. Add a post there and this updates on
+// the next deploy — no separate XML edit needed.
+
+const SITE = "https://tokensfund.xyz";
+
+// Static pages with their own cadence/priority.
+const STATIC_PAGES: Array<{ path: string; lastmod: string; changefreq: string; priority: string }> = [
+  { path: "/", lastmod: "2026-06-25", changefreq: "daily", priority: "1.0" },
+  { path: "/blog", lastmod: "2026-06-25", changefreq: "weekly", priority: "0.8" },
+  { path: "/track", lastmod: "2026-06-22", changefreq: "monthly", priority: "0.6" },
+  { path: "/faq", lastmod: "2026-06-24", changefreq: "monthly", priority: "0.6" },
+  { path: "/sitemap", lastmod: "2026-07-19", changefreq: "weekly", priority: "0.4" },
+  { path: "/terms", lastmod: "2026-06-25", changefreq: "yearly", priority: "0.3" },
+  { path: "/privacy", lastmod: "2026-06-25", changefreq: "yearly", priority: "0.3" },
+];
+
+// Parse "July 19, 2026" → "2026-07-19" without Date() to avoid any
+// timezone off-by-one at build time.
+const MONTHS: Record<string, string> = {
+  january: "01", february: "02", march: "03", april: "04", may: "05", june: "06",
+  july: "07", august: "08", september: "09", october: "10", november: "11", december: "12",
+};
+
+function toIso(human: string): string {
+  const m = human.trim().match(/^([A-Za-z]+)\s+(\d{1,2}),\s*(\d{4})$/);
+  if (!m) return "2026-01-01"; // defensive fallback; every PostMeta.date matches the pattern
+  const month = MONTHS[m[1].toLowerCase()] ?? "01";
+  const day = m[2].padStart(2, "0");
+  return `${m[3]}-${month}-${day}`;
+}
+
+function urlEntry(loc: string, lastmod: string, changefreq: string, priority: string): string {
+  return `  <url>
+    <loc>${loc}</loc>
+    <lastmod>${lastmod}</lastmod>
+    <changefreq>${changefreq}</changefreq>
+    <priority>${priority}</priority>
+  </url>`;
+}
+
 export async function GET() {
+  const staticXml = STATIC_PAGES.map((p) =>
+    urlEntry(SITE + p.path, p.lastmod, p.changefreq, p.priority)
+  );
+  const postXml = POSTS.map((p) =>
+    urlEntry(`${SITE}/blog/${p.slug}`, toIso(p.date), "monthly", "0.7")
+  );
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://tokensfund.xyz/</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/track</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/faq</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/terms</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/privacy</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.3</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/bear-market-builders-alpenglow-2026</loc>
-    <lastmod>2026-07-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/clarity-act-us-crypto-limbo-2026</loc>
-    <lastmod>2026-07-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/japan-crypto-bill-regulations-two-blades-2026</loc>
-    <lastmod>2026-07-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/privacy-coins-bull-market-xmr-zec-2026</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/bitcoin-307-day-range-2026</loc>
-    <lastmod>2026-07-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/crypto-ipo-carnage-casino-vs-chips-2026</loc>
-    <lastmod>2026-07-11</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/ascendex-collapse-mica-custody-lesson-2026</loc>
-    <lastmod>2026-07-09</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/stablecoin-flippening-usdc-usdt-2026</loc>
-    <lastmod>2026-07-07</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/best-btc-to-xmr-rate-2026</loc>
-    <lastmod>2026-07-06</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/ansem-trenches-revival-2026</loc>
-    <lastmod>2026-07-05</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/binance-usdt-eu-mica-delisting-2026</loc>
-    <lastmod>2026-07-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/bitcoin-etf-outflows-paper-btc-vs-real-btc-2026</loc>
-    <lastmod>2026-07-02</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/move-crypto-off-exchange-without-kyc-2026</loc>
-    <lastmod>2026-06-29</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/mica-deadline-swap-without-exchange-2026</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/fear-greed-12-self-custody-bear-market-2026</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/coinex-sanctions-exchange-surveillance-2026</loc>
-    <lastmod>2026-06-25</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/buy-privacy-coins-without-kyc-2026</loc>
-    <lastmod>2026-06-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/how-to-swap-crypto-anonymously-2026</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/why-non-custodial-swaps-protect-privacy-2026</loc>
-    <lastmod>2026-06-20</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/best-crypto-to-buy-june-2026-without-kyc</loc>
-    <lastmod>2026-06-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/spacex-ipo-hyperliquid-perpetuals</loc>
-    <lastmod>2026-06-18</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/buy-xrp-ltc-hype-tao-without-kyc-2026</loc>
-    <lastmod>2026-06-17</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/btc-to-eth-without-kyc-2026</loc>
-    <lastmod>2026-06-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/cross-chain-swap-without-kyc-2026</loc>
-    <lastmod>2026-06-13</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-  <url>
-    <loc>https://tokensfund.xyz/blog/swap-xmr-btc-no-kyc</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
+${[...staticXml, ...postXml].join("\n")}
 </urlset>`;
+
   return new NextResponse(xml, {
     headers: {
       "Content-Type": "application/xml; charset=utf-8",
-      "Cache-Control": "public, max-age=86400",
+      "Cache-Control": "public, max-age=0, s-maxage=86400, stale-while-revalidate",
     },
   });
 }
