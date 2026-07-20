@@ -496,3 +496,26 @@ a { color: inherit; }
 .reviews-strip-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 /* Badges themselves are official third-party embeds with their own inline
    styling — no custom badge styles needed. */
+
+/* ==== sitemap page (human) ==== */
+/* Links read as a plain list by default — the .blog-post gold link style is
+   deliberately overridden — and reveal a gold hover cue on interaction. */
+.blog-post .sm-list { line-height: 1.9; padding-left: 1.2rem; }
+.blog-post .sm-list li::marker { color: var(--muted-2); }
+.blog-post .sm-list a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.blog-post .sm-list a:hover {
+  color: var(--gold);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.blog-post .sm-foot { margin-top: 2rem; color: var(--muted-2); font-size: 0.9em; }
+.blog-post .sm-foot a {
+  color: var(--muted-2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+.blog-post .sm-foot a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
