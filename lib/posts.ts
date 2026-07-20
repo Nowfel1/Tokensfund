@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "stablecoin-payments-overtake-trading-2026",
+    title: "While Washington Debates Stablecoins, 100 Million People Already Use Them as Bank Accounts",
+    date: "July 20, 2026",
+    description: "US regulators just missed the GENIUS Act's deadline for final stablecoin rules. Meanwhile a self-custodial wallet crossed 100M users and, for the first time, daily payment users outnumbered traders — driven by Nigeria, Argentina and Southeast Asia. What the numbers show, what they don't, and where the KYC comes back.",
+    tag: "Markets",
+  },
+  {
     slug: "bear-market-builders-alpenglow-2026",
     title: "The Market Is in Extreme Fear. The Chains Are Having Their Best Shipping Year",
     date: "July 19, 2026",
