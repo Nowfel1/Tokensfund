@@ -39,7 +39,7 @@ export async function getQuote(
     params.set("affiliate_bps", AFFILIATE_BPS);
   }
   const url = `${THORNODE}/thorchain/quote/swap?${params.toString()}`;
-  const res = await fetch(url, { headers: { accept: "application/json" } });
+  const res = await fetch(url, { cache: "no-store", headers: { accept: "application/json" } });
   if (!res.ok) {
     const body = await res.text();
     throw new Error(`THORChain quote failed (${res.status}): ${body.slice(0, 200)}`);
@@ -106,6 +106,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
   let res: Response;
   try {
     res = await fetch(`${THORNODE}/thorchain/tx/status/${hash}`, {
+      cache: "no-store",
       headers: { accept: "application/json" },
     });
   } catch (e: any) {
