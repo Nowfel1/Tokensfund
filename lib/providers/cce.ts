@@ -31,6 +31,7 @@ function getAuthHeaders(body: object): Record<string, string> {
 async function post<T>(path: string, body: object): Promise<T> {
   const headers = getAuthHeaders(body);
   const res = await fetch(`${BASE}${path}`, {
+    cache: "no-store",
     method: "POST",
     headers,
     body: JSON.stringify(body),
@@ -60,7 +61,7 @@ async function get<T>(path: string, params: Record<string, string>): Promise<T> 
   let lastData: any;
   for (const signBody of signCandidates) {
     const headers = getAuthHeadersRaw(signBody);
-    const res = await fetch(url, { method: "GET", headers });
+    const res = await fetch(url, { method: "GET", cache: "no-store", headers });
     const data = await res.json();
 
     // TEMPORARY DEBUG: remove once tracking is confirmed working.
