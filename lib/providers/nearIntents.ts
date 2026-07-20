@@ -106,6 +106,39 @@ export async function getQuote(
   };
 }
 
+// 1Click's deadline can arrive as an ISO string OR an epoch number (seconds
+// or milliseconds). A naive new Date(x)/1000 mis-parses the numeric forms and
+// produces absurd countdowns (e.g. 4000+ minutes). Normalize to epoch SECONDS,
+// and sanity-check: a deposit window is minutes, so anything implying a
+// countdown beyond ~1 day is treated as unparseable rather than displayed.
+function parseDeadline(raw: unknown): number | undefined {
+  if (raw == null) return undefined;
+  let sec: number | undefined;
+
+  if (typeof raw === "number") {
+    // Heuristic: >10^12 is ms since epoch; otherwise treat as seconds.
+    sec = raw > 1e12 ? Math.floor(raw / 1000) : Math.floor(raw);
+  } else if (typeof raw === "string") {
+    const asNum = Number(raw);
+    if (Number.isFinite(asNum) && raw.trim() !== "") {
+      sec = asNum > 1e12 ? Math.floor(asNum / 1000) : Math.floor(asNum);
+    } else {
+      const t = new Date(raw).getTime();
+      if (Number.isFinite(t)) sec = Math.floor(t / 1000);
+    }
+  }
+
+  if (sec == null || !Number.isFinite(sec)) return undefined;
+
+  // Sanity clamp: reject values that imply a countdown longer than ~26 hours
+  // from now (our window is 60 min; some slack for clock skew). Prevents the
+  // 4374:32 display bug from ever reaching the UI.
+  const nowSec = Math.floor(Date.now() / 1000);
+  if (sec - nowSec > 26 * 3600) return undefined;
+
+  return sec;
+}
+
 export async function buildSwap(
   _quote: NormalizedQuote,
   from: CanonicalAsset,
@@ -118,11 +151,16 @@ export async function buildSwap(
   if (!depositAddress) {
     throw new Error("NEAR 1Click did not return a depositAddress.");
   }
+
+  // TEMPORARY DEBUG: log the raw build response so we can see the exact
+  // deadline field/format and the deposit address. Remove once verified.
+  console.log("NEAR_INTENTS build →", JSON.stringify(data));
+
   return {
     provider: "near_intents",
     depositAddress,
     depositAmount: req.amount,
-    expiresAt: q.deadline ? Math.floor(new Date(q.deadline).getTime() / 1000) : undefined,
+    expiresAt: parseDeadline(q.deadline ?? data.deadline),
     trackingId: depositAddress,
     // Dev note (not for UI): 1Click supports POST /v0/deposit/submit with the
     // txHash to make deposit detection near-instant instead of scan-based.
