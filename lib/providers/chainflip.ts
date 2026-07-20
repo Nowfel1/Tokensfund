@@ -98,6 +98,7 @@ export async function buildSwap(
   let debugText = "no response";
   try {
     const res = await fetch(brokerUrl, {
+      cache: "no-store",
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(rpcBody),
