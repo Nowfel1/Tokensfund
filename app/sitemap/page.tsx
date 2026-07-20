@@ -17,17 +17,6 @@ const SECTIONS = [
   { href: "/privacy", label: "Privacy Policy" },
 ];
 
-// Inline link styling deliberately overrides the gold/underlined link style
-// that .blog-post applies — a sitemap reads better as a plain list.
-const linkStyle = {
-  color: "var(--text)",
-  textDecoration: "none",
-} as const;
-
-const listStyle = {
-  lineHeight: 1.9,
-} as const;
-
 export default function SitemapPage() {
   return (
     <main className="wrap">
@@ -51,26 +40,26 @@ export default function SitemapPage() {
         <p>All sections and pages of tokensfund.xyz.</p>
 
         <h2>Main sections</h2>
-        <ul style={listStyle}>
+        <ul className="sm-list">
           {SECTIONS.map((s) => (
             <li key={s.href}>
-              <Link href={s.href} style={linkStyle}>{s.label}</Link>
+              <Link href={s.href}>{s.label}</Link>
             </li>
           ))}
         </ul>
 
         <h2>Blog posts</h2>
-        <ul style={listStyle}>
+        <ul className="sm-list">
           {POSTS.map((p) => (
             <li key={p.slug}>
-              <Link href={"/blog/" + p.slug} style={linkStyle}>{p.title}</Link>
+              <Link href={"/blog/" + p.slug}>{p.title}</Link>
             </li>
           ))}
         </ul>
 
-        <p style={{ marginTop: "2rem", color: "var(--muted-2)", fontSize: "0.9em" }}>
+        <p className="sm-foot">
           Looking for the machine-readable version? The XML sitemap for search engines lives at{" "}
-          <a href="/sitemap.xml" style={{ color: "var(--muted-2)", textDecoration: "none" }}>/sitemap.xml</a>.
+          <a href="/sitemap.xml">/sitemap.xml</a>.
         </p>
       </article>
     </main>
