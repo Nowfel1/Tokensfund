@@ -110,7 +110,10 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
 
 export default function SwapTerminal() {
   const [fromId, setFromId] = useState("BTC");
-  const [toId, setToId] = useState("ETH");
+  // Default pair is BTC -> XMR on purpose: the privacy-directory traffic
+  // (Monerica, KYCNOT.me) that reaches this page is disproportionately here
+  // for Monero. Changing this default changes the first thing they see.
+  const [toId, setToId] = useState("XMR");
   const [amount, setAmount] = useState("0.1");
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
