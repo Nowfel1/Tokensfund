@@ -58,7 +58,7 @@ export default function Footer() {
               <div style={head}>Legal</div>
               <Link href="/terms" style={link}>Terms of Service</Link>
               <Link href="/privacy" style={link}>Privacy Policy</Link>
-              <Link href="/sitemap">Sitemap</Link>
+              <Link href="/sitemap" style={link}>sitemap</Link>
             </div>
             <div>
               <div style={head}>Community</div>
