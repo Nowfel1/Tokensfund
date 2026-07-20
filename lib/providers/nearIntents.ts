@@ -7,10 +7,11 @@ const FEE_BPS = process.env.NEAR_APP_FEE_BPS ? Number(process.env.NEAR_APP_FEE_B
 const FEE_RECIPIENT = process.env.NEAR_FEE_RECIPIENT;
 
 // How long the user has to send their deposit before the quote expires.
-// This must be generous enough for slow chains (BTC confirmations, wallet
-// fumbling). 5 minutes was far too short and strands late deposits in
-// expired intents — 60 minutes is a sane floor.
-const DEPOSIT_WINDOW_MS = 60 * 60 * 1000;
+// Must comfortably exceed Bitcoin finality: 1Click's docs cite ~1 hour for a
+// BTC deposit to mine, and a low-fee tx can take the full hour. 60 min was
+// the bare minimum and risked a slow deposit landing right as the quote
+// expired (triggering a refund instead of a swap). 120 min gives real slack.
+const DEPOSIT_WINDOW_MS = 120 * 60 * 1000;
 
 function headers() {
   const h: Record<string, string> = { "Content-Type": "application/json" };
@@ -73,6 +74,7 @@ async function requestQuote(
   };
 
   const res = await fetch(`${BASE}/v0/quote`, {
+    cache: "no-store",
     method: "POST",
     headers: headers(),
     body: JSON.stringify(body),
@@ -175,6 +177,7 @@ export async function getStatus(depositAddress: string): Promise<SwapStatus> {
   let res: Response;
   try {
     res = await fetch(`${BASE}/v0/status?depositAddress=${encodeURIComponent(addr)}`, {
+      cache: "no-store",
       headers: headers(),
     });
   } catch (e: any) {
@@ -198,13 +201,33 @@ export async function getStatus(depositAddress: string): Promise<SwapStatus> {
     .toUpperCase();
 
   const map: Record<string, SwapStatus["state"]> = {
+    // --- awaiting deposit ---
     PENDING_DEPOSIT: "awaiting_deposit",
+    AWAITING_DEPOSIT: "awaiting_deposit",
+    PENDING: "awaiting_deposit",
+    // --- deposit seen ---
     KNOWN_DEPOSIT_TX: "deposit_detected",
+    DEPOSIT_RECEIVED: "deposit_detected",
+    DEPOSITED: "deposit_detected",
+    // --- in flight ---
     PROCESSING: "processing",
+    PENDING_EXECUTION: "processing",
+    EXECUTING: "processing",
+    // --- completed (1Click's exact word is unconfirmed — cover the field) ---
     SUCCESS: "success",
+    SUCCESSFUL: "success",
+    SETTLED: "success",
+    COMPLETED: "success",
+    COMPLETE: "success",
+    DONE: "success",
+    FILLED: "success",
+    // --- refunded / failed ---
     REFUNDED: "refunded",
+    REFUND: "refunded",
     INCOMPLETE_DEPOSIT: "failed",
     FAILED: "failed",
+    FAILURE: "failed",
+    EXPIRED: "failed",
   };
 
   const mapped = map[rawStatus];
