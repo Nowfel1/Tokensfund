@@ -20,7 +20,7 @@ export async function getQuote(
     amount: req.amount,
     fix: "0",
   });
-  const res = await fetch(`${BASE}/rate?${params.toString()}`);
+  const res = await fetch(`${BASE}/rate?${params.toString()}`, { cache: "no-store" });
   const data = await res.json();
   if (!res.ok || data.result !== true || typeof data.rate !== "number") {
     throw new Error("Changee quote unavailable for this pair");
@@ -64,7 +64,7 @@ export async function buildSwap(
     destinationAddress: req.destinationAddress,
   });
   if (req.refundAddress) params.set("refundAddress", req.refundAddress);
-  const res = await fetch(`${BASE}/exchange-create?${params.toString()}`);
+  const res = await fetch(`${BASE}/exchange-create?${params.toString()}`, { cache: "no-store" });
   const data = await res.json();
 
   // TEMPORARY DEBUG: log the raw create response so the actual id field (if
@@ -100,7 +100,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
 
   try {
     const params = new URLSearchParams({ key: API_KEY, id });
-    const res = await fetch(`${BASE}/exchange-status?${params.toString()}`);
+    const res = await fetch(`${BASE}/exchange-status?${params.toString()}`, { cache: "no-store" });
     const data = await res.json();
 
     // TEMPORARY DEBUG: log the raw response so failures name themselves.
