@@ -184,7 +184,7 @@ export default function Home() {
             data-businessunit-id="6a3d464b9af2e359f1a069ec"
             data-style-height="52px"
             data-style-width="100%"
-            data-token="dc9cb9fb-1e61-4c87-96ec-439f750344ac"
+            data-token="31a2e6b0-8262-46b2-88ee-ddddf3c5cee4"
             style={{ width: "240px", flex: "0 0 auto" }}
           >
             <a href="https://www.trustpilot.com/review/tokensfund.xyz" target="_blank" rel="noopener">
