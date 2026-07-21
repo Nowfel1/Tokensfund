@@ -493,7 +493,7 @@ a { color: inherit; }
 
 /* ==== independent reviews strip (official badges only) ==== */
 .reviews-strip { text-align: center; margin: 2rem auto 0; }
-.reviews-strip-row { display: flex; gap: 12px; justify-content: center; align-items: center; flex-wrap: wrap; }
+.reviews-strip-row { display: flex; flex-direction: column; gap: 14px; justify-content: center; align-items: center; }
 /* Badges themselves are official third-party embeds with their own inline
    styling — no custom badge styles needed. */
 
