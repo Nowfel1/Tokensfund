@@ -177,6 +177,7 @@ export default function Home() {
           <div
             className="trustpilot-widget"
             data-locale="en-US"
+            data-theme="dark"
             data-template-id="56278e9abfbbba0bdcd568bc"
             data-businessunit-id="6a3d464b9af2e359f1a069ec"
             data-style-height="52px"
