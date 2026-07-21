@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Script from "next/script";
 import Logo from "@/components/Logo";
 import SwapTerminal from "@/components/SwapTerminal";
 import RateTicker from "@/components/RateTicker";
@@ -170,7 +171,28 @@ export default function Home() {
             </span>
             Review Tokensfund on Monerica
           </a>
+          {/* Official Trustpilot TrustBox (Review Collector). The bootstrap
+              script below is required — without it this renders as a bare
+              text link. Loaded homepage-only via next/script. */}
+          <div
+            className="trustpilot-widget"
+            data-locale="en-US"
+            data-template-id="56278e9abfbbba0bdcd568bc"
+            data-businessunit-id="6a3d464b9af2e359f1a069ec"
+            data-style-height="52px"
+            data-style-width="100%"
+            data-token="dc9cb9fb-1e61-4c87-96ec-439f750344ac"
+            style={{ minWidth: "260px" }}
+          >
+            <a href="https://www.trustpilot.com/review/tokensfund.xyz" target="_blank" rel="noopener">
+              Trustpilot
+            </a>
+          </div>
         </div>
+        <Script
+          src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
+          strategy="afterInteractive"
+        />
       </section>
     </main>
   );
