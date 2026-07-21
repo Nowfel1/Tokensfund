@@ -174,16 +174,18 @@ export default function Home() {
           {/* Official Trustpilot TrustBox (Review Collector). The bootstrap
               script below is required — without it this renders as a bare
               text link. Loaded homepage-only via next/script. */}
+          {/* Free-plan TrustBox is light-theme only — data-theme is plan-gated,
+              so don't re-add it. Fixed width keeps it badge-proportioned
+              beside the Monerica badge instead of a floating white box. */}
           <div
             className="trustpilot-widget"
             data-locale="en-US"
-            data-theme="dark"
             data-template-id="56278e9abfbbba0bdcd568bc"
             data-businessunit-id="6a3d464b9af2e359f1a069ec"
             data-style-height="52px"
             data-style-width="100%"
             data-token="dc9cb9fb-1e61-4c87-96ec-439f750344ac"
-            style={{ minWidth: "260px" }}
+            style={{ width: "240px", flex: "0 0 auto" }}
           >
             <a href="https://www.trustpilot.com/review/tokensfund.xyz" target="_blank" rel="noopener">
               Trustpilot
