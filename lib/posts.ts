@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "bitcoin-exchange-outflows-custody-migration-2026",
+    title: "$686 Million Left Exchanges in One Day. The Custody Migration Is Showing Up in the Data",
+    date: "July 21, 2026",
+    description: "July 20 saw nearly $686M in BTC withdrawn from Binance, Coinbase and Bybit — Binance's largest daily net outflow since April. After a year of delistings, collapses and paper-BTC lessons, the coins are walking. What the data shows, what it doesn't, and the question that comes after withdrawal.",
+    tag: "Markets",
+  },
+  {
     slug: "stablecoin-payments-overtake-trading-2026",
     title: "While Washington Debates Stablecoins, 100 Million People Already Use Them as Bank Accounts",
     date: "July 20, 2026",
