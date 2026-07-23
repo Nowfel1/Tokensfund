@@ -12,6 +12,14 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "bitmex-shutdown-orderly-exit-custody-2026",
+    title: "BitMEX Is Shutting Down. Even the Best-Case Exchange Ending Puts a Deadline on Your Money",
+    date: "July 23, 2026",
+    description: "The exchange that invented the perpetual swap closes 23 September — voluntary, orderly, proof-of-reserves intact. It's the opposite of AscendEX, and it still comes with force-closed positions, dormancy fees on unwithdrawn funds, and withdrawal queues. Both kinds of exchange death teach the same lesson.",
+    tag: "Markets",
+  },
+  
+  {
     slug: "bitcoin-exchange-outflows-custody-migration-2026",
     title: "$686 Million Left Exchanges in One Day. The Custody Migration Is Showing Up in the Data",
     date: "July 21, 2026",
