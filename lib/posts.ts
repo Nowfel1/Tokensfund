@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "bitmart-bitmex-exchange-winddown-wave-2026",
+    title: "Two Exchanges Announced Their Deaths in One Week. Read the Exit Terms Side by Side",
+    date: "July 26, 2026",
+    description: "BitMEX on July 23. BitMart on July 26. Both orderly, both 'strategic' — and the exit doors read very differently. BitMart's withdrawal terms include source-of-funds review and proof you own your own wallet address. What the wind-down wave says about the venue layer.",
+    tag: "Markets",
+  },
+  {
     slug: "bitmex-shutdown-orderly-exit-custody-2026",
     title: "BitMEX Is Shutting Down. Even the Best-Case Exchange Ending Puts a Deadline on Your Money",
     date: "July 23, 2026",
