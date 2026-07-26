@@ -1,33 +1,21 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  
+
   // 1. Powered-by Header Removal (Prevents tech-stack fingerprinting for security)
   poweredByHeader: false,
-
   // 2. Trailing Slash Configuration (Ensures strict URL consistency to prevent duplicate content issues)
   trailingSlash: false,
-
   images: {
     unoptimized: true, // Keep this true if hosting on platforms like GitHub Pages
   },
-
   async headers() {
     return [
-      // Optimize caching for crawlable search engine assets
-      {
-        source: "/sitemap.xml",
-        headers: [
-          {
-            key: "Content-Type",
-            value: "application/xml",
-          },
-          {
-            key: "Cache-Control",
-            value: "public, max-age=0, s-maxage=86400, stale-while-revalidate", // Keeps sitemap updated without heavy re-fetches
-          },
-        ],
-      },
+      // NOTE: /sitemap.xml intentionally has NO headers block here. The route
+      // handler at app/sitemap.xml/route.ts sets Content-Type and
+      // Cache-Control itself — declaring them here as well produced
+      // duplicate/conflicting Content-Type headers on the response, which
+      // strict sitemap parsers (Google's) can reject as unreadable.
       {
         source: "/robots.txt",
         headers: [
@@ -62,5 +50,4 @@ const nextConfig = {
     ];
   },
 };
-
 module.exports = nextConfig;
