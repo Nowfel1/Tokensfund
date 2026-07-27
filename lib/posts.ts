@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "swap-btc-to-xmr-zec-without-kyc-2026",
+    title: "How to Swap BTC to XMR and ZEC Without KYC (2026 Guide)",
+    date: "July 27, 2026",
+    description: "Step-by-step: Bitcoin into Monero and Zcash with no account and no KYC — wallet setup, address formats, why ZEC shows fewer routes than XMR, and the mistakes that cost people money. Wallet to wallet, keys yours throughout.",
+    tag: "Guide",
+  },
+  {
     slug: "bitmart-bitmex-exchange-winddown-wave-2026",
     title: "Two Exchanges Announced Their Deaths in One Week. Read the Exit Terms Side by Side",
     date: "July 26, 2026",
