@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "fake-wallet-apps-self-custody-software-risk-2026",
+    title: "Self-Custody's Failure Mode Is Software",
+    date: "July 28, 2026",
+    description: "A lawsuit alleges Apple kept a counterfeit Bitcoin wallet on the App Store after a user reported an $875,000 theft — and a second user then lost about $840,000. We've spent a month telling people to hold their own keys. Here's the half of that advice nobody writes: how to verify the software you trust with them.",
+    tag: "Guide",
+  },
+  {
     slug: "swap-btc-to-xmr-zec-without-kyc-2026",
     title: "How to Swap BTC to XMR and ZEC Without KYC (2026 Guide)",
     date: "July 27, 2026",
