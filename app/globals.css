@@ -519,3 +519,13 @@ a { color: inherit; }
   transition: color 0.15s ease;
 }
 .blog-post .sm-foot a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ==== best-route strip: selectable ==== */
+/* The BEST strip is clickable so the user can return to the best route after
+   choosing another one. Gold fill now means "currently selected"; the BEST
+   pill marks the top rate regardless of what's selected. */
+.route-strip-pick { cursor: pointer; flex: 1; min-width: 0; }
+.route-strip.best:not(.sel) { background: var(--surface-2); border-color: var(--border-soft); }
+.route-strip.best:not(.sel) .route-strip-mark.gold { background: var(--surface-3); border-color: var(--border); color: var(--muted-2); }
+.route-strip-pick:hover .route-strip-name { color: var(--gold); }
+.route-strip-pick:focus-visible { outline: 2px solid var(--gold-ring); outline-offset: 3px; border-radius: 10px; }
