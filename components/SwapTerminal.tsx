@@ -443,8 +443,23 @@ export default function SwapTerminal() {
 
         {/* best route strip (after compare) */}
         {bestQuote && !bestQuote.error && (
-          <div className="route-strip best">
-            <div className="route-strip-left">
+          <div className={"route-strip best" + (selected === bestQuote.provider ? " sel" : "")}>
+            {/* Clickable: lets the user re-select the best route after picking
+                another one from the expanded list. Kept separate from the
+                "N more" toggle so expanding doesn't change the selection. */}
+            <div
+              className="route-strip-left route-strip-pick"
+              role="button"
+              tabIndex={0}
+              aria-pressed={selected === bestQuote.provider}
+              onClick={() => setSelected(bestQuote.provider)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  setSelected(bestQuote.provider);
+                }
+              }}
+            >
               <span className="route-strip-mark gold">{PROVIDER_INITIAL[bestQuote.provider]}</span>
               <div>
                 <div className="route-strip-name">
