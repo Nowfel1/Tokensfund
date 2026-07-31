@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "coldcard-entropy-flaw-cold-storage-randomness-2026",
+    title: "Cold Storage Didn't Fail. Randomness Did",
+    date: "July 31, 2026",
+    description: "594 BTC drained from ~500 wallets in 25 minutes. Coinkite has warned that seeds generated on Coldcard Mk3 firmware 4.0.1 through 5.0.3 may be at risk. What actually broke — entropy at seed generation, not the air gap — who is affected, and exactly what to do if you hold one.",
+    tag: "Privacy",
+  },
+  {
     slug: "fake-wallet-apps-self-custody-software-risk-2026",
     title: "Self-Custody's Failure Mode Is Software",
     date: "July 28, 2026",
