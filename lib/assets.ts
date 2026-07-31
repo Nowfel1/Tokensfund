@@ -121,20 +121,21 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    // USDT on BNB Smart Chain, routed via CCE.Cash only.
-    // NOTE: the `chain` string below must match CCE's own network naming
-    // exactly — verify against their supported-currency list. Their other
-    // entries use "TRON"/"Ethereum", so "BSC" is the likely form; if quotes
-    // come back empty for this asset, that string is the first thing to check.
+    // USDT on BNB Smart Chain (BEP20), routed via CCE.Cash only.
+    // chain/decimals verified against CCE /openapi/abbr/lists:
+    //   { abbr: "USDT", chain: "BNB Smart Chain", type: "BEP20",
+    //     decimal: 18, recv: true, send: true }
+    // The chain string must match CCE's value EXACTLY — do not shorten to
+    // "BSC" or "BEP20".
     // WARNING: BSC uses the same 0x... address format as Ethereum, so the
     // address checker cannot distinguish them. Labelling must stay explicit.
     id: "USDT_BSC",
     symbol: "USDT",
     name: "Tether (BNB Smart Chain)",
-    chain: "BSC",
+    chain: "BNB Smart Chain",
     decimals: 18,
     providerIds: {
-      cce: { abbr: "USDT", chain: "BSC" },
+      cce: { abbr: "USDT", chain: "BNB Smart Chain" },
     },
   },
   {
