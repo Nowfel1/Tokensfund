@@ -69,23 +69,11 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 8,
     providerIds: {
       near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-     thorchain: { asset: "ZEC.ZEC", decimals: 8 },
+      // THORChain ZEC pool not live yet (rollout ~early July 2026). Re-add when live:
+      // thorchain: { asset: "ZEC.ZEC", decimals: 8 },
     },
   },
   {
-  id: "DAI",
-  symbol: "DAI",
-  name: "Dai (Ethereum)",
-  chain: "Ethereum",
-  decimals: 18,
-  providerIds: {
-    thorchain: {
-      asset: "ETH.DAI-0X6B175474E89094C44DA98B954EEDEAC495271D0F",
-      decimals: 8,
-    },
-  },
-  },
-      {
     id: "SOL",
     symbol: "SOL",
     name: "Solana",
@@ -130,6 +118,23 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 6,
     providerIds: {
       cce: { abbr: "USDT", chain: "TRON" },
+    },
+  },
+  {
+    // USDT on BNB Smart Chain, routed via CCE.Cash only.
+    // NOTE: the `chain` string below must match CCE's own network naming
+    // exactly — verify against their supported-currency list. Their other
+    // entries use "TRON"/"Ethereum", so "BSC" is the likely form; if quotes
+    // come back empty for this asset, that string is the first thing to check.
+    // WARNING: BSC uses the same 0x... address format as Ethereum, so the
+    // address checker cannot distinguish them. Labelling must stay explicit.
+    id: "USDT_BSC",
+    symbol: "USDT",
+    name: "Tether (BNB Smart Chain)",
+    chain: "BSC",
+    decimals: 18,
+    providerIds: {
+      cce: { abbr: "USDT", chain: "BSC" },
     },
   },
   {
