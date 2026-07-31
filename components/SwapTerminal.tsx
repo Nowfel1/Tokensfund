@@ -14,7 +14,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
 
 const COIN_LETTER: Record<string, string> = {
   BTC: "\u20BF", ETH: "\u039E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
-  LTC: "L", TON: "T", XMR: "M", ZEC: "Z", NEAR: "N",
+  LTC: "L", TON: "G", XMR: "M", ZEC: "Z", NEAR: "N", // TON id, GRAM display
   TRX: "T", USDT_TRC20: "T", USDT_BSC: "T",
 };
 
