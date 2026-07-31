@@ -21,6 +21,7 @@ const CG_IDS: Record<string, string> = {
   HYPE: "hyperliquid",
   TRX: "tron",
   USDT_TRC20: "tether",
+  USDT_BSC: "tether",
 };
 
 // CoinGecko Demo API key (free). Set COINGECKO_API_KEY in Vercel
