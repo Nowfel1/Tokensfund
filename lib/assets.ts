@@ -173,9 +173,17 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+    // Toncoin rebranded to Gram (GRAM) on 15 June 2026 after an 81% governance
+    // vote — same coin, 1:1, no migration. The BLOCKCHAIN is still called TON,
+    // which is why `chain` and the internal `id` stay "TON": the id is the key
+    // for the price map, coin icon, and address pattern, and changing it would
+    // break all three for zero benefit.
+    // Provider identifiers are pinned explicitly below so this display rename
+    // can never leak into an API call. If a provider later renames its own
+    // ticker to GRAM, change ONLY that provider's line.
     id: "TON",
-    symbol: "TON",
-    name: "Toncoin",
+    symbol: "GRAM",
+    name: "Gram (TON network)",
     chain: "TON",
     decimals: 9,
     providerIds: {
