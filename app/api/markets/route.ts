@@ -1,95 +1,104 @@
 import { NextResponse } from "next/server";
+import { createHmac, randomBytes } from "crypto";
+
+// ============================================================================
+// TEMPORARY DIAGNOSTIC ROUTE — DELETE AFTER USE.
+// CCE's /openapi/abbr/lists needs HMAC-signed headers, so it can't be opened
+// in a browser directly. This route signs the request with the same
+// credentials cce.ts uses and returns a trimmed view of the currency list.
+//
+// Usage:
+//   /api/cce-currencies            → every currency (trimmed fields)
+//   /api/cce-currencies?q=usdt     → only rows whose abbr/chain/type matches
+//   /api/cce-currencies?raw=1      → untouched CCE response
+// ============================================================================
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-// Map our asset IDs to CoinGecko IDs
-const CG_IDS: Record<string, string> = {
-  BTC: "bitcoin",
-  ETH: "ethereum",
-  SOL: "solana",
-  XRP: "ripple",
-  DOGE: "dogecoin",
-  USDT: "tether",
-  USDC: "usd-coin",
-  LTC: "litecoin",
-  TON: "the-open-network",
-  XMR: "monero",
-  ZEC: "zcash",
-  NEAR: "near",
-  TAO: "bittensor",
-  HYPE: "hyperliquid",
-  TRX: "tron",
-  USDT_TRC20: "tether",
-  USDT_BSC: "tether",
-};
+const BASE = "https://cce.cash/api/v1";
+const PATH = "/openapi/abbr/lists";
+const API_KEY = process.env.CCE_API_KEY ?? "";
+const API_SECRET = process.env.CCE_API_SECRET ?? "";
 
-// CoinGecko Demo API key (free). Set COINGECKO_API_KEY in Vercel
-// (Production scope) and redeploy after adding it.
-const CG_KEY = process.env.COINGECKO_API_KEY;
-
-let cache: { at: number; data: Record<string, number> } | null = null;
-const TTL = 5 * 60 * 1000; // 5 min — plenty fresh for ticker + fiat hints
-const MAX_STALE = 15 * 60 * 1000; // during outages, serve last-good up to this age
-
-function staleOk() {
-  return cache !== null && Date.now() - cache.at < MAX_STALE;
+function headersFor(signOver: string): Record<string, string> {
+  const nonce = randomBytes(16).toString("hex");
+  const timestamp = Math.floor(Date.now() / 1000).toString();
+  const signature = createHmac("sha256", API_SECRET)
+    .update(API_KEY + nonce + timestamp + signOver)
+    .digest("hex");
+  return {
+    "Content-Type": "application/json",
+    "X-Api-Key": API_KEY,
+    "X-Api-Nonce": nonce,
+    "X-Api-Timestamp": timestamp,
+    "X-Api-Signature": signature,
+  };
 }
 
-function corsJson(data: Record<string, number>) {
-  return NextResponse.json(data, { headers: { "Access-Control-Allow-Origin": "*" } });
-}
-
-export async function GET() {
-  if (cache && Date.now() - cache.at < TTL) {
-    return corsJson(cache.data);
-  }
-
-  try {
-    const ids = Array.from(new Set(Object.values(CG_IDS))).join(",");
-    const res = await fetch(
-      "https://api.coingecko.com/api/v3/simple/price?ids=" + ids + "&vs_currencies=usd",
-      {
-        // CRITICAL: Next.js caches fetch() bodies in Vercel's Data Cache by
-        // default — that platform-level cache (visible as "Using cache" in
-        // request traces) served stale prices for days despite our in-memory
-        // TTL. no-store bypasses it. Do not remove.
-        cache: "no-store",
-        headers: {
-          accept: "application/json",
-          ...(CG_KEY ? { "x-cg-demo-api-key": CG_KEY } : {}),
-        },
-      }
+export async function GET(req: Request) {
+  if (!API_KEY || !API_SECRET) {
+    return NextResponse.json(
+      { error: "CCE_API_KEY / CCE_API_SECRET not set in this environment" },
+      { status: 500 }
     );
-
-    const raw = await res.json().catch(() => null);
-
-    // Re-key from CoinGecko IDs back to our asset IDs
-    const out: Record<string, number> = {};
-    if (raw && typeof raw === "object") {
-      for (const [assetId, cgId] of Object.entries(CG_IDS)) {
-        const price = raw?.[cgId]?.usd;
-        if (typeof price === "number") out[assetId] = price;
-      }
-    }
-
-    // Failed call or no usable prices (rate limit, error body, outage):
-    // never cache the empty result — serve last-good while acceptably
-    // fresh, then hide. Components render nothing on {} by design.
-    if (!res.ok || Object.keys(out).length === 0) {
-      console.warn(
-        "MARKETS: no usable data (status " + res.status + ", key " + (CG_KEY ? "present" : "MISSING") + "). Body:",
-        JSON.stringify(raw)?.slice(0, 200)
-      );
-      if (staleOk()) return corsJson(cache!.data);
-      return corsJson({});
-    }
-
-    cache = { at: Date.now(), data: out };
-    return corsJson(out);
-  } catch (e: any) {
-    console.warn("MARKETS: fetch threw:", e?.message);
-    if (staleOk()) return corsJson(cache!.data);
-    return corsJson({});
   }
+
+  const url = new URL(req.url);
+  const q = (url.searchParams.get("q") ?? "").toLowerCase();
+  const raw = url.searchParams.get("raw") === "1";
+
+  // Mirror cce.ts: signature target for GETs is unspecified in their docs, so
+  // try an empty string first, then the query string.
+  const qs = "with_unavailable=false";
+  let data: any = null;
+  let lastStatus = 0;
+
+  for (const signOver of ["", qs]) {
+    try {
+      const res = await fetch(`${BASE}${PATH}?${qs}`, {
+        cache: "no-store",
+        headers: headersFor(signOver),
+      });
+      lastStatus = res.status;
+      const body = await res.json().catch(() => null);
+      if (body && body.code === 0) {
+        data = body;
+        break;
+      }
+      data = body; // keep the last error body for reporting
+    } catch (e: any) {
+      data = { error: e?.message };
+    }
+  }
+
+  if (!data || data.code !== 0) {
+    return NextResponse.json(
+      { ok: false, httpStatus: lastStatus, cceResponse: data },
+      { status: 502 }
+    );
+  }
+
+  if (raw) return NextResponse.json(data);
+
+  const rows: any[] = Array.isArray(data.data) ? data.data : [];
+  const trimmed = rows
+    .map((r) => ({
+      abbr: r.abbr,
+      chain: r.chain,
+      type: r.type,
+      decimal: r.decimal,
+      recv: r.recv,
+      send: r.send,
+      name: r.name,
+    }))
+    .filter((r) => {
+      if (!q) return true;
+      return [r.abbr, r.chain, r.type, r.name]
+        .filter(Boolean)
+        .some((v: string) => String(v).toLowerCase().includes(q));
+    })
+    .sort((a, b) => String(a.abbr).localeCompare(String(b.abbr)));
+
+  return NextResponse.json({ ok: true, count: trimmed.length, currencies: trimmed });
 }
