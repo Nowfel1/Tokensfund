@@ -121,6 +121,26 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
+    // BNB — native coin of BNB Smart Chain.
+    // VERIFY BEFORE TRUSTING: the cce chain string below is copied from CCE's
+    // /openapi/abbr/lists convention ("BNB Smart Chain", as confirmed for
+    // USDT-BEP20). Confirm BNB's own row via /api/cce-currencies?q=bnb and
+    // correct `abbr`/`chain`/`decimals` if they differ.
+    // Changee and NEAR Intents may also support BNB — their lines are left
+    // commented out deliberately rather than guessed. Uncomment only after
+    // confirming the exact ticker / asset id from each provider.
+    id: "BNB",
+    symbol: "BNB",
+    name: "BNB (BNB Smart Chain)",
+    chain: "BNB Smart Chain",
+    decimals: 18,
+    providerIds: {
+      cce: { abbr: "BNB", chain: "BNB Smart Chain" },
+      // changee: { ticker: "BNB" },              // verify against Changee's currency list
+      // near_intents: { asset: "nep141:bnb.omft.near", decimals: 18 }, // GUESS — verify
+    },
+  },
+  {
     // USDT on BNB Smart Chain (BEP20), routed via CCE.Cash only.
     // chain/decimals verified against CCE /openapi/abbr/lists:
     //   { abbr: "USDT", chain: "BNB Smart Chain", type: "BEP20",
