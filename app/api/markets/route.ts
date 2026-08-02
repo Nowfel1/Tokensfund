@@ -22,6 +22,7 @@ const CG_IDS: Record<string, string> = {
   TRX: "tron",
   USDT_TRC20: "tether",
   USDT_BSC: "tether",
+  BNB: "binancecoin",
 };
 
 // CoinGecko Demo API key (free). Set COINGECKO_API_KEY in Vercel
