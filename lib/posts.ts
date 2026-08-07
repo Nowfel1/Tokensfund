@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "coldcard-exploit-update-still-ongoing-2026",
+    title: "The Coldcard Exploit Tripled — and It's Still Running",
+    date: "August 7, 2026",
+    description: "A week on, researchers track roughly 1,816 BTC — $116M or more — drained from over 5,200 addresses across at least four waves, by multiple attacker groups, and the sweeps have not stopped. Critically, the newer Mk4, Mk5 and Q models are no longer considered unaffected. The updated checklist and what the numbers mean.",
+    tag: "Privacy",
+  },
+  {
     slug: "coldcard-entropy-flaw-cold-storage-randomness-2026",
     title: "Cold Storage Didn't Fail. Randomness Did",
     date: "July 31, 2026",
