@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "zcash-ironwood-turnstile-supply-integrity-2026",
+    title: "Zcash Sealed a $1.7 Billion Pool to Prove Its Money Is Real",
+    date: "August 10, 2026",
+    description: "A bug in Orchard's proof circuit could have allowed counterfeit ZEC with no on-chain trace. So Zcash sealed the pool holding 3.66 million ZEC, opened a new one starting at zero, and installed a turnstile that traps any fake coins inside. How shielded supply is audited, and what Tachyon has to prove next.",
+    tag: "Privacy",
+  },
+  {
     slug: "coldcard-exploit-update-still-ongoing-2026",
     title: "The Coldcard Exploit Tripled — and It's Still Running",
     date: "August 7, 2026",
