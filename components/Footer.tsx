@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { PAIRS } from "@/lib/pairs";
 
 const head: React.CSSProperties = {
   fontSize: "12px",
@@ -45,7 +46,6 @@ export default function Footer() {
               protocol — TokensFund never takes custody of your assets.
             </p>
           </div>
-
           <div style={{ display: "flex", gap: "3rem", flexWrap: "wrap" }}>
             <div>
               <div style={head}>Product</div>
@@ -54,11 +54,22 @@ export default function Footer() {
               <Link href="/blog" style={link}>Blog</Link>
               <Link href="/faq" style={link}>FAQ</Link>
             </div>
+            {/* Popular pairs — sitewide internal links to the transactional
+                landing pages. Derived from lib/pairs.ts, so adding a pair
+                there surfaces it here automatically. */}
+            <div>
+              <div style={head}>Popular pairs</div>
+              {PAIRS.map((p) => (
+                <Link key={p.slug} href={"/swap/" + p.slug} style={link}>
+                  {p.fromId} {"\u2192"} {p.toId}
+                </Link>
+              ))}
+            </div>
             <div>
               <div style={head}>Legal</div>
               <Link href="/terms" style={link}>Terms of Service</Link>
               <Link href="/privacy" style={link}>Privacy Policy</Link>
-              <Link href="/sitemap" style={link}>sitemap</Link>
+              <Link href="/sitemap" style={link}>Sitemap</Link>
             </div>
             <div>
               <div style={head}>Community</div>
@@ -67,7 +78,6 @@ export default function Footer() {
             </div>
           </div>
         </div>
-
         <div style={{ fontSize: "12px", color: "#5f6b80", marginTop: "2.25rem", lineHeight: 1.6 }}>
           © {year} TokensFund. Crypto swaps are irreversible and carry risk. Nothing on this site is
           financial advice.
