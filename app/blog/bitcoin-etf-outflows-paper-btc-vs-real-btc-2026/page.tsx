@@ -150,7 +150,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Prefer the real thing?</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
