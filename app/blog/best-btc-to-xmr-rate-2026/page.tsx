@@ -153,7 +153,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Compare BTC→XMR routes in one click</p>
           <Link
-            href="/"
+            href="/swap/btc-to-xmr"
             style={{
               display: "inline-block",
               textDecoration: "none",
