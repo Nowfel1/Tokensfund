@@ -157,7 +157,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Skip the wrappers</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
