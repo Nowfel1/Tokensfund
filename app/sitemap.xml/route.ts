@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { POSTS } from "@/lib/posts";
+import { PAIRS } from "@/lib/pairs";
 
 // XML sitemap, generated from the same lib/posts.ts that drives the blog
 // index and the human /sitemap page. Add a post there and this updates on
@@ -50,9 +51,14 @@ export async function GET() {
     urlEntry(`${SITE}/blog/${p.slug}`, toIso(p.date), "monthly", "0.7")
   );
 
+  // Transactional pair pages — high priority: these target buying intent.
+  const pairXml = PAIRS.map((p) =>
+    urlEntry(`${SITE}/swap/${p.slug}`, "2026-08-10", "weekly", "0.9")
+  );
+
   const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${[...staticXml, ...postXml].join("\n")}
+${[...staticXml, ...pairXml, ...postXml].join("\n")}
 </urlset>`;
 
   return new NextResponse(xml, {
