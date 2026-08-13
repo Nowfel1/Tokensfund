@@ -170,7 +170,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Rotate assets without a closure date attached</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
