@@ -529,3 +529,28 @@ a { color: inherit; }
 .route-strip.best:not(.sel) .route-strip-mark.gold { background: var(--surface-3); border-color: var(--border); color: var(--muted-2); }
 .route-strip-pick:hover .route-strip-name { color: var(--gold); }
 .route-strip-pick:focus-visible { outline: 2px solid var(--gold-ring); outline-offset: 3px; border-radius: 10px; }
+
+/* ==== EVM contract-call instructions (THORChain on EVM chains) ==== */
+.exec-box { margin-top: 14px; border: 1px solid var(--warn-ring, #6b4a1f); border-radius: 12px; padding: 14px; background: rgba(244,198,78,0.04); }
+.exec-alert { color: var(--text); font-size: 13.5px; line-height: 1.55; margin: 0 0 10px; }
+.exec-alert strong { color: var(--gold); }
+.exec-easy { color: var(--muted); font-size: 13px; line-height: 1.55; margin: 0 0 12px; }
+.exec-adv { color: var(--muted-2); font-size: 11.5px; font-family: var(--mono); letter-spacing: 0.06em; text-transform: uppercase; margin: 0 0 8px; }
+.exec-note { color: var(--muted-2); font-size: 12px; line-height: 1.5; margin: 10px 0 0; }
+
+/* ==== pair landing pages (/swap/<pair>) ==== */
+.pair-hero { text-align: center; max-width: 720px; margin: 2.5rem auto 1.5rem; }
+.pair-title { font-size: clamp(1.9rem, 5vw, 2.8rem); line-height: 1.15; margin: 0 0 0.75rem; color: var(--text); }
+.pair-arrow { color: var(--gold); }
+.pair-sub { color: var(--muted); font-size: 1.02rem; line-height: 1.6; margin: 0 auto 1.1rem; max-width: 620px; }
+.pair-trust { justify-content: center; }
+.pair-terminal { max-width: 520px; margin: 0 auto; }
+.pair-body { max-width: 720px; margin: 3rem auto 0; }
+.pair-body h2 { font-size: 1.15rem; margin: 2rem 0 0.75rem; color: var(--text); }
+.pair-body ul, .pair-body ol { color: var(--muted); line-height: 1.75; padding-left: 1.2rem; }
+.pair-body li { margin-bottom: 0.4rem; }
+.pair-faq dt { color: var(--text); font-weight: 700; margin-top: 1.1rem; font-size: 0.98rem; }
+.pair-faq dd { color: var(--muted); margin: 0.35rem 0 0; line-height: 1.7; }
+.pair-links { list-style: none; padding-left: 0; }
+.pair-links a { color: var(--text); text-decoration: none; }
+.pair-links a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
