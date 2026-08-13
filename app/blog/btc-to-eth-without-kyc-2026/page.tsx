@@ -180,7 +180,7 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to swap BTC to ETH without KYC?</p>
-          <a href="/" style={ctaStyle}>
+          <a href="/swap/btc-to-eth" style={ctaStyle}>
             Swap BTC to ETH Now
           </a>
         </div>
