@@ -156,7 +156,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Non-custodial by design. Verified by you.</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
