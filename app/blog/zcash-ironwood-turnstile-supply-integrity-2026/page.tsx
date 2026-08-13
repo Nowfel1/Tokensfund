@@ -197,7 +197,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Shielded ZEC, no account required</p>
           <Link
-            href="/"
+            href="/swap/btc-to-xmr"
             style={{
               display: "inline-block",
               textDecoration: "none",
