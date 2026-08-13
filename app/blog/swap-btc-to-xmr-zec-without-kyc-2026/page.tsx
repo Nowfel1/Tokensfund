@@ -144,7 +144,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>BTC → XMR is already loaded on the terminal</p>
           <Link
-            href="/"
+            href="/swap/btc-to-xmr"
             style={{
               display: "inline-block",
               textDecoration: "none",
