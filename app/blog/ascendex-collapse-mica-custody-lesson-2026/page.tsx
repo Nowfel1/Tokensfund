@@ -168,7 +168,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>Your keys. Your coins. Before the email.</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
