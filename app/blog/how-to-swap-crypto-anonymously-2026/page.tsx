@@ -190,7 +190,7 @@ export default function Post() {
 
         <div className="blog-cta">
           <p>Ready to swap crypto privately, with no account?</p>
-          <a href="/" style={ctaStyle}>Swap Now at TokensFund</a>
+          <a href="/swap/btc-to-xmr" style={ctaStyle}>Swap Now at TokensFund</a>
         </div>
       </article>
     </main>
