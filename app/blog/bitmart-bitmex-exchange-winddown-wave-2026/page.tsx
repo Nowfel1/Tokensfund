@@ -177,7 +177,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>No closure dates. No exit reviews. Your keys.</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
