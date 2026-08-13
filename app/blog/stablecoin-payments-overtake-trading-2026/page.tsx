@@ -178,7 +178,7 @@ export default function Post() {
         <div className="blog-cta">
           <p>An account nobody can freeze</p>
           <Link
-            href="/"
+            href="/swap/btc-to-eth"
             style={{
               display: "inline-block",
               textDecoration: "none",
