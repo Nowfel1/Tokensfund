@@ -113,13 +113,32 @@ const STATE_META: Record<string, { label: string; step: number; tone: string }> 
   unknown: { label: "Status unavailable", step: 0, tone: "wait" },
 };
 
-export default function SwapTerminal() {
-  const [fromId, setFromId] = useState("BTC");
+export interface SwapTerminalProps {
+  /** Prefill the pay side (asset id, e.g. "BTC"). Used by pair pages. */
+  initialFrom?: string;
+  /** Prefill the receive side (asset id, e.g. "XMR"). */
+  initialTo?: string;
+  /** Prefill the amount. */
+  initialAmount?: string;
+}
+
+function validAssetId(id: string | undefined | null): string | undefined {
+  if (!id) return undefined;
+  const up = id.toUpperCase();
+  return ASSETS.some((a) => a.id === up) ? up : undefined;
+}
+
+export default function SwapTerminal({
+  initialFrom,
+  initialTo,
+  initialAmount,
+}: SwapTerminalProps) {
+  const [fromId, setFromId] = useState(validAssetId(initialFrom) ?? "BTC");
   // Default pair is BTC -> XMR on purpose: the privacy-directory traffic
   // (Monerica, KYCNOT.me) that reaches this page is disproportionately here
   // for Monero. Changing this default changes the first thing they see.
-  const [toId, setToId] = useState("XMR");
-  const [amount, setAmount] = useState("0.1");
+  const [toId, setToId] = useState(validAssetId(initialTo) ?? "XMR");
+  const [amount, setAmount] = useState(initialAmount ?? "0.1");
   const [destination, setDestination] = useState("");
   const [refund, setRefund] = useState("");
   const [loading, setLoading] = useState(false);
@@ -144,6 +163,22 @@ export default function SwapTerminal() {
   const fromSym = ASSETS.find((a) => a.id === fromId)?.symbol ?? fromId;
   const fromName = ASSETS.find((a) => a.id === fromId)?.name ?? "";
   const toName = ASSETS.find((a) => a.id === toId)?.name ?? "";
+
+  // Deep-link support: /?from=BTC&to=XMR&amount=0.5
+  // Read on mount rather than via useSearchParams so this component can be
+  // used in statically rendered pages without a Suspense boundary. Props
+  // (used by pair pages) set the initial state; URL params override them.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const q = new URLSearchParams(window.location.search);
+    const f = validAssetId(q.get("from"));
+    const t = validAssetId(q.get("to"));
+    const amt = q.get("amount");
+    if (f) setFromId(f);
+    if (t && t !== f) setToId(t);
+    if (amt && /^\d*\.?\d+$/.test(amt)) setAmount(amt);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // load prices once
   useEffect(() => {
@@ -544,24 +579,30 @@ export default function SwapTerminal() {
             <span className="deposit-provider">{PROVIDER_INITIAL[deposit.provider]} {label(deposit.provider)}</span>
           </div>
           <p className="sub">{"One-time address from " + label(deposit.provider) + ". The swap starts automatically once your deposit confirms."}</p>
-          <div className="kv">
-            <div className="row">
-              <span className="k">Amount</span>
-              <Copyable text={String(deposit.depositAmount)} />
-            </div>
-            <div className="row">
-              <span className="k">Deposit address</span>
-              <Copyable text={deposit.depositAddress} />
-            </div>
-            {deposit.memo && (
-              <div className="row">
-                <span className="k">Memo (required)</span>
-                <Copyable text={deposit.memo} />
+          {deposit.execution ? (
+            <ContractCallPanel exec={deposit.execution} />
+          ) : (
+            <>
+              <div className="kv">
+                <div className="row">
+                  <span className="k">Amount</span>
+                  <Copyable text={String(deposit.depositAmount)} />
+                </div>
+                <div className="row">
+                  <span className="k">Deposit address</span>
+                  <Copyable text={deposit.depositAddress} />
+                </div>
+                {deposit.memo && (
+                  <div className="row">
+                    <span className="k">Memo (required)</span>
+                    <Copyable text={deposit.memo} />
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          )}
           <StatusTracker status={status} provider={deposit.provider} />
-          {deposit.memo && (
+          {deposit.memo && !deposit.execution && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
           {deposit.notes && <p className="warn">{deposit.notes}</p>}
@@ -636,6 +677,71 @@ function StatusTracker({ status, provider }: { status: SwapStatus | null; provid
       ) : (
         <p className="status-hint">Status updates automatically every 15s.</p>
       )}
+    </div>
+  );
+}
+
+function ContractCallPanel({ exec }: { exec: NonNullable<SwapInstruction["execution"]> }) {
+  const isNative = exec.tokenAddress === "0x0000000000000000000000000000000000000000";
+  return (
+    <div className="exec-box">
+      <p className="exec-alert">
+        <strong>Do not send a normal transfer.</strong> This {exec.chain} route completes by
+        calling a contract — a plain wallet send (MetaMask&apos;s Send screen) cannot carry the
+        routing memo and the funds would be stranded.
+      </p>
+
+      <p className="exec-easy">
+        Easiest path: execute this swap in an interface that builds the call for you, such as{" "}
+        <a href={exec.helperUrl} target="_blank" rel="noopener noreferrer" className="status-ext-link">
+          THORSwap
+        </a>{" "}
+        or Asgardex. Or pick a different route above — the other providers use a plain deposit
+        address with no contract call.
+      </p>
+
+      <p className="exec-adv">Advanced: call the router directly with these exact parameters.</p>
+      <div className="kv">
+        <div className="row">
+          <span className="k">Contract (router)</span>
+          <Copyable text={exec.router} />
+        </div>
+        <div className="row">
+          <span className="k">Function</span>
+          <Copyable text={exec.functionName} />
+        </div>
+        <div className="row">
+          <span className="k">vault</span>
+          <Copyable text={exec.vault} />
+        </div>
+        <div className="row">
+          <span className="k">asset</span>
+          <Copyable text={exec.tokenAddress} />
+        </div>
+        <div className="row">
+          <span className="k">amount</span>
+          <Copyable text={exec.amountBaseUnits} />
+        </div>
+        <div className="row">
+          <span className="k">memo</span>
+          <Copyable text={exec.memo} />
+        </div>
+        <div className="row">
+          <span className="k">expiry</span>
+          <Copyable text={String(exec.expiry)} />
+        </div>
+        <div className="row">
+          <span className="k">payable value</span>
+          <Copyable text={isNative ? exec.nativeValue ?? "0" : "0"} />
+        </div>
+      </div>
+      <p className="exec-note">
+        {isNative
+          ? "Native coin: send the amount above as the transaction's value."
+          : "ERC-20: approve the router for this amount first, then call the function with value 0."}{" "}
+        Amounts are in base units. Verify every field before signing — a wrong parameter can lose
+        the funds.
+      </p>
     </div>
   );
 }
