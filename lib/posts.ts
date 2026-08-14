@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
   {
+    slug: "near-intents-stuck-swap-incident-2026",
+    title: "Incident Report: 5 BTC Stuck in a NEAR Intents Swap for Three Days",
+    date: "August 14, 2026",
+    description: "A swap deposited on August 11 has remained in PROCESSING since, past its quote deadline, with no destination transfer and no refund. What the documentation says should happen, what we have observed, what we are asking for, and what we do not yet know.",
+    tag: "Incident",
+  },
+  {
     slug: "zcash-ironwood-turnstile-supply-integrity-2026",
     title: "Zcash Sealed a $1.7 Billion Pool to Prove Its Money Is Real",
     date: "August 10, 2026",
