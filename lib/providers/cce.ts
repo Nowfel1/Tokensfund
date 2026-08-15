@@ -138,6 +138,11 @@ export async function buildSwap(
   };
   const data = await post<any>("/openapi/order/place", body);
 
+  // TEMPORARY DEBUG: log the raw place response so the exact field names and
+  // formats of the order identifiers are visible in Vercel logs. Remove once
+  // CCE tracking is confirmed working.
+  console.log("CCE place →", JSON.stringify(data));
+
   // CCE returns the order number as `no` (8-char) AND `query_code` (12-char,
   // the code shown on cce.cash). We don't know which the query endpoint keys
   // off, so store BOTH (joined with "~") and let getStatus try each.
@@ -194,6 +199,22 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
     .split("~")
     .map((s) => s.replace(/[\s-]/g, "").trim())
     .filter(Boolean);
+
+  // Guard: a CCE order code is short (8-char `no` or ~12-char `query_code`).
+  // Anything much longer is almost certainly a DEPOSIT ADDRESS pasted by
+  // mistake — a Solana address is 43-44 base58 chars, a BTC bech32 address
+  // ~42. Sending one to /order/query returns "Bad Request (code 1)", which
+  // tells the user nothing. Detect it and say what to enter instead.
+  const looksLikeAddress = parts.some((p) => p.length > 20);
+  if (looksLikeAddress) {
+    return {
+      provider: "cce",
+      state: "unknown",
+      detail:
+        "That looks like a deposit address, not a CCE order code. Enter the " +
+        "code shown on the swap screen as \"CCE.Cash Order #XXXX-XXXX-XXXX\".",
+    };
+  }
 
   // 8-char value is the order `no`; 12-char is the `query_code`.
   const orderNo = parts.find((p) => p.length <= 8);
