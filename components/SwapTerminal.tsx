@@ -579,24 +579,28 @@ export default function SwapTerminal({
             <span className="deposit-provider">{PROVIDER_INITIAL[deposit.provider]} {label(deposit.provider)}</span>
           </div>
           <p className="sub">{"One-time address from " + label(deposit.provider) + ". The swap starts automatically once your deposit confirms."}</p>
-          <div className="kv">
-            <div className="row">
-              <span className="k">Amount</span>
-              <Copyable text={String(deposit.depositAmount)} />
-            </div>
-            <div className="row">
-              <span className="k">Deposit address</span>
-              <Copyable text={deposit.depositAddress} />
-            </div>
-            {deposit.memo && (
+          {deposit.execution ? (
+            <ContractCallPanel exec={deposit.execution} />
+          ) : (
+            <div className="kv">
               <div className="row">
-                <span className="k">Memo (required)</span>
-                <Copyable text={deposit.memo} />
+                <span className="k">Amount</span>
+                <Copyable text={String(deposit.depositAmount)} />
               </div>
-            )}
-          </div>
+              <div className="row">
+                <span className="k">Deposit address</span>
+                <Copyable text={deposit.depositAddress} />
+              </div>
+              {deposit.memo && (
+                <div className="row">
+                  <span className="k">Memo (required)</span>
+                  <Copyable text={deposit.memo} />
+                </div>
+              )}
+            </div>
+          )}
           <StatusTracker status={status} provider={deposit.provider} />
-          {deposit.memo && (
+          {deposit.memo && !deposit.execution && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
           {deposit.notes && <p className="warn">{deposit.notes}</p>}
@@ -671,6 +675,71 @@ function StatusTracker({ status, provider }: { status: SwapStatus | null; provid
       ) : (
         <p className="status-hint">Status updates automatically every 15s.</p>
       )}
+    </div>
+  );
+}
+
+function ContractCallPanel({ exec }: { exec: NonNullable<SwapInstruction["execution"]> }) {
+  const isNative = exec.tokenAddress === "0x0000000000000000000000000000000000000000";
+  return (
+    <div className="exec-box">
+      <p className="exec-alert">
+        <strong>Do not send a normal transfer.</strong> This {exec.chain} route completes by
+        calling a contract — a plain wallet send (MetaMask&apos;s Send screen) cannot carry the
+        routing memo, and funds sent that way would be stranded.
+      </p>
+
+      <p className="exec-easy">
+        Easiest path: run this swap in an interface that builds the call for you, such as{" "}
+        <a href={exec.helperUrl} target="_blank" rel="noopener noreferrer" className="status-ext-link">
+          THORSwap
+        </a>{" "}
+        or Asgardex. Or pick a different route above — the other providers use a plain deposit
+        address with no contract call.
+      </p>
+
+      <p className="exec-adv">Advanced: call the router directly with these exact parameters</p>
+      <div className="kv">
+        <div className="row">
+          <span className="k">Contract (router)</span>
+          <Copyable text={exec.router} />
+        </div>
+        <div className="row">
+          <span className="k">Function</span>
+          <Copyable text={exec.functionName} />
+        </div>
+        <div className="row">
+          <span className="k">vault</span>
+          <Copyable text={exec.vault} />
+        </div>
+        <div className="row">
+          <span className="k">asset</span>
+          <Copyable text={exec.tokenAddress} />
+        </div>
+        <div className="row">
+          <span className="k">amount</span>
+          <Copyable text={exec.amountBaseUnits} />
+        </div>
+        <div className="row">
+          <span className="k">memo</span>
+          <Copyable text={exec.memo} />
+        </div>
+        <div className="row">
+          <span className="k">expiry</span>
+          <Copyable text={String(exec.expiry)} />
+        </div>
+        <div className="row">
+          <span className="k">payable value</span>
+          <Copyable text={isNative ? exec.nativeValue ?? "0" : "0"} />
+        </div>
+      </div>
+      <p className="exec-note">
+        {isNative
+          ? "Native coin: send the amount above as the transaction's value."
+          : "ERC-20: approve the router for this amount first, then call the function with value 0."}{" "}
+        Amounts are in base units. Verify every field before signing — a wrong parameter can lose
+        the funds.
+      </p>
     </div>
   );
 }
