@@ -29,11 +29,23 @@ export function generateMetadata({ params }: { params: { pair: string } }) {
       url,
       title: pair.title,
       description: pair.description,
+      // Nested metadata objects REPLACE the parent's rather than merging, so
+      // the layout's default image must be repeated here or shares render
+      // with no picture.
+      images: [
+        {
+          url: "/og-image.png",
+          width: 1200,
+          height: 630,
+          alt: pair.title,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: pair.title,
       description: pair.description,
+      images: ["/og-image.png"],
     },
   };
 }
