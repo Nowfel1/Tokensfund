@@ -52,10 +52,30 @@ export interface AggregatedQuotes {
   bestIndex: number;
 }
 
+// Some routes cannot be completed with a plain wallet transfer. THORChain on
+// EVM chains requires calling the Router's depositWithExpiry() — sending a
+// normal transfer to the vault address (as MetaMask's Send screen would do)
+// strands the funds. When present, the UI MUST show these instructions
+// instead of a simple "send to this address" panel.
+export interface EvmContractExecution {
+  type: "evm_contract_call";
+  chain: string;              // e.g. "Ethereum"
+  router: string;             // router contract to call
+  functionName: string;       // e.g. "depositWithExpiry"
+  vault: string;              // param: inbound vault address
+  tokenAddress: string;       // param: 0x0 for native ETH, else ERC20 contract
+  amountBaseUnits: string;    // param: amount in the token's base units
+  memo: string;               // param: THORChain memo string
+  expiry: number;             // param: unix seconds
+  nativeValue?: string;       // ETH value to send with the call (native swaps)
+  helperUrl?: string;         // interface that builds this call for the user
+}
+
 export interface SwapInstruction {
   provider: ProviderId;
   depositAddress: string;
   memo?: string;
+  execution?: EvmContractExecution;
   depositAmount: string;
   // NOTE: providers put different things here — THORChain a block height,
   // NEAR Intents a unix timestamp (seconds). UI countdowns assume unix
