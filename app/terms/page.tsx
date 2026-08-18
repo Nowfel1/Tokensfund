@@ -65,7 +65,8 @@ export default function Terms() {
           for determining whether your use of the Service is lawful where you are, and for complying
           with all applicable laws, including tax and reporting obligations. The Service is not
           offered to, and may not be used by, persons in jurisdictions where it would be unlawful,
-          or by persons subject to applicable sanctions.
+          or by persons subject to applicable sanctions [LIST RESTRICTED JURISDICTIONS / SANCTIONS
+          REGIMES — confirm with counsel].
         </p>
 
         <h2>3. Non-custodial swaps are final</h2>
@@ -91,7 +92,7 @@ export default function Terms() {
 
         <h2>5. Fees and quotes</h2>
         <p>
-          TokensFund charges a flat 2% fee, which is already reflected in the quote shown to you.
+          TokensFund charges a flat 1% fee, which is already reflected in the quote shown to you.
           Network (gas) fees and any spread charged by the underlying protocol are separate and
           outside our control. All quotes are estimates based on live conditions and are not
           guaranteed until a swap is executed; the amount you ultimately receive may differ due to
@@ -158,16 +159,16 @@ export default function Terms() {
 
         <h2>13. Governing law</h2>
         <p>
-          These Terms are governed by the laws of UAE, without regard to
+          These Terms are governed by the laws of [GOVERNING JURISDICTION], without regard to
           conflict-of-laws principles. Any dispute will be subject to the exclusive jurisdiction of
-          the courts of UAE.
+          the courts of [JURISDICTION]. [Confirm with counsel.]
         </p>
 
         <h2>14. Contact</h2>
         <p>
           Questions about these Terms? Reach us on Telegram at{" "}
           <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>{" "}
-          or at [Hello@tokensfund.xyz].
+          or at [CONTACT EMAIL].
         </p>
       </article>
     </main>
