@@ -37,9 +37,9 @@ export const PAIRS: PairPage[] = [
     toLabel: "Monero",
     title: "Swap BTC to XMR — No Account, No KYC",
     description:
-      "Compare live BTC to XMR rates across THORChain, NEAR Intents, Changee and CCE.Cash in one place. Non-custodial, no account, no KYC for standard swaps, flat 2% already in the quote.",
+      "Compare live BTC to XMR rates across THORChain, NEAR Intents, Changee and CCE.Cash in one place. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
-      "Bitcoin in, Monero out, wallet to wallet. We quote every route that supports the pair and send your swap to the best one — no account, no KYC for standard swaps, and our 2% fee is already inside the number you see.",
+      "Bitcoin in, Monero out, wallet to wallet. We quote every route that supports the pair and send your swap to the best one — no account, no KYC for standard swaps, and our 1% fee is already inside the number you see.",
     notes: [
       "BTC→XMR rates vary more between services than almost any other pair, which is exactly why comparing routes matters here.",
       "Your XMR address is ~95 characters starting with 4 (or 8 for a subaddress) — check the first and last five characters before sending.",
@@ -56,7 +56,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "What fee do you charge on BTC to XMR?",
-        a: "A flat 2%, already included in every quote shown. The figure on screen is what you receive, aside from network fees charged by the blockchains themselves.",
+        a: "A flat 1%, already included in every quote shown. The figure on screen is what you receive, aside from network fees charged by the blockchains themselves.",
       },
       {
         q: "How long does a BTC to XMR swap take?",
@@ -76,9 +76,9 @@ export const PAIRS: PairPage[] = [
     toLabel: "Bitcoin",
     title: "Swap XMR to BTC — No Account, No KYC",
     description:
-      "Compare live XMR to BTC rates across every route that supports the pair. Non-custodial, no account, no KYC for standard swaps, flat 2% already in the quote.",
+      "Compare live XMR to BTC rates across every route that supports the pair. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
-      "Monero in, Bitcoin out, wallet to wallet. We quote every provider that serves the pair and route your swap to the best rate — no account, no KYC for standard swaps, 2% already included in the quote.",
+      "Monero in, Bitcoin out, wallet to wallet. We quote every provider that serves the pair and route your swap to the best rate — no account, no KYC for standard swaps, 1% already included in the quote.",
     notes: [
       "Monero transactions are irreversible and private by default — verify your destination Bitcoin address carefully before sending.",
       "XMR deposits usually confirm faster than Bitcoin ones, so the Bitcoin payout leg is often the longer wait.",
@@ -95,7 +95,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "What does the swap cost?",
-        a: "A flat 2% is included in the displayed quote, plus the blockchains' own network fees. There are no additional charges revealed later.",
+        a: "A flat 1% is included in the displayed quote, plus the blockchains' own network fees. There are no additional charges revealed later.",
       },
       {
         q: "Is swapping Monero legal?",
@@ -111,9 +111,9 @@ export const PAIRS: PairPage[] = [
     toLabel: "Ethereum",
     title: "Swap BTC to ETH — No Account, No KYC",
     description:
-      "Compare live BTC to ETH rates across THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash. Non-custodial, no account, no KYC for standard swaps, flat 2% already in the quote.",
+      "Compare live BTC to ETH rates across THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
-      "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and our 2% is already in the number.",
+      "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and our 1% is already in the number.",
     notes: [
       "All five providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
       "Your ETH address is the standard 0x format. Double-check it: the same format is used by several other EVM chains, and funds sent to the wrong network are unrecoverable.",
@@ -130,7 +130,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "What is the fee?",
-        a: "A flat 2%, already included in the quote you see, plus network fees charged by Bitcoin and Ethereum themselves.",
+        a: "A flat 1%, already included in the quote you see, plus network fees charged by Bitcoin and Ethereum themselves.",
       },
       {
         q: "Do I need a refund address?",
@@ -146,7 +146,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Zcash",
     title: "Swap BTC to ZEC — No Account, No KYC",
     description:
-      "Swap Bitcoin for Zcash without an account or KYC. Live quotes from every route that supports the pair, non-custodial, flat 2% already in the quote.",
+      "Swap Bitcoin for Zcash without an account or KYC. Live quotes from every route that supports the pair, non-custodial, flat 1% already in the quote.",
     intro:
       "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show you every one that does, and send your swap to the best rate.",
     notes: [
@@ -169,7 +169,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "What does it cost?",
-        a: "A flat 2%, already included in the quote you see, plus the network fees charged by Bitcoin and Zcash themselves.",
+        a: "A flat 1%, already included in the quote you see, plus the network fees charged by Bitcoin and Zcash themselves.",
       },
     ],
   },
@@ -181,9 +181,9 @@ export const PAIRS: PairPage[] = [
     toLabel: "Bitcoin",
     title: "Swap ETH to BTC — No Account, No KYC",
     description:
-      "Compare live ETH to BTC rates across every integrated route. Non-custodial, no account, no KYC for standard swaps, flat 2% already in the quote.",
+      "Compare live ETH to BTC rates across every integrated route. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
-      "Ethereum in, Bitcoin out, wallet to wallet. This is one of the most widely supported pairs we route, so the comparison runs deep — the best rate wins and our 2% is already inside the number you see.",
+      "Ethereum in, Bitcoin out, wallet to wallet. This is one of the most widely supported pairs we route, so the comparison runs deep — the best rate wins and our 1% is already inside the number you see.",
     notes: [
       "Ethereum network fees vary a lot by congestion; check gas before sending, since it is charged on top of the quote.",
       "The Bitcoin payout leg confirms on Bitcoin's schedule, so allow time even after your Ethereum deposit lands.",
@@ -199,7 +199,7 @@ export const PAIRS: PairPage[] = [
         a: "It varies with liquidity and trade size, which is the reason for the comparison — the terminal quotes every eligible route at the moment you ask.",
       },
       {
-        q: "Are there fees beyond the 2%?",
+        q: "Are there fees beyond the 1%?",
         a: "Only the blockchains' own network fees. Ethereum gas is paid by you when you send the deposit, and the Bitcoin payout carries a standard mining fee.",
       },
       {
@@ -216,7 +216,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Bitcoin",
     title: "Swap USDT to BTC — No Account, No KYC",
     description:
-      "Swap Tether for Bitcoin without an account or KYC. Live quotes across every supporting route, non-custodial, flat 2% already in the quote.",
+      "Swap Tether for Bitcoin without an account or KYC. Live quotes across every supporting route, non-custodial, flat 1% already in the quote.",
     intro:
       "Stablecoins in, Bitcoin out, wallet to wallet. A useful route if you hold dollar-denominated tokens and want an asset with no issuer, no freeze function and no closure date attached.",
     notes: [
@@ -251,7 +251,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Litecoin",
     title: "Swap BTC to LTC — No Account, No KYC",
     description:
-      "Compare live BTC to LTC rates across every integrated route. Non-custodial, no account, no KYC for standard swaps, flat 2% already in the quote.",
+      "Compare live BTC to LTC rates across every integrated route. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
       "Bitcoin in, Litecoin out, wallet to wallet. Both chains settle predictably and the pair is widely supported, so this is one of the more straightforward swaps we route.",
     notes: [
@@ -270,7 +270,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "What is the fee?",
-        a: "A flat 2%, already included in the quote shown, plus each blockchain's own network fee.",
+        a: "A flat 1%, already included in the quote shown, plus each blockchain's own network fee.",
       },
       {
         q: "Do you support MWEB addresses?",
