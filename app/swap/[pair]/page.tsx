@@ -99,7 +99,7 @@ export default function PairPage({ params }: { params: { pair: string } }) {
           <span>Non-custodial</span>
           <span>No account</span>
           <span>No KYC</span>
-          <span>Flat 2% in the quote</span>
+          <span>Flat 1% in the quote</span>
         </div>
       </section>
 
