@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 export const metadata = {
   title: "Frequently Asked Questions",
   description:
-    "Answers about swapping crypto on TokensFund without KYC: how non-custodial swaps work, supported assets and protocols, the 2% fee, safety, and privacy.",
+    "Answers about swapping crypto on TokensFund without KYC: how non-custodial swaps work, supported assets and protocols, the 1% fee, safety, and privacy.",
   keywords: [
     "tokensfund faq",
     "no KYC crypto swap faq",
@@ -17,7 +17,7 @@ export const metadata = {
     url: "/faq",
     title: "TokensFund FAQ — No-KYC Crypto Swaps",
     description:
-      "How non-custodial swaps work, which protocols and assets are supported, the 2% fee, safety, and privacy — answered.",
+      "How non-custodial swaps work, which protocols and assets are supported, the 1% fee, safety, and privacy — answered.",
     images: [
       {
         url: "https://tokensfund.xyz/og-image.png",
@@ -31,7 +31,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "TokensFund FAQ — No-KYC Crypto Swaps",
     description:
-      "How non-custodial swaps work, which protocols and assets are supported, the 2% fee, safety, and privacy — answered.",
+      "How non-custodial swaps work, which protocols and assets are supported, the 1% fee, safety, and privacy — answered.",
     images: ["https://tokensfund.xyz/og-image.png"],
   },
 };
@@ -52,7 +52,7 @@ const faqs = [
   {
     section: "The basics",
     q: "Which assets can I swap?",
-    a: "TokensFund supports 15+ assets across multiple chains, including BTC, ETH, XMR, ZEC, SOL, XRP, DOGE, LTC, TON, NEAR, and USDC and USDT on Ethereum and Tron. The full, current list is always shown in the swap dropdown on the homepage.",
+    a: "TokensFund supports 15+ assets across multiple chains, including BTC, ETH, XMR, SOL, XRP, DOGE, LTC, TON, NEAR, and USDC and USDT on Ethereum and Tron. The full, current list is always shown in the swap dropdown on the homepage.",
   },
   {
     section: "The basics",
@@ -102,12 +102,12 @@ const faqs = [
   {
     section: "Fees & rates",
     q: "How does TokensFund make money? Do you charge a fee?",
-    a: "TokensFund charges a flat 2% fee per swap, and it's already included in the rate you see before you confirm. There's no separate charge added at the end — the quoted output is what lands in your wallet. The quote reflects everything: the routing protocol's costs and our 2% fee.",
+    a: "TokensFund charges a flat 1% fee per swap, and it's already included in the rate you see before you confirm. There's no separate charge added at the end — the quoted output is what lands in your wallet. The quote reflects everything: the routing protocol's costs and our 1% fee.",
   },
   {
     section: "Fees & rates",
     q: "Will I get exactly the rate I'm quoted?",
-    a: "Quotes are live estimates, not locked guarantees. The amount you actually receive can move slightly with network conditions and the routing protocol's liquidity between the moment you get the quote and the moment the swap executes. The 2% TokensFund fee is already built into the quote, so review the figure on screen before sending.",
+    a: "Quotes are live estimates, not locked guarantees. The amount you actually receive can move slightly with network conditions and the routing protocol's liquidity between the moment you get the quote and the moment the swap executes. The 1% TokensFund fee is already built into the quote, so review the figure on screen before sending.",
   },
   {
     section: "Fees & rates",
