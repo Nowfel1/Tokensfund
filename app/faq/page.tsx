@@ -57,7 +57,7 @@ const faqs = [
   {
     section: "The basics",
     q: "Which protocols does TokensFund route through?",
-    a: "TokensFund compares and routes across five protocols: THORChain, Chainflip, NEAR Intents, Changee, and CCE.Cash. You always see which route a quote comes from before you confirm. The swap itself is executed by the underlying protocol — TokensFund is the comparison and routing layer on top.",
+    a: "TokensFund compares and routes across four protocols: THORChain, Chainflip, Changee and CCE.Cash. You always see which route a quote comes from before you confirm. The swap itself is executed by the underlying protocol — TokensFund is the comparison and routing layer on top.",
   },
   {
     section: "Using TokensFund",
