@@ -554,3 +554,27 @@ a { color: inherit; }
 .pair-links { list-style: none; padding-left: 0; }
 .pair-links a { color: var(--text); text-decoration: none; }
 .pair-links a:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ==== track: shareable per-swap link ==== */
+.track-share {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  margin-top: 16px; padding: 10px 12px;
+  background: var(--surface-2); border: 1px solid var(--border-soft);
+  border-radius: 10px;
+}
+.track-share-label {
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--muted-2); white-space: nowrap;
+}
+.track-share-url {
+  flex: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+  white-space: nowrap; font-family: var(--mono); font-size: 12px;
+  color: var(--muted);
+}
+.track-link {
+  display: inline-block; margin-top: 10px;
+  font-family: var(--mono); font-size: 12px;
+  color: var(--muted-2); text-decoration: none;
+  transition: color 0.15s ease;
+}
+.track-link:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
