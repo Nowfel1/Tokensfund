@@ -66,8 +66,10 @@ export default function Privacy() {
         <p>
           Like most websites, our hosting and infrastructure may automatically log standard technical
           data such as IP address, browser type, device information, and timestamps, for security,
-          abuse prevention, and reliability. We do use analytics; if we do, it is configured to not 
-          collect personal data. 
+          abuse prevention, and reliability. [Confirm what your host/logging actually retains.] We
+          [do / do not] use analytics; if we do, it is [ANALYTICS PROVIDER, e.g. a privacy-friendly
+          analytics tool], configured to [describe — e.g. not set cookies and not collect personal
+          data]. [Edit this section to match your real setup before publishing.]
         </p>
 
         <h2>On-chain transactions are public</h2>
@@ -87,8 +89,7 @@ export default function Privacy() {
 
         <h2>Who we share with</h2>
         <p>
-          We share swap details with the third-party protocol that executes your swap — THORChain,
-          Chainflip, NEAR Intents, Changee or CCE.Cash — because they need your destination and
+          We share swap details with the third-party protocol that executes your swap — THORChain, Chainflip, Changee or CCE.Cash — because they need your destination and
           refund addresses to complete the transaction. Each operates independently and under its own
           privacy practices, which we do not control. We also rely on infrastructure providers such
           as our hosting platform [e.g. Vercel] and [any analytics or error-monitoring provider] to
@@ -142,7 +143,7 @@ export default function Privacy() {
         <p>
           Questions or requests? Reach us on Telegram at{" "}
           <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>{" "}
-          or at hello@tokensfund.xyz.
+          or at [CONTACT EMAIL].
         </p>
       </article>
     </main>
