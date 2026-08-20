@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Script from "next/script";
 import Logo from "@/components/Logo";
+import { POSTS } from "@/lib/posts";
 import SwapTerminal from "@/components/SwapTerminal";
 import RateTicker from "@/components/RateTicker";
 
@@ -11,23 +12,25 @@ export const metadata = {
 const PROTOCOLS = [
   { mark: "TC", name: "THORChain" },
   { mark: "CF", name: "Chainflip" },
-  { mark: "NI", name: "NEAR Intents" },
   { mark: "CG", name: "Changee" },
   { mark: "CC", name: "CCE.Cash" },
 ];
 
-const LATEST_POSTS = [
-  {
-    tag: "Regulation",
-    title: "AscendEX: the custody lesson",
-    href: "/blog/ascendex-collapse-mica-custody-lesson-2026",
-  },
-  {
-    tag: "Guide",
-    title: "Best BTC → XMR rate in 2026",
-    href: "/blog/best-btc-to-xmr-rate-2026",
-  },
-];
+// Auto-derived from lib/posts.ts — the homepage always links the two newest
+// posts. This matters beyond looks: the homepage is the most-crawled page, so
+// a link here is how new posts get discovered and indexed fastest. Chip titles
+// are truncated to keep the strip compact.
+function chipTitle(title: string, max = 48): string {
+  if (title.length <= max) return title;
+  const cut = title.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "\u2026";
+}
+
+const LATEST_POSTS = POSTS.slice(0, 2).map((p) => ({
+  tag: p.tag,
+  title: chipTitle(p.title),
+  href: "/blog/" + p.slug,
+}));
 
 export default function Home() {
   return (
@@ -62,7 +65,7 @@ export default function Home() {
             <span className="accent">Best rate.</span>
           </h1>
           <p className="sub">
-            TokensFund compares THORChain, Chainflip and NEAR Intents live, then routes your
+            TokensFund compares THORChain, Chainflip and CCE.Cash live, then routes your
             swap to the best price. No account. No KYC. Funds never touch our hands.
           </p>
           <div className="hero-ctas">
