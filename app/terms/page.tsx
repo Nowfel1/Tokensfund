@@ -82,8 +82,7 @@ export default function Terms() {
 
         <h2>4. Third-party protocols</h2>
         <p>
-          Swaps are executed by independent protocols including THORChain, Chainflip, NEAR Intents,
-          Changee and CCE.Cash. These protocols are operated by third parties and are not controlled
+          Swaps are executed by independent protocols including THORChain, Chainflip, Changee and CCE.Cash. These protocols are operated by third parties and are not controlled
           by TokensFund. Their availability, pricing, execution, slippage, and outcomes are outside
           our control, and their own terms and risks apply to your transaction. TokensFund is not
           responsible for any loss, delay, downtime, failed swap, or price difference arising from a
