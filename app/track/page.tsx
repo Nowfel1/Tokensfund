@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Logo from "@/components/Logo";
 import { ProviderId, SwapStatus } from "@/lib/types";
 
@@ -42,33 +42,80 @@ const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> 
   },
 };
 
+const PROVIDER_IDS: ProviderId[] = [
+  "thorchain",
+  "chainflip",
+  "near_intents",
+  "cce",
+  "changee",
+];
+
 export default function TrackPage() {
   const [provider, setProvider] = useState<ProviderId>("changee");
   const [id, setId] = useState("");
   const [status, setStatus] = useState<SwapStatus | null>(null);
   const [busy, setBusy] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [copied, setCopied] = useState(false);
+  const autoRan = useRef(false);
+
+  // Deep link: /track?provider=cce&id=XXXX loads and runs the lookup
+  // automatically, so every swap has its own shareable, bookmarkable URL.
+  useEffect(() => {
+    if (typeof window === "undefined" || autoRan.current) return;
+    const q = new URLSearchParams(window.location.search);
+    const p = q.get("provider") as ProviderId | null;
+    const i = q.get("id");
+    if (p && PROVIDER_IDS.includes(p)) setProvider(p);
+    if (i) setId(i);
+    if (p && PROVIDER_IDS.includes(p) && i) {
+      autoRan.current = true;
+      // defer so the state above is applied before the lookup reads it
+      setTimeout(() => {
+        void runLookup(p, i);
+      }, 0);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Shareable URL for the current lookup
+  const shareUrl =
+    typeof window !== "undefined" && id.trim()
+      ? `${window.location.origin}/track?provider=${provider}&id=${encodeURIComponent(id.trim())}`
+      : "";
+
+  function copyShare() {
+    if (!shareUrl) return;
+    navigator.clipboard?.writeText(shareUrl);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1600);
+  }
 
   const inputMeta = PROVIDER_INPUT[provider] ?? {
     placeholder: "Tracking ID",
     hint: "",
   };
 
-  async function lookup() {
-    if (!id.trim()) return;
+  async function runLookup(p: ProviderId, rawId: string) {
+    const value = rawId.trim();
+    if (!value) return;
     setBusy(true);
     setStatus(null);
     setTouched(true);
     try {
-      const res = await fetch("/api/status?provider=" + provider + "&id=" + encodeURIComponent(id.trim()));
+      const res = await fetch("/api/status?provider=" + p + "&id=" + encodeURIComponent(value));
       const text = await res.text();
-      const data = text ? JSON.parse(text) : { provider, state: "unknown", detail: "No response from server." };
+      const data = text ? JSON.parse(text) : { provider: p, state: "unknown", detail: "No response from server." };
       setStatus(data);
     } catch (e: any) {
-      setStatus({ provider, state: "unknown", detail: e.message });
+      setStatus({ provider: p, state: "unknown", detail: e.message });
     } finally {
       setBusy(false);
     }
+  }
+
+  async function lookup() {
+    await runLookup(provider, id);
   }
 
   const meta = status ? (STATE_META[status.state] ?? STATE_META.unknown) : null;
@@ -159,6 +206,19 @@ export default function TrackPage() {
 
         {touched && !meta && !busy && (
           <p className="status-hint" style={{ marginTop: 16 }}>No status found. Double-check the ID and provider.</p>
+        )}
+
+        {/* Shareable per-swap URL. Monerica flagged the absence of unique order
+            URLs as a suspicious practice — every lookup now has its own link
+            that can be bookmarked, shared with support, or reopened later. */}
+        {id.trim() && (
+          <div className="track-share">
+            <span className="track-share-label">Link to this swap</span>
+            <code className="track-share-url">{shareUrl}</code>
+            <button type="button" className="copybtn" onClick={copyShare}>
+              {copied ? "Copied" : "Copy"}
+            </button>
+          </div>
         )}
       </div>
 
