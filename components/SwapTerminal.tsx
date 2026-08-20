@@ -89,7 +89,9 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   const from = ASSETS.find((a) => a.id === fromId);
   const to = ASSETS.find((a) => a.id === toId);
   if (!from || !to) return [];
-  return (["thorchain", "chainflip", "near_intents", "cce", "changee"] as ProviderId[]).filter(
+  // NEAR Intents deliberately excluded — see the note in lib/assets.ts.
+  // Its refs are also commented out there, so this is belt-and-braces.
+  return (["thorchain", "chainflip", "cce", "changee"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
