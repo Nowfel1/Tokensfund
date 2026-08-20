@@ -1,6 +1,25 @@
 import { CanonicalAsset } from "./types";
 import type { ProviderId } from "./types";
 
+// ---------------------------------------------------------------------------
+// NEAR INTENTS DISABLED — 2026-08-17
+//
+// Every near_intents provider ref is commented out with the marker
+// [NEAR DISABLED]. Reason: multiple independent reports — including our own
+// ~5 BTC case (see /blog/near-intents-stuck-swap-incident-2026) — of deposits
+// confirming on-chain but never crediting, no refund issued, support
+// escalation going silent, and users restricted from asking in Telegram.
+//
+// Consequences while this is off:
+//   - ZEC has no route and is commented out below. THORChain's ZEC pool is
+//     announced but NOT live yet; when it ships, uncomment the thorchain ref
+//     inside the ZEC block and restore Zcash without needing NEAR.
+//   - NEAR (the token) has no route and is commented out below.
+//   - Everything else keeps its remaining routes.
+//
+// To re-enable NEAR: search "[NEAR DISABLED]" and uncomment.
+// ---------------------------------------------------------------------------
+
 export const ASSETS: CanonicalAsset[] = [
   {
     id: "BTC",
@@ -11,7 +30,7 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       thorchain: { asset: "BTC.BTC", decimals: 8 },
       chainflip: { asset: "BTC", chain: "Bitcoin" },
-      near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:btc.omft.near", decimals: 8 },
       cce: { abbr: "BTC", chain: "Bitcoin" },
       changee: { ticker: "BTC" },
     },
@@ -25,7 +44,7 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       thorchain: { asset: "ETH.ETH", decimals: 8 },
       chainflip: { asset: "ETH", chain: "Ethereum" },
-      near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:eth.omft.near", decimals: 18 },
       cce: { abbr: "ETH", chain: "Ethereum" },
       changee: { ticker: "ETH" },
     },
@@ -41,10 +60,7 @@ export const ASSETS: CanonicalAsset[] = [
         asset: "ETH.USDT-0XDAC17F958D2EE523A2206206994597C13D831EC7",
         decimals: 8,
       },
-      near_intents: {
-        asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near",
-        decimals: 6,
-      },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:eth-0xdac17f958d2ee523a2206206994597c13d831ec7.omft.near", decimals: 6 },
       cce: { abbr: "USDT", chain: "Ethereum" },
       changee: { ticker: "USDT" },
     },
@@ -61,16 +77,31 @@ export const ASSETS: CanonicalAsset[] = [
       changee: { ticker: "XMR" },
     },
   },
+  // [NEAR DISABLED] ZEC's only route was NEAR Intents. THORChain's ZEC pool is
+  // announced but not yet live — when it ships, uncomment this whole block AND
+  // its thorchain ref, and Zcash returns without needing NEAR.
+  // {
+  //   id: "ZEC",
+  //   symbol: "ZEC",
+  //   name: "Zcash",
+  //   chain: "Zcash",
+  //   decimals: 8,
+  //   providerIds: {
+  //     // near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
+  //     // thorchain: { asset: "ZEC.ZEC", decimals: 8 },
+  //   },
+  // },
   {
-    id: "ZEC",
-    symbol: "ZEC",
-    name: "Zcash",
-    chain: "Zcash",
-    decimals: 8,
+    id: "DAI",
+    symbol: "DAI",
+    name: "Dai (Ethereum)",
+    chain: "Ethereum",
+    decimals: 18,
     providerIds: {
-      near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-      // THORChain ZEC pool not live yet (rollout ~early July 2026). Re-add when live:
-      // thorchain: { asset: "ZEC.ZEC", decimals: 8 },
+      thorchain: {
+        asset: "ETH.DAI-0X6B175474E89094C44DA98B954EEDEAC495271D0F",
+        decimals: 8,
+      },
     },
   },
   {
@@ -81,7 +112,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 9,
     providerIds: {
       chainflip: { asset: "SOL", chain: "Solana" },
-      near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:sol.omft.near", decimals: 9 },
       cce: { abbr: "SOL", chain: "Solana" },
       changee: { ticker: "SOL" },
     },
@@ -93,7 +124,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "XRP Ledger",
     decimals: 6,
     providerIds: {
-      near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:xrp.omft.near", decimals: 6 },
       changee: { ticker: "XRP" },
     },
   },
@@ -105,7 +136,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 8,
     providerIds: {
       thorchain: { asset: "DOGE.DOGE", decimals: 8 },
-      near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:doge.omft.near", decimals: 8 },
       cce: { abbr: "DOGE", chain: "Dogecoin" },
       changee: { ticker: "DOGE" },
     },
@@ -122,13 +153,7 @@ export const ASSETS: CanonicalAsset[] = [
   },
   {
     // BNB — native coin of BNB Smart Chain.
-    // VERIFY BEFORE TRUSTING: the cce chain string below is copied from CCE's
-    // /openapi/abbr/lists convention ("BNB Smart Chain", as confirmed for
-    // USDT-BEP20). Confirm BNB's own row via /api/cce-currencies?q=bnb and
-    // correct `abbr`/`chain`/`decimals` if they differ.
-    // Changee and NEAR Intents may also support BNB — their lines are left
-    // commented out deliberately rather than guessed. Uncomment only after
-    // confirming the exact ticker / asset id from each provider.
+    // Verify cce values via /api/cce-currencies?q=bnb before trusting.
     id: "BNB",
     symbol: "BNB",
     name: "BNB (BNB Smart Chain)",
@@ -136,8 +161,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 18,
     providerIds: {
       cce: { abbr: "BNB", chain: "BNB Smart Chain" },
-      // changee: { ticker: "BNB" },              // verify against Changee's currency list
-      // near_intents: { asset: "nep141:bnb.omft.near", decimals: 18 }, // GUESS — verify
+      // changee: { ticker: "BNB" },  // verify against Changee's currency list
     },
   },
   {
@@ -145,8 +169,7 @@ export const ASSETS: CanonicalAsset[] = [
     // chain/decimals verified against CCE /openapi/abbr/lists:
     //   { abbr: "USDT", chain: "BNB Smart Chain", type: "BEP20",
     //     decimal: 18, recv: true, send: true }
-    // The chain string must match CCE's value EXACTLY — do not shorten to
-    // "BSC" or "BEP20".
+    // The chain string must match CCE's value EXACTLY — do not shorten.
     // WARNING: BSC uses the same 0x... address format as Ethereum, so the
     // address checker cannot distinguish them. Labelling must stay explicit.
     id: "USDT_BSC",
@@ -170,12 +193,23 @@ export const ASSETS: CanonicalAsset[] = [
         decimals: 8,
       },
       chainflip: { asset: "USDC", chain: "Ethereum" },
-      near_intents: {
-        asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near",
-        decimals: 6,
-      },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:eth-0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48.omft.near", decimals: 6 },
       cce: { abbr: "USDC", chain: "Ethereum" },
       changee: { ticker: "USDC" },
+    },
+  },
+  {
+    // USDC on Solana (SPL).
+    // VERIFY the cce chain string via /api/cce-currencies?q=usdc.
+    id: "USDC_SOL",
+    symbol: "USDC",
+    name: "USD Coin (Solana)",
+    chain: "Solana",
+    decimals: 6,
+    providerIds: {
+      chainflip: { asset: "USDC", chain: "Solana" },
+      cce: { abbr: "USDC", chain: "Solana" },
+      // changee: { ticker: "USDCSOL" },  // need real ticker
     },
   },
   {
@@ -187,40 +221,38 @@ export const ASSETS: CanonicalAsset[] = [
     providerIds: {
       thorchain: { asset: "LTC.LTC", decimals: 8 },
       chainflip: { asset: "LTC", chain: "Litecoin" },
-      near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
+      // [NEAR DISABLED] near_intents: { asset: "nep141:ltc.omft.near", decimals: 8 },
       cce: { abbr: "LTC", chain: "Litecoin" },
       changee: { ticker: "LTC" },
     },
   },
   {
-    // Toncoin rebranded to Gram (GRAM) on 15 June 2026 after an 81% governance
-    // vote — same coin, 1:1, no migration. The BLOCKCHAIN is still called TON,
-    // which is why `chain` and the internal `id` stay "TON": the id is the key
-    // for the price map, coin icon, and address pattern, and changing it would
-    // break all three for zero benefit.
-    // Provider identifiers are pinned explicitly below so this display rename
-    // can never leak into an API call. If a provider later renames its own
-    // ticker to GRAM, change ONLY that provider's line.
+    // Toncoin rebranded to Gram (GRAM) on 15 June 2026 — same coin, 1:1, no
+    // migration. The BLOCKCHAIN is still called TON, which is why `chain` and
+    // the internal `id` stay "TON": the id keys the price map, coin icon and
+    // address pattern. Provider identifiers are pinned explicitly so this
+    // display rename cannot leak into an API call.
     id: "TON",
     symbol: "GRAM",
     name: "Gram (TON network)",
     chain: "TON",
     decimals: 9,
     providerIds: {
-      near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
+      // [NEAR DISABLED] near_intents: { asset: "nep245:v2_1.omni.hot.tg:1117_", decimals: 9 },
       changee: { ticker: "TON" },
     },
   },
-  {
-    id: "NEAR",
-    symbol: "NEAR",
-    name: "NEAR",
-    chain: "NEAR",
-    decimals: 24,
-    providerIds: {
-      near_intents: { asset: "nep141:wrap.near", decimals: 24 },
-    },
-  },
+  // [NEAR DISABLED] NEAR's only route was NEAR Intents.
+  // {
+  //   id: "NEAR",
+  //   symbol: "NEAR",
+  //   name: "NEAR",
+  //   chain: "NEAR",
+  //   decimals: 24,
+  //   providerIds: {
+  //     near_intents: { asset: "nep141:wrap.near", decimals: 24 },
+  //   },
+  // },
 ];
 
 export const ASSET_BY_ID = new Map(ASSETS.map((a) => [a.id, a]));
