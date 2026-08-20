@@ -115,7 +115,7 @@ export const PAIRS: PairPage[] = [
     intro:
       "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and our 1% is already in the number.",
     notes: [
-      "All five providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
+      "All four providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
       "Your ETH address is the standard 0x format. Double-check it: the same format is used by several other EVM chains, and funds sent to the wrong network are unrecoverable.",
       "Bitcoin confirmation time dominates the wait; the Ethereum payout is usually fast once the deposit clears.",
     ],
