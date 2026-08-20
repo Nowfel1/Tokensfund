@@ -24,9 +24,12 @@ const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> 
     placeholder: "Changee exchange ID (e.g. b221f953d73ec3)",
     hint: "Use the exchange ID from your swap confirmation — not the deposit address.",
   },
+  // Kept so deep links from older swaps (/track?provider=near_intents&id=...)
+  // still render sensibly, but removed from the dropdown — we no longer route
+  // to NEAR Intents and can't query its status.
   near_intents: {
     placeholder: "Deposit address you sent funds to",
-    hint: "NEAR Intents swaps are tracked by the deposit address itself.",
+    hint: "NEAR Intents routing is suspended. Existing swaps can be checked at explorer.near-intents.org using your deposit address.",
   },
   chainflip: {
     placeholder: "Deposit channel ID (e.g. 12345678-Bitcoin-123)",
@@ -42,10 +45,11 @@ const PROVIDER_INPUT: Record<ProviderId, { placeholder: string; hint: string }> 
   },
 };
 
+// near_intents intentionally absent — routing suspended, status unavailable.
+// Deep links carrying it will simply not auto-run a lookup.
 const PROVIDER_IDS: ProviderId[] = [
   "thorchain",
   "chainflip",
-  "near_intents",
   "cce",
   "changee",
 ];
@@ -153,7 +157,6 @@ export default function TrackPage() {
             onChange={(e) => { setProvider(e.target.value as ProviderId); setStatus(null); setTouched(false); }}
           >
             <option value="changee">Changee</option>
-            <option value="near_intents">NEAR Intents</option>
             <option value="chainflip">Chainflip</option>
             <option value="thorchain">THORChain</option>
             <option value="cce">CCE.Cash</option>
