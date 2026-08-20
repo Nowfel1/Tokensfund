@@ -15,7 +15,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
 const COIN_LETTER: Record<string, string> = {
   BTC: "\u20BF", ETH: "\u039E", SOL: "S", XRP: "X", DOGE: "D", USDT: "T", USDC: "U",
   LTC: "L", TON: "G", XMR: "M", ZEC: "Z", NEAR: "N", // TON id, GRAM display
-  TRX: "T", USDT_TRC20: "T", USDT_BSC: "T", BNB: "B",
+  TRX: "T", USDT_TRC20: "T", USDT_BSC: "T", BNB: "B", USDC_SOL: "U",
 };
 
 // gradient pairs per coin for the icon
@@ -26,6 +26,7 @@ const COIN_GRAD: Record<string, [string, string]> = {
   XMR: ["#ff6600", "#ff8c42"], ZEC: ["#f4b728", "#f4cd5e"], NEAR: ["#7b7cf0", "#a5a6f8"],
   TRX: ["#e83b3b", "#ff6b6b"], USDT_TRC20: ["#26a17b", "#3fd69b"],
   USDT_BSC: ["#f0b90b", "#f8d33a"], BNB: ["#f3ba2f", "#f8d777"],
+  USDC_SOL: ["#2775ca", "#4f9be8"],
 };
 
 function coinGrad(id: string): string {
@@ -70,6 +71,7 @@ const ADDR_PATTERNS: Record<string, RegExp> = {
   // only — it cannot tell a BSC address from an Ethereum one.
   USDT_BSC: /^0x[a-fA-F0-9]{40}$/,
   BNB: /^0x[a-fA-F0-9]{40}$/, // EVM format — indistinguishable from an ETH address
+  USDC_SOL: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, // Solana base58
   TON: /^(EQ|UQ|kQ|0Q)[A-Za-z0-9_-]{40,60}$/,
   ZEC: /^(t1|t3|u1|zs)[a-zA-Z0-9]{20,90}$/,
   NEAR: /^([a-z0-9_-]+\.near|[a-f0-9]{64})$/,
@@ -600,6 +602,16 @@ export default function SwapTerminal({
             </div>
           )}
           <StatusTracker status={status} provider={deposit.provider} />
+          {/* Unique per-swap URL. Users can bookmark this, send it to support,
+              or reopen it later without re-entering any identifier. */}
+          <a
+            className="track-link"
+            href={"/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId)}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Track this swap {"\u2192"}
+          </a>
           {deposit.memo && !deposit.execution && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
