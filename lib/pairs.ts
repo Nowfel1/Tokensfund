@@ -138,41 +138,43 @@ export const PAIRS: PairPage[] = [
       },
     ],
   },
-  {
-    slug: "btc-to-zec",
-    fromId: "BTC",
-    toId: "ZEC",
-    fromLabel: "Bitcoin",
-    toLabel: "Zcash",
-    title: "Swap BTC to ZEC — No Account, No KYC",
-    description:
-      "Swap Bitcoin for Zcash without an account or KYC. Live quotes from every route that supports the pair, non-custodial, flat 1% already in the quote.",
-    intro:
-      "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show you every one that does, and send your swap to the best rate.",
-    notes: [
-      "ZEC has fewer routes than most pairs because of exchange delistings — expect a shorter comparison list, not a worse rate.",
-      "Zcash addresses come in transparent (t1...), shielded (zs...) and unified (u1...) forms. Swap routes usually deliver to transparent addresses.",
-      "If privacy is your reason for buying ZEC, move the funds into your own shielded address after they arrive — that final hop is where the privacy actually begins.",
-    ],
-    faqs: [
-      {
-        q: "Can I buy Zcash without KYC?",
-        a: "Yes. The swap runs from your Bitcoin wallet to a one-time deposit address and delivers ZEC to an address you control. No registration and no KYC for standard swaps.",
-      },
-      {
-        q: "Will my ZEC be shielded?",
-        a: "Not automatically. Most swap routes deliver to a transparent address, which behaves like a Bitcoin address — amounts and history are visible. To use Zcash's privacy, move the received funds to your own shielded address inside your wallet.",
-      },
-      {
-        q: "Why are there fewer routes for ZEC than for other coins?",
-        a: "Privacy assets have been delisted from many custodial platforms, which fragmented liquidity. We only show routes that genuinely support the pair rather than padding the list.",
-      },
-      {
-        q: "What does it cost?",
-        a: "A flat 1%, already included in the quote you see, plus the network fees charged by Bitcoin and Zcash themselves.",
-      },
-    ],
-  },
+  // [NEAR DISABLED 2026-08-17] btc-to-zec removed: ZEC's only route was NEAR
+  // Intents. Restore this block when ZEC has a working route again.
+  // {
+  //   slug: "btc-to-zec",
+  //   fromId: "BTC",
+  //   toId: "ZEC",
+  //   fromLabel: "Bitcoin",
+  //   toLabel: "Zcash",
+  //   title: "Swap BTC to ZEC — No Account, No KYC",
+  //   description:
+  //     "Swap Bitcoin for Zcash without an account or KYC. Live quotes from every route that supports the pair, non-custodial, flat 1% already in the quote.",
+  //   intro:
+  //     "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show you every one that does, and send your swap to the best rate.",
+  //   notes: [
+  //     "ZEC has fewer routes than most pairs because of exchange delistings — expect a shorter comparison list, not a worse rate.",
+  //     "Zcash addresses come in transparent (t1...), shielded (zs...) and unified (u1...) forms. Swap routes usually deliver to transparent addresses.",
+  //     "If privacy is your reason for buying ZEC, move the funds into your own shielded address after they arrive — that final hop is where the privacy actually begins.",
+  //   ],
+  //   faqs: [
+  //     {
+  //       q: "Can I buy Zcash without KYC?",
+  //       a: "Yes. The swap runs from your Bitcoin wallet to a one-time deposit address and delivers ZEC to an address you control. No registration and no KYC for standard swaps.",
+  //     },
+  //     {
+  //       q: "Will my ZEC be shielded?",
+  //       a: "Not automatically. Most swap routes deliver to a transparent address, which behaves like a Bitcoin address — amounts and history are visible. To use Zcash's privacy, move the received funds to your own shielded address inside your wallet.",
+  //     },
+  //     {
+  //       q: "Why are there fewer routes for ZEC than for other coins?",
+  //       a: "Privacy assets have been delisted from many custodial platforms, which fragmented liquidity. We only show routes that genuinely support the pair rather than padding the list.",
+  //     },
+  //     {
+  //       q: "What does it cost?",
+  //       a: "A flat 1%, already included in the quote you see, plus the network fees charged by Bitcoin and Zcash themselves.",
+  //     },
+  //   ],
+  // },
   {
     slug: "eth-to-btc",
     fromId: "ETH",
