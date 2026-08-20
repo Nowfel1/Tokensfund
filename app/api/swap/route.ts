@@ -3,7 +3,6 @@ import { getAsset } from "@/lib/assets";
 import { ProviderId, QuoteRequest } from "@/lib/types";
 import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
-import * as nearIntents from "@/lib/providers/nearIntents";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
 import { sql, ensureOrdersTable } from "@/lib/db";
@@ -36,6 +35,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    // NEAR Intents removed 2026-08-17 — see the header note in lib/assets.ts.
+    // Nothing should reach this branch (its asset refs are commented out and
+    // the aggregator filters it), but refuse explicitly rather than fall
+    // through to "Unknown provider" if a stale client ever asks for it.
+    if (body.provider === "near_intents") {
+      return NextResponse.json(
+        { error: "NEAR Intents routing has been suspended. Please choose another route." },
+        { status: 400 }
+      );
+    }
+
     let result;
     if (body.provider === "thorchain") {
       const quote = await thorchain.getQuote(from, to, body);
@@ -43,9 +53,6 @@ export async function POST(req: NextRequest) {
     } else if (body.provider === "chainflip") {
       const quote = await chainflip.getQuote(from, to, body);
       result = await chainflip.buildSwap(quote, body, from, to);
-    } else if (body.provider === "near_intents") {
-      const quote = await nearIntents.getQuote(from, to, body);
-      result = await nearIntents.buildSwap(quote, from, to, body);
     } else if (body.provider === "cce") {
       const quote = await cce.getQuote(from, to, body);
       result = await cce.buildSwap(quote, body, from, to);
