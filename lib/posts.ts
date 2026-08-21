@@ -11,6 +11,13 @@ export interface PostMeta {
 }
 
 export const POSTS: PostMeta[] = [
+    {
+    slug: "bitcoin-breaks-307-day-range-2026",
+    title: "The Box Broke",
+    date: "August 21, 2026",
+    description: "After 307 days inside the same $10K range, Bitcoin cleared $77,000 — up roughly 24% since Monday, its best week in more than two years. The trigger wasn't crypto-native: it was the Treasury doubling bond buybacks, amplified by a record $2.7B of short liquidations. What broke, and what a 24% week doesn't prove.",
+    tag: "Markets",
+  },
   {
     slug: "near-intents-stuck-swap-incident-2026",
     title: "Incident Report: 5 BTC Stuck in a NEAR Intents Swap for Three Days",
