@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "thorchain-320-native-xmr-zec-2026",
+    title: "THORChain v3.20: Native XMR and ZEC, and What Actually Shipped",
+    date: "August 26, 2026",
+    description: "THORChain's v3.20 upgrade went live on 25 August, bringing Monero and Zcash support, restoring BNB, Base and Solana trading after May's exploit, and shipping Protocol-Owned Liquidity and a Stable Reserve. What's live now, what's still staged, and why native privacy-coin swaps matter after two years of delistings.",
+    tag: "Privacy",
+  },
+    {
     slug: "bitcoin-breaks-307-day-range-2026",
     title: "The Box Broke",
     date: "August 21, 2026",
