@@ -192,6 +192,25 @@ export default function SwapTerminal({
       .catch(() => {});
   }, []);
 
+  // As soon as a deposit address exists, put the swap's tracking URL in the
+  // address bar. This is what makes the order recoverable: the URL enters
+  // browser history automatically, so a user who closes the tab (or needs
+  // evidence in a dispute) can find it again without having copied anything.
+  // pushState is used rather than a navigation so the terminal keeps its state.
+  useEffect(() => {
+    if (typeof window === "undefined" || !deposit) return;
+    const url =
+      "/track?provider=" +
+      deposit.provider +
+      "&id=" +
+      encodeURIComponent(deposit.trackingId);
+    try {
+      window.history.pushState({ tokensfundSwap: true }, "", url);
+    } catch {
+      // history API unavailable — the copyable link below still works
+    }
+  }, [deposit]);
+
   // ticking clock only while a quote-expiry countdown is on screen
   useEffect(() => {
     if (!deposit?.expiresAt) return;
@@ -604,16 +623,19 @@ export default function SwapTerminal({
             </div>
           )}
           <StatusTracker status={status} provider={deposit.provider} />
-          {/* Unique per-swap URL. Users can bookmark this, send it to support,
-              or reopen it later without re-entering any identifier. */}
-          <a
-            className="track-link"
-            href={"/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId)}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Track this swap {"\u2192"}
-          </a>
+          {/* Unique per-swap URL, shown in full and copyable. Also pushed into
+              the address bar above (see the effect near the top of this file)
+              so it enters browser history without the user doing anything. */}
+          <div className="swap-url">
+            <span className="swap-url-label">Your swap URL — save this</span>
+            <Copyable
+              text={
+                (typeof window !== "undefined" ? window.location.origin : "https://tokensfund.xyz") +
+                "/track?provider=" + deposit.provider +
+                "&id=" + encodeURIComponent(deposit.trackingId)
+              }
+            />
+          </div>
           {deposit.memo && !deposit.execution && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
