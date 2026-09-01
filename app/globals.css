@@ -578,3 +578,15 @@ a { color: inherit; }
   transition: color 0.15s ease;
 }
 .track-link:hover { color: var(--gold); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ==== per-swap URL block in the deposit panel ==== */
+.swap-url {
+  margin-top: 14px; padding: 10px 12px;
+  background: var(--surface-2); border: 1px solid var(--gold-ring);
+  border-radius: 10px;
+}
+.swap-url-label {
+  display: block; margin-bottom: 6px;
+  font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--gold);
+}
