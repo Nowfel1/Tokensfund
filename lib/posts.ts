@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "monero-price-predictions-what-they-tell-you-2026",
+    title: "What Monero Price Predictions Actually Tell You",
+    date: "September 2, 2026",
+    description: "For the same month, published XMR forecasts ranged from $355 to $470. End-2026 targets run from $825 to over $1,000. They can't all be right, and the spread is the useful information. What actually moves Monero: tail emission, delisting-driven liquidity fragmentation, and the arrival of native protocol routes.",
+    tag: "Privacy",
+  },
+    {
     slug: "thorchain-320-native-xmr-zec-2026",
     title: "THORChain v3.20: Native XMR and ZEC, and What Actually Shipped",
     date: "August 26, 2026",
