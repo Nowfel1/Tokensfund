@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "bitmex-closes-in-three-days-checklist-2026",
+    title: "BitMEX Closes in Three Days",
+    date: "September 20, 2026",
+    description: "BitMEX ceases operations on 23 September 2026 at 04:00 UTC. Positions still open will be force-closed, and KYC-verified users who leave a balance face a fee of 1% a year or $50 — whichever is greater. What to do now, and the trap that catches small balances.",
+    tag: "Markets",
+  },
+    {
     slug: "monero-price-predictions-what-they-tell-you-2026",
     title: "What Monero Price Predictions Actually Tell You",
     date: "September 2, 2026",
