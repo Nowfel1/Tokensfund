@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "we-removed-zcash-and-it-4x-2026",
+    title: "We Removed Zcash Six Weeks Ago. It's Up Roughly 4x Since",
+    date: "September 22, 2026",
+    description: "In August we dropped ZEC rather than keep routing users through a provider with unresolved stuck funds. Zcash has since gone from about $400 to $1,609 and into the top ten. An honest accounting of what that decision cost, why it was still right, and what actually drove the run.",
+    tag: "Privacy",
+  },
+    {
     slug: "bitmex-closes-in-three-days-checklist-2026",
     title: "BitMEX Closes in Three Days",
     date: "September 20, 2026",
