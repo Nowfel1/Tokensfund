@@ -77,20 +77,23 @@ export const ASSETS: CanonicalAsset[] = [
       changee: { ticker: "XMR" },
     },
   },
-  // [NEAR DISABLED] ZEC's only route was NEAR Intents. THORChain's ZEC pool is
-  // announced but not yet live — when it ships, uncomment this whole block AND
-  // its thorchain ref, and Zcash returns without needing NEAR.
-  // {
-  //   id: "ZEC",
-  //   symbol: "ZEC",
-  //   name: "Zcash",
-  //   chain: "Zcash",
-  //   decimals: 8,
-  //   providerIds: {
-  //     // near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
-  //     // thorchain: { asset: "ZEC.ZEC", decimals: 8 },
-  //   },
-  // },
+  {
+    // ZEC restored 2026-09-22 via Changee, which lists it. Zcash came off the
+    // site when NEAR Intents (its only route at the time) was suspended.
+    // THORChain's ZEC pool is announced but NOT yet live — verify at
+    // <THORNODE_URL>/thorchain/pools for ZEC.ZEC with status "Available"
+    // before uncommenting the thorchain ref below.
+    id: "ZEC",
+    symbol: "ZEC",
+    name: "Zcash",
+    chain: "Zcash",
+    decimals: 8,
+    providerIds: {
+      changee: { ticker: "ZEC" },
+      // thorchain: { asset: "ZEC.ZEC", decimals: 8 },  // pool not live yet
+      // [NEAR DISABLED] near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
+    },
+  },
   {
     id: "DAI",
     symbol: "DAI",
