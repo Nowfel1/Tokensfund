@@ -1,5 +1,4 @@
 import Link from "next/link";
-import Script from "next/script";
 import Logo from "@/components/Logo";
 import { POSTS } from "@/lib/posts";
 import SwapTerminal from "@/components/SwapTerminal";
@@ -46,7 +45,7 @@ export default function Home() {
             <Link href="/track" className="nav-link">Track</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/faq" className="nav-link">FAQ</Link>
-            <span className="routes-pill"><span className="routes-pill-dot" />5 routes live</span>
+            <span className="routes-pill"><span className="routes-pill-dot" />4 routes live</span>
           </nav>
         </div>
       </header>
@@ -108,7 +107,7 @@ export default function Home() {
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 02</span>
             <h3>Compare routes</h3>
-            <p>Five protocols quoted at once. The best rate wins, with our fee already included in the number you see.</p>
+            <p>Four routes quoted at once. The best rate wins, with our fee already included in the number you see.</p>
           </div>
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 03</span>
@@ -127,79 +126,6 @@ export default function Home() {
         <Link href="/blog" className="blog-chip more">All posts →</Link>
       </div>
 
-      {/* Independent reviews — links out to third-party listings so visitors
-          can verify on neutral ground. No scores hardcoded on purpose:
-          ratings live (and change) on the review sites, not here. */}
-      <section className="reviews-strip">
-        <div className="reviews-strip-row">
-          {/* Official Monerica badge (their sanctioned embed, converted to JSX).
-              rel is "noopener" WITHOUT noreferrer on purpose — their snippet
-              keeps the referrer so Monerica can see the traffic source. */}
-          <a
-            href="https://monerica.com/site/tokensfund"
-            target="_blank"
-            rel="noopener"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "10px",
-              padding: "8px 14px",
-              fontFamily: "Arial,Helvetica,sans-serif",
-              fontSize: "14px",
-              fontWeight: "bold",
-              lineHeight: 1.2,
-              color: "#ffffff",
-              backgroundColor: "#1d1d1d",
-              border: "1px solid #ff6600",
-              borderRadius: "8px",
-              textDecoration: "none",
-            }}
-          >
-            <span
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                background: "#ffffff",
-                borderRadius: "4px",
-                padding: "3px 5px",
-                lineHeight: 0,
-              }}
-            >
-              <img
-                src="https://cdn.monerica.com/directorycontent/images/monerica-logo.png"
-                alt="Monerica"
-                height={18}
-                style={{ height: "18px", width: "auto", display: "block", border: 0 }}
-              />
-            </span>
-            Review Tokensfund on Monerica
-          </a>
-          {/* Official Trustpilot TrustBox (Review Collector). The bootstrap
-              script below is required — without it this renders as a bare
-              text link. Loaded homepage-only via next/script. */}
-          {/* Free-plan TrustBox is light-theme only — data-theme is plan-gated,
-              so don't re-add it. Fixed width keeps it badge-proportioned
-              beside the Monerica badge instead of a floating white box. */}
-          <div
-            className="trustpilot-widget"
-            data-locale="en-US"
-            data-template-id="56278e9abfbbba0bdcd568bc"
-            data-businessunit-id="6a3d464b9af2e359f1a069ec"
-            data-style-height="52px"
-            data-style-width="100%"
-            data-token="31a2e6b0-8262-46b2-88ee-ddddf3c5cee4"
-            style={{ width: "240px", flex: "0 0 auto" }}
-          >
-            <a href="https://www.trustpilot.com/review/tokensfund.xyz" target="_blank" rel="noopener">
-              Trustpilot
-            </a>
-          </div>
-        </div>
-        <Script
-          src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"
-          strategy="afterInteractive"
-        />
-      </section>
     </main>
   );
 }
