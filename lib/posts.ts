@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "bitget-hack-withdrawals-frozen-2026",
+    title: "Bitget Froze Withdrawals. Its Self-Custodial Wallet Didn't Skip a Beat",
+    date: "September 24, 2026",
+    description: "Roughly $351.6 million was drained from Bitget's hot wallets on 24 September and withdrawals were suspended. The same company's self-custodial wallet — the one we wrote about in July — was unaffected, because there was nothing there to take. One brand, two products, one lesson.",
+    tag: "Markets",
+  },
+    {
     slug: "we-removed-zcash-and-it-4x-2026",
     title: "We Removed Zcash Six Weeks Ago. It's Up Roughly 4x Since",
     date: "September 22, 2026",
