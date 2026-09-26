@@ -199,11 +199,11 @@ export default function SwapTerminal({
   // pushState is used rather than a navigation so the terminal keeps its state.
   useEffect(() => {
     if (typeof window === "undefined" || !deposit) return;
-    const url =
-      "/track?provider=" +
-      deposit.provider +
-      "&id=" +
-      encodeURIComponent(deposit.trackingId);
+    // Prefer the short order code when the swap was logged; fall back to the
+    // /track URL if the database write failed.
+    const url = deposit.orderCode
+      ? "/order/" + deposit.orderCode
+      : "/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId);
     try {
       window.history.pushState({ tokensfundSwap: true }, "", url);
     } catch {
@@ -627,12 +627,15 @@ export default function SwapTerminal({
               the address bar above (see the effect near the top of this file)
               so it enters browser history without the user doing anything. */}
           <div className="swap-url">
-            <span className="swap-url-label">Your swap URL — save this</span>
+            <span className="swap-url-label">
+              {deposit.orderCode ? "Order " + deposit.orderCode + " — save this link" : "Your swap URL — save this"}
+            </span>
             <Copyable
               text={
                 (typeof window !== "undefined" ? window.location.origin : "https://tokensfund.xyz") +
-                "/track?provider=" + deposit.provider +
-                "&id=" + encodeURIComponent(deposit.trackingId)
+                (deposit.orderCode
+                  ? "/order/" + deposit.orderCode
+                  : "/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId))
               }
             />
           </div>
