@@ -82,6 +82,9 @@ export interface SwapInstruction {
   // seconds, so only timestamp-based providers get a meaningful countdown.
   expiresAt?: number;
   trackingId: string;
+  /** Short shareable code for the /order/<code> URL. Set by /api/swap when
+   *  the order is logged; absent if logging failed. */
+  orderCode?: string | null;
   notes?: string;
 }
 
