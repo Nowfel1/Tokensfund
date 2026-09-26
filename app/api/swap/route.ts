@@ -5,20 +5,26 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
-import { sql, ensureOrdersTable } from "@/lib/db";
+import { sql, ensureOrdersTable, generateOrderCode } from "@/lib/db";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-async function logOrder(result: any, body: any) {
+// Returns the short order code so it can be handed back to the client for the
+// /order/<code> URL. Returns null if logging failed — the swap still works,
+// the user just falls back to the /track lookup.
+async function logOrder(result: any, body: any): Promise<string | null> {
   try {
     await ensureOrdersTable();
+    const orderCode = generateOrderCode();
     await sql`
-      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId})
+      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code)
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId}, ${orderCode})
     `;
+    return orderCode;
   } catch (e) {
     console.error("Failed to log order:", e);
+    return null;
   }
 }
 
@@ -63,8 +69,8 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
     }
 
-    await logOrder(result, body);
-    return NextResponse.json(result);
+    const orderCode = await logOrder(result, body);
+    return NextResponse.json({ ...result, orderCode });
   } catch (e: any) {
     console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
     return NextResponse.json(
