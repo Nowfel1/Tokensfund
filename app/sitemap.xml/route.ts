@@ -12,7 +12,7 @@ const SITE = "https://tokensfund.xyz";
 const STATIC_PAGES: Array<{ path: string; lastmod: string; changefreq: string; priority: string }> = [
   { path: "/", lastmod: "2026-06-25", changefreq: "daily", priority: "1.0" },
   { path: "/blog", lastmod: "2026-06-25", changefreq: "weekly", priority: "0.8" },
-  { path: "/track", lastmod: "2026-06-22", changefreq: "monthly", priority: "0.6" },
+  { path: "/order", lastmod: "2026-09-25", changefreq: "monthly", priority: "0.6" },
   { path: "/faq", lastmod: "2026-06-24", changefreq: "monthly", priority: "0.6" },
   { path: "/sitemap", lastmod: "2026-07-19", changefreq: "weekly", priority: "0.4" },
   { path: "/terms", lastmod: "2026-06-25", changefreq: "yearly", priority: "0.3" },
