@@ -1,0 +1,18 @@
+TokensFund update — shared header + order status page
+
+HOW TO UPLOAD (on a computer, not a phone):
+1. Unzip this file.
+2. Open github.com/Nowfel1/Tokensfund
+3. Click "Add file" -> "Upload files"
+4. Open the unzipped "tokensfund-update" folder and drag EVERYTHING inside it
+   (the "app" folder, the "components" folder and next.config.js)
+   into the GitHub upload box.
+   GitHub keeps the folder structure, so every file lands in the right place
+   and replaces the old version automatically.
+5. Click "Commit changes".
+6. If the folder app/track still exists in your repo, delete it.
+
+Then wait for Vercel to show "Ready" and check:
+- any blog post header says "Order status", not "Track"
+- tokensfund.xyz/order shows the "Check your swap" box
+- tokensfund.xyz/track goes to the same page

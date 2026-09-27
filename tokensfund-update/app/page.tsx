@@ -1,0 +1,117 @@
+import Link from "next/link";
+import Header from "@/components/Header";
+import { POSTS } from "@/lib/posts";
+import SwapTerminal from "@/components/SwapTerminal";
+import RateTicker from "@/components/RateTicker";
+
+export const metadata = {
+  alternates: { canonical: "/" },
+};
+
+const PROTOCOLS = [
+  { mark: "TC", name: "THORChain" },
+  { mark: "CF", name: "Chainflip" },
+  { mark: "CG", name: "Changee" },
+  { mark: "CC", name: "CCE.Cash" },
+];
+
+// Auto-derived from lib/posts.ts — the homepage always links the two newest
+// posts. This matters beyond looks: the homepage is the most-crawled page, so
+// a link here is how new posts get discovered and indexed fastest. Chip titles
+// are truncated to keep the strip compact.
+function chipTitle(title: string, max = 48): string {
+  if (title.length <= max) return title;
+  const cut = title.slice(0, max);
+  return cut.slice(0, cut.lastIndexOf(" ")) + "\u2026";
+}
+
+const LATEST_POSTS = POSTS.slice(0, 2).map((p) => ({
+  tag: p.tag,
+  title: chipTitle(p.title),
+  href: "/blog/" + p.slug,
+}));
+
+export default function Home() {
+  return (
+    <main className="wrap">
+      <Header showRoutes />
+
+      <RateTicker />
+
+      <section className="hero-2col">
+        <div className="hero-2col-text">
+          <span className="hero-badge">
+            <span className="dot" />
+            <span className="txt">NON-CUSTODIAL AGGREGATOR</span>
+          </span>
+          <h1>
+            One swap.<br />
+            Every protocol.<br />
+            <span className="accent">Best rate.</span>
+          </h1>
+          <p className="sub">
+            TokensFund compares THORChain, Chainflip, Changee and CCE.Cash live, then routes your
+            swap to the best price. No account. No KYC. Funds never touch our hands.
+          </p>
+          <div className="hero-ctas">
+            <a href="#swap" className="btn-gold">Start swapping</a>
+            <a href="#how" className="btn-ghost">How it works</a>
+          </div>
+          <div className="hero-2col-stats">
+            <div className="h2c-stat"><span className="num">4</span><span className="lbl">routes</span></div>
+            <div className="h2c-div" />
+            <div className="h2c-stat"><span className="num">15+</span><span className="lbl">assets</span></div>
+            <div className="h2c-div" />
+            <div className="h2c-stat"><span className="num ok">0</span><span className="lbl">accounts</span></div>
+          </div>
+        </div>
+
+        <div className="hero-2col-card" id="swap">
+          <SwapTerminal />
+        </div>
+      </section>
+
+      <div className="powered-strip" aria-label="Routing protocols">
+        <span className="powered-strip-label">POWERED BY</span>
+        {PROTOCOLS.map((p) => (
+          <span key={p.mark} className="powered-strip-item">
+            <span className="powered-strip-mark">{p.mark}</span>
+            {p.name}
+          </span>
+        ))}
+      </div>
+
+      <section className="hiw2" id="how">
+        <p className="hiw2-label">HOW IT WORKS</p>
+        <h2 className="hiw2-title">Three steps. Zero accounts.</h2>
+        <div className="hiw2-grid">
+          <div className="hiw2-card">
+            <span className="hiw2-step">STEP 01</span>
+            <h3>Pick your pair</h3>
+            <p>Choose what you send and what you receive — 15+ assets across major chains, privacy coins included.</p>
+          </div>
+          <div className="hiw2-card">
+            <span className="hiw2-step">STEP 02</span>
+            <h3>Compare routes</h3>
+            <p>Four routes quoted at once. The best rate wins, with our fee already included in the number you see.</p>
+          </div>
+          <div className="hiw2-card">
+            <span className="hiw2-step">STEP 03</span>
+            <h3>Receive in your wallet</h3>
+            <p>Send one deposit; funds arrive at your own address automatically. If a swap can&apos;t fill, it refunds to you.</p>
+          </div>
+        </div>
+      </section>
+
+      <div className="blog-chips">
+        {LATEST_POSTS.map((p) => (
+          <Link key={p.href} href={p.href} className="blog-chip">
+            <span className="blog-chip-tag">{p.tag}</span> {p.title}
+          </Link>
+        ))}
+        <Link href="/blog" className="blog-chip more">All posts →</Link>
+      </div>
+
+    </main>
+  );
+}
