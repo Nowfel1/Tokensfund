@@ -199,11 +199,10 @@ export default function SwapTerminal({
   // pushState is used rather than a navigation so the terminal keeps its state.
   useEffect(() => {
     if (typeof window === "undefined" || !deposit) return;
-    // Prefer the short order code when the swap was logged; fall back to the
-    // /track URL if the database write failed.
-    const url = deposit.orderCode
-      ? "/order/" + deposit.orderCode
-      : "/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId);
+    // Only push a URL when the order was logged and has a code. If the
+    // database write failed there's no status page to point at.
+    if (!deposit.orderCode) return;
+    const url = "/order/" + deposit.orderCode;
     try {
       window.history.pushState({ tokensfundSwap: true }, "", url);
     } catch {
@@ -626,19 +625,17 @@ export default function SwapTerminal({
           {/* Unique per-swap URL, shown in full and copyable. Also pushed into
               the address bar above (see the effect near the top of this file)
               so it enters browser history without the user doing anything. */}
-          <div className="swap-url">
-            <span className="swap-url-label">
-              {deposit.orderCode ? "Order " + deposit.orderCode + " — save this link" : "Your swap URL — save this"}
-            </span>
-            <Copyable
-              text={
-                (typeof window !== "undefined" ? window.location.origin : "https://tokensfund.xyz") +
-                (deposit.orderCode
-                  ? "/order/" + deposit.orderCode
-                  : "/track?provider=" + deposit.provider + "&id=" + encodeURIComponent(deposit.trackingId))
-              }
-            />
-          </div>
+          {deposit.orderCode && (
+            <div className="swap-url">
+              <span className="swap-url-label">{"Order " + deposit.orderCode + " \u2014 save this link"}</span>
+              <Copyable
+                text={
+                  (typeof window !== "undefined" ? window.location.origin : "https://tokensfund.xyz") +
+                  "/order/" + deposit.orderCode
+                }
+              />
+            </div>
+          )}
           {deposit.memo && !deposit.execution && (
             <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
           )}
