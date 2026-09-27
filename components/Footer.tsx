@@ -50,7 +50,7 @@ export default function Footer() {
             <div>
               <div style={head}>Product</div>
               <Link href="/" style={link}>Swap</Link>
-              <Link href="/track" style={link}>Track</Link>
+              <Link href="/order" style={link}>Order status</Link>
               <Link href="/blog" style={link}>Blog</Link>
               <Link href="/faq" style={link}>FAQ</Link>
             </div>
