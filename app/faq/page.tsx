@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "Frequently Asked Questions",
@@ -42,7 +42,7 @@ const faqs = [
   {
     section: "The basics",
     q: "What is TokensFund?",
-    a: "TokensFund is a non-custodial cross-chain swap aggregator. Instead of giving you a single exchange's price, it compares live quotes from five routing protocols and sends your swap through whichever offers the best rate. There's no account, no sign-up, and no KYC, and your funds never pass through us.",
+    a: "TokensFund is a non-custodial cross-chain swap aggregator. Instead of giving you a single exchange's price, it compares live quotes from four independent swap routes and sends your swap through whichever offers the best rate. There's no account, no sign-up, and no KYC, and your funds never pass through us.",
   },
   {
     section: "The basics",
@@ -164,19 +164,7 @@ export default function FAQ() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <header className="masthead">
-        <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
-          <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/track" className="nav-link">Track</a>
-            <a href="/blog" className="nav-link">Blog</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <h1>Frequently Asked Questions</h1>

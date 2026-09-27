@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -132,8 +120,8 @@ export default function Post() {
         <p>
           Whichever way you rotate — USDT to USDC, stables into BTC or ETH, or back — you don&apos;t
           need a licensed venue or an account to do it. TokensFund swaps between them
-          non-custodially: it compares THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash and
-          routes to the best rate, wallet to wallet, no KYC for standard swaps, flat 2% shown in the
+          non-custodially: it compares THORChain, Chainflip, Changee and CCE.Cash and
+          routes to the best rate, wallet to wallet, no KYC for standard swaps, flat 1% shown in the
           quote, automatic refund to your own address if a swap can&apos;t fill. The venue chokepoint
           is exactly the thing a wallet-to-wallet swap doesn&apos;t have.
         </p>

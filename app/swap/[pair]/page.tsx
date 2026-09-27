@@ -1,6 +1,6 @@
 import Link from "next/link";
+import Header from "@/components/Header";
 import { notFound } from "next/navigation";
-import Logo from "@/components/Logo";
 import SwapTerminal from "@/components/SwapTerminal";
 import { PAIRS, PAIR_BY_SLUG } from "@/lib/pairs";
 
@@ -75,20 +75,7 @@ export default function PairPage({ params }: { params: { pair: string } }) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
 
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-            <Link href="/faq" className="nav-link">FAQ</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <section className="pair-hero">
         <h1 className="pair-title">

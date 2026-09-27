@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -140,7 +128,7 @@ export default function Post() {
           You don&apos;t have to. A non-custodial swap lets you trade directly from your own wallet.
           TokensFund is an aggregator that compares rates across established protocols and routes
           your swap to the best one — without ever holding your funds. There&apos;s no account, no
-          email, and no KYC for standard swaps, and the fee (a flat 2%) is already shown in the quote.
+          email, and no KYC for standard swaps, and the fee (a flat 1%) is already shown in the quote.
         </p>
         <ol>
           <li>Go to <Link href="/">tokensfund.xyz</Link></li>

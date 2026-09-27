@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import { POSTS } from "@/lib/posts";
 import SwapTerminal from "@/components/SwapTerminal";
 import RateTicker from "@/components/RateTicker";
@@ -34,21 +34,7 @@ const LATEST_POSTS = POSTS.slice(0, 2).map((p) => ({
 export default function Home() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/order" className="nav-link">Order status</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-            <Link href="/faq" className="nav-link">FAQ</Link>
-            <span className="routes-pill"><span className="routes-pill-dot" />4 routes live</span>
-          </nav>
-        </div>
-      </header>
+      <Header showRoutes />
 
       <RateTicker />
 

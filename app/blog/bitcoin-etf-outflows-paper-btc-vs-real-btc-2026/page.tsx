@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -123,8 +111,8 @@ export default function Post() {
         <p>
           TokensFund is a non-custodial swap aggregator: if you hold any crypto — stablecoins, ETH,
           anything else — you can swap it directly into BTC (or out of it) from your own wallet. It
-          compares rates across THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash and routes
-          your swap to the best one. No account, no email, no KYC for standard swaps; the flat 2%
+          compares rates across THORChain, Chainflip, Changee and CCE.Cash and routes
+          your swap to the best one. No account, no email, no KYC for standard swaps; the flat 1%
           fee is already shown in the quote, and funds go wallet-to-wallet with an automatic refund
           to your own address if a swap can&apos;t complete.
         </p>

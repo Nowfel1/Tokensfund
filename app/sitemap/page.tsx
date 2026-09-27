@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 import { POSTS } from "@/lib/posts";
 import { PAIRS } from "@/lib/pairs";
@@ -21,20 +21,7 @@ const SECTIONS = [
 export default function SitemapPage() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/order" className="nav-link">Order status</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-            <Link href="/faq" className="nav-link">FAQ</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <h1>Sitemap</h1>

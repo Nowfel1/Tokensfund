@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -153,9 +141,8 @@ export default function Post() {
           being about entry price and start being about mechanics: keys backed up properly, and the
           ability to move between assets without asking permission. Our{" "}
           <Link href="/blog/move-crypto-off-exchange-without-kyc-2026">self-custody guide</Link>{" "}
-          covers the first. The second is what we build: TokensFund compares THORChain, Chainflip,
-          NEAR Intents, Changee and CCE.Cash and routes your swap to the best rate, wallet to
-          wallet — no account, no KYC for standard swaps, flat 2% already in the quote, automatic
+          covers the first. The second is what we build: TokensFund compares THORChain, Chainflip, Changee and CCE.Cash and routes your swap to the best rate, wallet to
+          wallet — no account, no KYC for standard swaps, flat 1% already in the quote, automatic
           refund to your own address if a swap can&apos;t fill.
         </p>
         <p>

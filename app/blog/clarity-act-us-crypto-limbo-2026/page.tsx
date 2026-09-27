@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -142,8 +130,8 @@ export default function Post() {
         </p>
         <p>
           That&apos;s the whole case for the way TokensFund is built: non-custodial swaps across
-          THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash, wallet to wallet, best rate
-          wins. No account, no KYC for standard swaps, flat 2% shown in the quote, automatic
+          THORChain, Chainflip, Changee and CCE.Cash, wallet to wallet, best rate
+          wins. No account, no KYC for standard swaps, flat 1% shown in the quote, automatic
           refund to your own address if a swap can&apos;t fill. You&apos;re responsible for
           following the laws where you live, whatever they turn out to be — but your keys
           don&apos;t have to wait for the gavel to find out.

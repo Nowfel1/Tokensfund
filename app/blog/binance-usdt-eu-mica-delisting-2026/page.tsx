@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -135,7 +123,7 @@ export default function Post() {
         <p>
           TokensFund handles the swap step non-custodially: it compares THORChain, Chainflip, NEAR
           Intents, Changee and CCE.Cash and routes your swap to the best rate, wallet to wallet. No
-          account, no KYC for standard swaps, flat 2% fee shown in the quote, automatic refund to
+          account, no KYC for standard swaps, flat 1% fee shown in the quote, automatic refund to
           your own address if a swap can&apos;t complete. Your funds never sit on a platform that a
           licensing deadline can freeze.
         </p>

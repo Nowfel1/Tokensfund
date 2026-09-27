@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -167,12 +155,19 @@ export default function Post() {
         </p>
         <p>
           Worth noting for context on how people are actually acquiring it: something on the order
-          of $1.5 billion of ZEC volume has moved through NEAR Intents without KYC — the same
-          protocol TokensFund routes ZEC through today. Privacy assets are increasingly being
-          bought on non-custodial rails rather than exchanges, which is what you&apos;d expect for
-          coins that keep getting delisted from the custodial ones. Our terminal compares
-          THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash and sends your swap to the best
-          rate, wallet to wallet — no account, no KYC for standard swaps, flat 2% in the quote.
+          of $1.5 billion of ZEC volume has moved through NEAR Intents without KYC. Privacy assets
+          are increasingly bought on non-custodial rails rather than exchanges, which is what
+          you&apos;d expect for coins that keep getting delisted from the custodial ones.
+        </p>
+        <p>
+          <strong>An update, added August 2026:</strong> TokensFund no longer routes ZEC. Zcash&apos;s
+          only route on our platform was NEAR Intents, and we have suspended that provider entirely
+          after a swap of ours stalled without settling or refunding — see our{" "}
+          <Link href="/blog/near-intents-stuck-swap-incident-2026">incident report</Link>. We expect
+          to restore Zcash when THORChain&apos;s ZEC pool goes live. In the meantime our terminal
+          compares THORChain, Chainflip, Changee and CCE.Cash across the assets we do support —
+          Monero included — wallet to wallet, no account, no KYC for standard swaps, flat 1% in the
+          quote.
         </p>
         <p>
           The broader point is one worth sitting with. A blockchain found a flaw that could have

@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,20 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -140,7 +127,7 @@ export default function Post() {
 
         <h2>What about Zcash (ZEC)?</h2>
         <p>
-          TokensFund also routes ZEC, via <strong>NEAR Intents</strong>. The flow is identical: choose
+          TokensFund does not currently route ZEC: its only route was NEAR Intents, which we have suspended (see our incident report). We expect to restore Zcash when THORChain's ZEC pool goes live. For XMR the flow is: choose
           your send asset, select ZEC to receive, enter your Zcash address, then compare routes and
           swap — no account required.
         </p>
@@ -170,7 +157,7 @@ export default function Post() {
 
         <h2>Fees</h2>
         <p>
-          TokensFund charges a flat <strong>2%</strong>, already built into the quote you see — no
+          TokensFund charges a flat <strong>1%</strong>, already built into the quote you see — no
           separate withdrawal fee, and no minimum or maximum swap size. You compare the final receive
           amount across routes and pick the best one, so what you see is what you get.
         </p>

@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "Why Non-Custodial Swaps Protect Your Privacy in 2026",
@@ -46,19 +46,7 @@ const bannerStyle = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
-          <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/track" className="nav-link">Track</a>
-            <a href="/blog" className="nav-link">Blog</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -177,7 +165,7 @@ export default function Post() {
 
         <h2>How to Swap Without an Account</h2>
         <p>
-          TokensFund compares live rates across THORChain, Chainflip, NEAR Intents, Changee
+          TokensFund compares live rates across THORChain, Chainflip, Changee
           and CCE.Cash, all non-custodial or near-custodial routing protocols that do not require
           identity verification for crypto-to-crypto swaps.
         </p>

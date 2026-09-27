@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -131,8 +119,8 @@ export default function Post() {
         </p>
         <p>
           Which is also why we build the way we do. TokensFund never holds your funds — swaps route
-          from your wallet through THORChain, Chainflip, NEAR Intents, Changee or CCE.Cash to your
-          own destination address, no account, no KYC for standard swaps, flat 2% shown in the
+          from your wallet through THORChain, Chainflip, Changee or CCE.Cash to your
+          own destination address, no account, no KYC for standard swaps, flat 1% shown in the
           quote. That design removes the custodian from the equation. It cannot verify that the
           wallet you&apos;re swapping into is genuine, and it can&apos;t undo a payment sent to an
           address that malware rewrote. Non-custodial infrastructure and careful software habits

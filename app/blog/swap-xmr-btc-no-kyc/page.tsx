@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -24,20 +24,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -72,7 +59,7 @@ export default function Post() {
           <li><strong>THORChain</strong> — decentralized cross-chain liquidity, native XMR support</li>
           <li><strong>Changee</strong> — instant non-custodial swap service, no account required, with Monero support</li>
         </ul>
-        <p>Chainflip and NEAR Intents do not currently support XMR.</p>
+        <p>Chainflip does not currently support XMR.</p>
 
         <h2>Step-by-Step: Swap XMR to BTC on TokensFund</h2>
         <ol>

@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -101,7 +89,7 @@ export default function Post() {
           several routes at once, at the same instant, with the same amount — the exact comparison
           you&apos;d otherwise do by hand across tabs. This is what TokensFund does: it quotes the
           pair across its supported protocols (for Monero pairs, the providers that actually route
-          XMR — not every protocol does) and shows you the best, with our flat 2% already included
+          XMR — not every protocol does) and shows you the best, with our flat 1% already included
           in the number on screen. What lands in your wallet is what was quoted, or the swap refunds
           to your own address.
         </p>

@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -84,10 +72,10 @@ export default function Post() {
         <h2>The swap, step by step</h2>
         <ul>
           <li><strong>1. Open the terminal.</strong> The <Link href="/">TokensFund homepage</Link> defaults to BTC → XMR already. For Zcash, tap the receive-side token and pick ZEC.</li>
-          <li><strong>2. Enter your amount</strong> — the estimated output updates live, with our flat 2% already inside the number. What you see is what arrives, minus only network fees.</li>
+          <li><strong>2. Enter your amount</strong> — the estimated output updates live, with our flat 1% already inside the number. What you see is what arrives, minus only network fees.</li>
           <li><strong>3. Paste your destination address.</strong> The field checks the format and shows a green tick when it looks right — advisory, not a guarantee, so eyeball the first and last characters yourself. Always.</li>
           <li><strong>4. Add a refund address (your BTC address).</strong> Optional for most routes but genuinely recommended: if a swap can&apos;t fill, funds return there automatically instead of needing support intervention.</li>
-          <li><strong>5. Compare routes.</strong> One click quotes every provider that serves your pair, best rate first. XMR currently routes through up to three of our five providers; ZEC routes through NEAR Intents — which is why an XMR quote may show more alternatives than a ZEC one. Fewer routes isn&apos;t a defect; it&apos;s us only showing routes that actually exist.</li>
+          <li><strong>5. Compare routes.</strong> One click quotes every provider that serves your pair, best rate first. XMR currently routes through up to three of our four providers. <strong>Note as of August 2026: ZEC swaps are unavailable on TokensFund</strong> — Zcash&apos;s only route was NEAR Intents, which we have suspended over unresolved user funds. We expect to restore ZEC when THORChain&apos;s Zcash pool goes live.</li>
           <li><strong>6. Send the deposit.</strong> You get a one-time BTC deposit address and an exact amount. Send precisely that amount, once. Bitcoin confirmations take time — plan for up to an hour on a busy day — and the tracker moves through Deposit → Detected → Processing → Done automatically.</li>
           <li><strong>7. Funds arrive at your address.</strong> XMR typically lands within minutes of the BTC leg confirming. Done — no account was created, nothing to log out of, nothing holding a balance for you.</li>
         </ul>

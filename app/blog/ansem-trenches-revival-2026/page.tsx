@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -137,7 +125,7 @@ export default function Post() {
           Straight talk on where we fit: TokensFund doesn&apos;t route pump.fun tokens — our five
           protocols handle the majors and privacy coins, not the trenches. Where we come in is the
           before and after: getting your stack into self-custody in the first place, and swapping
-          wins back into BTC, ETH or stables wallet-to-wallet — no account, no KYC, flat 2% shown in
+          wins back into BTC, ETH or stables wallet-to-wallet — no account, no KYC, flat 1% shown in
           the quote, refund to your own address if a swap can&apos;t fill.
         </p>
 

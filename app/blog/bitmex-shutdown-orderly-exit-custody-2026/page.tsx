@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -149,7 +137,7 @@ export default function Post() {
           onto the <em>next</em> venue that will someday publish its own closure notice? That&apos;s
           the gap non-custodial swaps close. TokensFund compares THORChain, Chainflip, NEAR
           Intents, Changee and CCE.Cash and routes each swap to the best rate, wallet to wallet —
-          no account, no KYC for standard swaps, flat 2% in the quote, automatic refund to your own
+          no account, no KYC for standard swaps, flat 1% in the quote, automatic refund to your own
           address if a swap can&apos;t fill. Your BTC, ETH, stables and privacy assets rotate
           without ever sitting on a balance sheet with a closure date. Our{" "}
           <Link href="/blog/move-crypto-off-exchange-without-kyc-2026">self-custody guide</Link>{" "}

@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
@@ -9,13 +9,13 @@ export const metadata = {
     type: "article",
     url: "/blog/buy-xrp-ltc-hype-tao-without-kyc-2026",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, NEAR Intents and Changee.",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, Changee and CCE.Cash.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png", width: 1200, height: 400 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, NEAR Intents and Changee.",
+    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, Changee and CCE.Cash.",
     images: ["https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png"],
   },
 };
@@ -46,19 +46,7 @@ const bannerStyle = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
-          <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/track" className="nav-link">Track</a>
-            <a href="/blog" className="nav-link">Blog</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -83,7 +71,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you how to swap into XRP, LTC, HYPE and TAO without KYC
-          using <strong>NEAR Intents, Chainflip, THORChain and Changee</strong> through TokensFund.
+          using <strong>THORChain, Chainflip, Changee and CCE.Cash</strong> through TokensFund.
         </p>
 
         <h2>Why Buy These Assets Without KYC?</h2>
@@ -95,7 +83,7 @@ export default function Post() {
 
         <h2>How to Buy XRP Without KYC</h2>
         <p>
-          XRP runs on the XRP Ledger and is supported via NEAR Intents and Changee on TokensFund.
+          XRP runs on the XRP Ledger and is supported via Changee and CCE.Cash on TokensFund.
           To receive XRP you need an XRP wallet address. Popular options include Trust Wallet,
           Exodus, or any wallet that supports the XRP Ledger.
         </p>
@@ -112,7 +100,7 @@ export default function Post() {
         <h2>How to Buy Litecoin (LTC) Without KYC</h2>
         <p>
           Litecoin is one of the most widely supported assets across decentralized protocols.
-          On TokensFund it is available via THORChain, Chainflip, NEAR Intents and Changee,
+          On TokensFund it is available via THORChain, Chainflip, Changee and CCE.Cash,
           giving you the most routes and best rates of any asset on the platform.
         </p>
         <ol>
@@ -155,7 +143,7 @@ export default function Post() {
 
         <h2>Why Use TokensFund?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, NEAR Intents and Changee in one click</li>
+          <li>Compares THORChain, Chainflip, Changee and CCE.Cash in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>

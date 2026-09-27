@@ -1,6 +1,5 @@
-import Link from "next/link";
+import Header from "@/components/Header";
 import { notFound } from "next/navigation";
-import Logo from "@/components/Logo";
 import { getOrderByCode } from "@/lib/db";
 import { getAsset } from "@/lib/assets";
 import OrderView from "@/components/OrderView";
@@ -31,19 +30,7 @@ export default async function OrderPage({ params }: { params: { code: string } }
 
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <OrderView
         code={order.order_code}

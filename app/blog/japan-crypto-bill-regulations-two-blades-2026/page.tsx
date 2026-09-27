@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -132,9 +120,8 @@ export default function Post() {
           ever.
         </p>
         <p>
-          TokensFund is built for that position: non-custodial swaps across THORChain, Chainflip,
-          NEAR Intents, Changee and CCE.Cash, best rate wins, wallet to wallet. No account, no KYC
-          for standard swaps, flat 2% shown in the quote, automatic refund to your own address if a
+          TokensFund is built for that position: non-custodial swaps across THORChain, Chainflip, Changee and CCE.Cash, best rate wins, wallet to wallet. No account, no KYC
+          for standard swaps, flat 1% shown in the quote, automatic refund to your own address if a
           swap can&apos;t fill. Whatever your local rules are — and you&apos;re responsible for
           following them, in Tokyo or Lisbon — your keys work the same everywhere.
         </p>

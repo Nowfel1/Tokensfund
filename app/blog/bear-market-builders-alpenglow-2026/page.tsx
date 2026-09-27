@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -116,7 +104,7 @@ export default function Post() {
           SOL on our routes settle noticeably faster — that&apos;s not a narrative, it&apos;s our
           product getting better without us writing a line of code. When Monero&apos;s anonymity
           set grew by orders of magnitude, every XMR swap we route got more private. When the
-          protocols we compare — THORChain, Chainflip, NEAR Intents and the rest — ship upgrades,
+          protocols we compare — THORChain, Chainflip, Changee and the rest — ship upgrades,
           the comparison itself improves. The rails are appreciating while the tokens depreciate,
           and if you use crypto rather than only holding it, the rails are what you actually touch.
         </p>
@@ -125,7 +113,7 @@ export default function Post() {
           <Link href="/blog/bitcoin-307-day-range-2026">the boredom-phase playbook</Link>: quiet
           markets are for homework — custody done properly, allocations set deliberately, and
           swaps done wallet-to-wallet. TokensFund handles that last part non-custodially: five
-          protocols compared, best rate wins, no account, no KYC for standard swaps, flat 2% in
+          protocols compared, best rate wins, no account, no KYC for standard swaps, flat 1% in
           the quote, automatic refund to your own address if a swap can&apos;t fill. Use the rails;
           keep the keys.
         </p>

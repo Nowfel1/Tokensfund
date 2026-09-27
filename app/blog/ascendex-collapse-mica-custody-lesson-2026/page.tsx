@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 import Link from "next/link";
 
 export const metadata = {
@@ -33,19 +33,7 @@ export const metadata = {
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -136,9 +124,8 @@ export default function Post() {
           <li><strong>Swap without re-depositing.</strong> The usual reason people keep funds on exchanges is convenience: it&apos;s where you trade. Non-custodial swaps remove that reason — you can rotate between BTC, ETH, stables and more directly from your own wallet.</li>
         </ol>
         <p>
-          That last step is what TokensFund does: it compares THORChain, Chainflip, NEAR Intents,
-          Changee and CCE.Cash and routes your swap to the best rate, wallet to wallet. No account,
-          no KYC for standard swaps, flat 2% shown in the quote, automatic refund to your own
+          That last step is what TokensFund does: it compares THORChain, Chainflip, Changee and CCE.Cash and routes your swap to the best rate, wallet to wallet. No account,
+          no KYC for standard swaps, flat 1% shown in the quote, automatic refund to your own
           address if a swap can&apos;t fill. There is no balance to freeze because there is no
           balance — funds move from your wallet to your wallet.
         </p>

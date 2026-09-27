@@ -1,4 +1,4 @@
-import Logo from "@/components/Logo";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "How to Swap Crypto Anonymously in 2026 (Honest Guide)",
@@ -37,19 +37,7 @@ const bannerStyle = { width: "100%", height: "auto", borderRadius: "12px", margi
 export default function Post() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <a href="/" className="brand" style={brandStyle}>
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </a>
-          <nav className="main-nav">
-            <a href="/" className="nav-link">Swap</a>
-            <a href="/track" className="nav-link">Track</a>
-            <a href="/blog" className="nav-link">Blog</a>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <div className="blog-post-meta">
@@ -125,8 +113,7 @@ export default function Post() {
 
         <h2>How to Swap Crypto Privately, Step by Step</h2>
         <p>
-          TokensFund is a non-custodial swap aggregator. It compares live rates across THORChain,
-          Chainflip, NEAR Intents, Changee and CCE.Cash, then routes your swap to the best
+          TokensFund is a non-custodial swap aggregator. It compares live rates across THORChain, Chainflip, Changee and CCE.Cash, then routes your swap to the best
           available price, all without an account or KYC.
         </p>
         <ol>

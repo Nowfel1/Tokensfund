@@ -1,5 +1,4 @@
-import Logo from "@/components/Logo";
-import Link from "next/link";
+import Header from "@/components/Header";
 
 export const metadata = {
   title: "Terms of Service",
@@ -24,19 +23,7 @@ export const metadata = {
 export default function Terms() {
   return (
     <main className="wrap">
-      <header className="masthead">
-        <div className="header-inner">
-          <Link href="/" className="brand">
-            <Logo size={34} />
-            <span>tokensfund<span className="tld">.xyz</span></span>
-          </Link>
-          <nav className="main-nav">
-            <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
-            <Link href="/blog" className="nav-link">Blog</Link>
-          </nav>
-        </div>
-      </header>
+      <Header />
 
       <article className="blog-post">
         <h1>Terms of Service</h1>
