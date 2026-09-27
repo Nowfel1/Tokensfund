@@ -42,7 +42,7 @@ export default function Home() {
           </Link>
           <nav className="main-nav">
             <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
+            <Link href="/order" className="nav-link">Order status</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/faq" className="nav-link">FAQ</Link>
             <span className="routes-pill"><span className="routes-pill-dot" />4 routes live</span>
@@ -64,7 +64,7 @@ export default function Home() {
             <span className="accent">Best rate.</span>
           </h1>
           <p className="sub">
-            TokensFund compares THORChain, Chainflip and CCE.Cash live, then routes your
+            TokensFund compares THORChain, Chainflip, Changee and CCE.Cash live, then routes your
             swap to the best price. No account. No KYC. Funds never touch our hands.
           </p>
           <div className="hero-ctas">
@@ -72,7 +72,7 @@ export default function Home() {
             <a href="#how" className="btn-ghost">How it works</a>
           </div>
           <div className="hero-2col-stats">
-            <div className="h2c-stat"><span className="num">5</span><span className="lbl">protocols</span></div>
+            <div className="h2c-stat"><span className="num">4</span><span className="lbl">routes</span></div>
             <div className="h2c-div" />
             <div className="h2c-stat"><span className="num">15+</span><span className="lbl">assets</span></div>
             <div className="h2c-div" />
