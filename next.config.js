@@ -14,6 +14,13 @@ const nextConfig = {
   async redirects() {
     return [{ source: "/track", destination: "/order", permanent: true }];
   },
+  // Second address for the same sitemap. Search Console showed "Couldn't
+  // fetch" on /sitemap.xml for over a month while the file served correctly;
+  // submitting an identical sitemap at a fresh URL gets Google to treat it as
+  // a new submission. Serves exactly the same content — no second file.
+  async rewrites() {
+    return [{ source: "/sitemap-pages.xml", destination: "/sitemap.xml" }];
+  },
   async headers() {
     return [
       // NOTE: /sitemap.xml intentionally has NO headers block here. The route
