@@ -10,8 +10,8 @@ export const metadata = {
 };
 
 const SECTIONS = [
-  { href: "/", label: "Swap — compare 5 protocols, best rate wins" },
-  { href: "/track", label: "Track — check the status of any swap" },
+  { href: "/", label: "Swap — compare 4 protocols, best rate wins" },
+  { href: "/order", label: "Order status — look up a swap by its order code" },
   { href: "/blog", label: "Blog — guides, market analysis and regulation coverage" },
   { href: "/faq", label: "FAQ — how TokensFund works, fees, and privacy" },
   { href: "/terms", label: "Terms of Service" },
@@ -29,7 +29,7 @@ export default function SitemapPage() {
           </Link>
           <nav className="main-nav">
             <Link href="/" className="nav-link">Swap</Link>
-            <Link href="/track" className="nav-link">Track</Link>
+            <Link href="/order" className="nav-link">Order status</Link>
             <Link href="/blog" className="nav-link">Blog</Link>
             <Link href="/faq" className="nav-link">FAQ</Link>
           </nav>
