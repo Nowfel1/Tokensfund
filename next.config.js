@@ -9,6 +9,11 @@ const nextConfig = {
   images: {
     unoptimized: true, // Keep this true if hosting on platforms like GitHub Pages
   },
+  // /track was replaced by the order status page. Send old bookmarks and
+  // search results there instead of a 404.
+  async redirects() {
+    return [{ source: "/track", destination: "/order", permanent: true }];
+  },
   async headers() {
     return [
       // NOTE: /sitemap.xml intentionally has NO headers block here. The route
