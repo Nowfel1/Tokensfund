@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "q3-2026-crypto-review",
+    title: "Q3 2026 in Review: Bitcoin's Best Summer Since 2017. Custody's Worst",
+    date: "October 1, 2026",
+    description: "Bitcoin rose about 43% in Q3 2026 — its best third quarter since 2017 — while exchanges closed, wallets were drained and a major venue froze withdrawals. The quarter's price story and its custody story ran in opposite directions. A review of both.",
+    tag: "Markets",
+  },
+    {
     slug: "bitget-hack-withdrawals-frozen-2026",
     title: "Bitget Froze Withdrawals. Its Self-Custodial Wallet Didn't Skip a Beat",
     date: "September 24, 2026",
