@@ -150,7 +150,7 @@ export const PAIRS: PairPage[] = [
     intro:
       "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show every one that genuinely does, and send your swap to the best rate.",
     notes: [
-      "ZEC currently routes through one of our providers, so you may see a single quote rather than a comparison. That is us showing only routes that actually exist rather than padding the list.",
+      "ZEC now routes through THORChain and Changee. THORChain is a decentralised protocol, so on that route there is no company holding your funds mid-swap.",
       "Zcash addresses come in transparent (t1...), shielded (zs...) and unified (u1...) forms. Swap routes usually deliver to transparent addresses.",
       "If privacy is your reason for holding ZEC, move the funds into your own shielded address after they arrive — that final hop is where the privacy actually begins.",
     ],
@@ -164,8 +164,8 @@ export const PAIRS: PairPage[] = [
         a: "Not automatically. Most swap routes deliver to a transparent address, which behaves like a Bitcoin address — amounts and history are visible. To use Zcash's privacy, move the received funds to your own shielded address inside your wallet.",
       },
       {
-        q: "Why is there only one route for ZEC?",
-        a: "Privacy assets have been delisted from many platforms, which fragmented liquidity. We only display routes that genuinely support the pair. THORChain has announced a Zcash pool which is not yet live; when it activates we will add it and the comparison widens.",
+        q: "Which routes support ZEC?",
+        a: "THORChain and Changee. THORChain's native Zcash pool means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian. The terminal quotes both and highlights whichever gives you more ZEC.",
       },
       {
         q: "What does it cost?",
