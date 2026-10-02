@@ -215,7 +215,7 @@ export default function Post() {
         <ul>
           <li><strong>BitMart&apos;s wind-down</strong> runs to 31 January 2027. If you still hold anything there, the same checklist we published for BitMEX applies, with more time on the clock.</li>
           <li><strong>Bitget&apos;s recovery</strong> — how fully withdrawals resume, and what the investigation finds.</li>
-          <li><strong>THORChain&apos;s Zcash pool.</strong> When it goes live, Zcash gets a protocol route with no company in the middle — and the comparison on our site widens.</li>
+          <li><strong>THORChain&apos;s Zcash pool</strong> went live as this quarter closed, giving Zcash a protocol route with no company in the middle. Worth watching how quickly its liquidity deepens.</li>
           <li><strong>Rates and yields.</strong> The rally cooled exactly when yields rose and the Fed hiked. Whatever the Fed does next will likely matter more to Bitcoin&apos;s price than anything in crypto.</li>
         </ul>
         <p>
