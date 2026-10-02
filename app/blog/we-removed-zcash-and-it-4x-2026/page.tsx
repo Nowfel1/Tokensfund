@@ -129,7 +129,9 @@ export default function Post() {
           plainly than dress up a single quote as a market survey.
         </p>
         <p>
-          THORChain has announced Zcash pools but they are not live yet — we checked, rather than
+          <strong>Update, 1 October:</strong> THORChain&apos;s Zcash pool is now live, so BTC → ZEC
+          compares two routes, one of them a decentralised protocol.{" "}
+          At the time of writing, THORChain had announced Zcash pools but they were not live yet — we checked, rather than
           taking the announcement at face value, because we said we would add it &quot;the day those
           pools are live and quoting, not the day a press release says they are.&quot; When they
           activate, the comparison widens and we will say so.
