@@ -78,11 +78,9 @@ export const ASSETS: CanonicalAsset[] = [
     },
   },
   {
-    // ZEC restored 2026-09-22 via Changee, which lists it. Zcash came off the
-    // site when NEAR Intents (its only route at the time) was suspended.
-    // THORChain's ZEC pool is announced but NOT yet live — verify at
-    // <THORNODE_URL>/thorchain/pools for ZEC.ZEC with status "Available"
-    // before uncommenting the thorchain ref below.
+    // ZEC restored 2026-09-22 via Changee, after coming off the site when
+    // NEAR Intents (its only route then) was suspended. THORChain's ZEC pool
+    // went live in October 2026, giving Zcash a second, protocol-based route.
     id: "ZEC",
     symbol: "ZEC",
     name: "Zcash",
@@ -90,7 +88,7 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 8,
     providerIds: {
       changee: { ticker: "ZEC" },
-      // thorchain: { asset: "ZEC.ZEC", decimals: 8 },  // pool not live yet
+      thorchain: { asset: "ZEC.ZEC", decimals: 8 }, // pool live October 2026
       // [NEAR DISABLED] near_intents: { asset: "nep141:zec.omft.near", decimals: 8 },
     },
   },
