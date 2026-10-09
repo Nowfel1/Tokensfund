@@ -8,6 +8,23 @@ function ticker(asset: CanonicalAsset): string {
   return asset.providerIds.changee?.ticker ?? asset.symbol;
 }
 
+// Changee sometimes answers with an HTML page instead of JSON (an error page,
+// maintenance page or bot-protection challenge). res.json() then fails with an
+// unhelpful "Unexpected token '<'". Read the body as text first so the error
+// says what actually came back: the HTTP status and the page title.
+async function readJson(res: Response, label: string): Promise<any> {
+  const text = await res.text();
+  try {
+    return JSON.parse(text);
+  } catch {
+    const title = text.match(/<title[^>]*>([^<]*)<\/title>/i)?.[1]?.trim();
+    throw new Error(
+      `Changee ${label}: expected JSON but got HTTP ${res.status}` +
+        (title ? ` "${title}"` : ` (${text.slice(0, 80).replace(/\s+/g, " ")})`)
+    );
+  }
+}
+
 export async function getQuote(
   from: CanonicalAsset,
   to: CanonicalAsset,
@@ -21,9 +38,12 @@ export async function getQuote(
     fix: "0",
   });
   const res = await fetch(`${BASE}/rate?${params.toString()}`, { cache: "no-store" });
-  const data = await res.json();
+  const data = await readJson(res, "rate");
   if (!res.ok || data.result !== true || typeof data.rate !== "number") {
-    throw new Error("Changee quote unavailable for this pair");
+    throw new Error(
+      "Changee quote unavailable" +
+        (data.message ? `: ${data.message}` : ` (HTTP ${res.status})`)
+    );
   }
   // IMPORTANT: Changee's /rate returns the TOTAL estimated output for the
   // requested amount (e.g. 1.85 ETH for 0.1 BTC), NOT a per-unit rate.
@@ -65,7 +85,7 @@ export async function buildSwap(
   });
   if (req.refundAddress) params.set("refundAddress", req.refundAddress);
   const res = await fetch(`${BASE}/exchange-create?${params.toString()}`, { cache: "no-store" });
-  const data = await res.json();
+  const data = await readJson(res, "create");
 
   // TEMPORARY DEBUG: log the raw create response so the actual id field (if
   // any) names itself. Remove once the tracking id is confirmed.
@@ -101,7 +121,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
   try {
     const params = new URLSearchParams({ key: API_KEY, id });
     const res = await fetch(`${BASE}/exchange-status?${params.toString()}`, { cache: "no-store" });
-    const data = await res.json();
+    const data = await readJson(res, "status");
 
     // TEMPORARY DEBUG: log the raw response so failures name themselves.
     // Remove once tracking is confirmed working.
