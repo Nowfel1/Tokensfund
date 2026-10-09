@@ -9,7 +9,14 @@ const THORNODE = process.env.THORNODE_URL || "https://gateway.liquify.com/chain/
 
 // Optional: earn revenue by setting an affiliate THORName + bps in env.
 const AFFILIATE = process.env.THOR_AFFILIATE; // e.g. "TKF"
-const AFFILIATE_BPS = process.env.THOR_AFFILIATE_BPS; // e.g. "200" (2%)
+const AFFILIATE_BPS = process.env.THOR_AFFILIATE_BPS; // e.g. "100" (1%)
+
+// Thin pools (new ones like ZEC) can't fill within a 1% limit: normal pool
+// fees and price impact alone exceed it, so THORChain refuses with "emit
+// asset ... less than price limit". In that case we ask once more with this
+// wider limit. The amount shown to the user is still THORChain's own
+// expected output; the limit only sets the floor the swap may fill at.
+const FALLBACK_TOLERANCE_BPS = 500; // 5%
 
 function toThorBase(humanAmount: string): string {
   const [whole, frac = ""] = humanAmount.split(".");
@@ -21,20 +28,19 @@ function fromThorBase(base: string | number): number {
   return Number(base) / 100_000_000;
 }
 
-export async function getQuote(
-  from: CanonicalAsset,
-  to: CanonicalAsset,
-  req: QuoteRequest
-): Promise<NormalizedQuote> {
-  const fromRef = from.providerIds.thorchain!;
-  const toRef = to.providerIds.thorchain!;
+async function requestQuote(
+  fromAsset: string,
+  toAsset: string,
+  req: QuoteRequest,
+  toleranceBps: number | undefined
+): Promise<any> {
   const params = new URLSearchParams({
-    from_asset: fromRef.asset!,
-    to_asset: toRef.asset!,
+    from_asset: fromAsset,
+    to_asset: toAsset,
     amount: toThorBase(req.amount),
   });
   if (req.destinationAddress) params.set("destination", req.destinationAddress);
-  if (req.slippageBps) params.set("tolerance_bps", String(req.slippageBps));
+  if (toleranceBps) params.set("tolerance_bps", String(toleranceBps));
   if (AFFILIATE && AFFILIATE_BPS) {
     params.set("affiliate", AFFILIATE);
     params.set("affiliate_bps", AFFILIATE_BPS);
@@ -47,6 +53,38 @@ export async function getQuote(
   }
   const data = await res.json();
   if (data.error) throw new Error(`THORChain: ${data.error}`);
+  return data;
+}
+
+function isPriceLimitError(e: unknown): boolean {
+  return /less than price limit/i.test(String((e as any)?.message ?? e));
+}
+
+export async function getQuote(
+  from: CanonicalAsset,
+  to: CanonicalAsset,
+  req: QuoteRequest
+): Promise<NormalizedQuote> {
+  const fromRef = from.providerIds.thorchain!;
+  const toRef = to.providerIds.thorchain!;
+
+  let data: any;
+  try {
+    data = await requestQuote(fromRef.asset!, toRef.asset!, req, req.slippageBps);
+  } catch (e) {
+    if (!isPriceLimitError(e) || (req.slippageBps ?? 0) >= FALLBACK_TOLERANCE_BPS) throw e;
+    try {
+      data = await requestQuote(fromRef.asset!, toRef.asset!, req, FALLBACK_TOLERANCE_BPS);
+    } catch (e2) {
+      if (isPriceLimitError(e2)) {
+        throw new Error(
+          "THORChain: price impact too high for this amount on the current pool — try a smaller amount."
+        );
+      }
+      throw e2;
+    }
+  }
+
   const expectedOut = fromThorBase(data.expected_amount_out ?? data.expected_amount_out_streaming ?? 0);
   if (!expectedOut) throw new Error("THORChain quote returned no expected_amount_out");
   const feeOut = data.fees?.total ? fromThorBase(data.fees.total) : undefined;
@@ -74,8 +112,8 @@ export async function buildSwap(
   // NOTE: THORChain has no order id. A swap is tracked by the user's INBOUND
   // DEPOSIT TX HASH, which doesn't exist until they broadcast the deposit. The
   // `trackingId` below is the vault (inbound) address purely as a placeholder —
-  // it CANNOT be used to query status. Live tracking requires the user's deposit
-  // tx hash (entered on /track, or captured from the wallet send if you add that).
+  // it CANNOT be used to query status. Live tracking requires the user's
+  // deposit tx hash (captured from the wallet send if you add that).
   // ---- EVM routes need a contract call, not a transfer ----------------
   // THORChain returns `router` for EVM chains. On those chains the deposit is
   // made by calling Router.depositWithExpiry(vault, asset, amount, memo,
