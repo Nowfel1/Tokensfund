@@ -177,14 +177,15 @@ export const ASSETS: CanonicalAsset[] = [
   },
   {
     // Toncoin was renamed Gram (GRAM). The id stays "TON" because it keys the
-    // price map, icon and address check; provider tickers stay "TON" too.
+    // price map, icon and address check. Providers name it differently:
+    // CCE lists it as GRAM (verified against CCE's list), Changee as TON.
     id: "TON",
     symbol: "GRAM",
     name: "Gram (TON network)",
     chain: "TON",
     decimals: 9,
     providerIds: {
-      cce: { abbr: "TON", chain: "TON" },
+      cce: { abbr: "GRAM", chain: "TON" },
       changee: { ticker: "TON" },
     },
   },
