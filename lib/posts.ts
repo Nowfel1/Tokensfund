@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "ledger-cryptobilis-supply-chain-implant-2026",
+    title: "Ledger Wasn't Hacked. The Box Was",
+    date: "October 12, 2026",
+    description: "Ledger confirmed a hidden hardware implant in a device sold by Southeast Asian reseller CryptoBilis, after drains estimated at up to $93 million. Ledger's own systems weren't breached — the devices were tampered with before buyers opened them. What's confirmed, what isn't, and how to buy a hardware wallet safely.",
+    tag: "Privacy",
+  },
+    {
     slug: "q3-2026-crypto-review",
     title: "Q3 2026 in Review: Bitcoin's Best Summer Since 2017. Custody's Worst",
     date: "October 1, 2026",
