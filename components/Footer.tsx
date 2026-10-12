@@ -75,6 +75,7 @@ export default function Footer() {
               <div style={head}>Community</div>
               <a href="https://x.com/Tokensfund" target="_blank" rel="noopener noreferrer" style={link}>X / Twitter</a>
               <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer" style={link}>Telegram</a>
+              <Link href="/marketing" style={link}>Marketing services</Link>
             </div>
           </div>
         </div>
