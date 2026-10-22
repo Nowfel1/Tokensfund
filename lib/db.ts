@@ -20,7 +20,7 @@ export async function ensureOrdersTable() {
 
   // Short, shareable order code used in /order/<code> URLs. Added after the
   // table existed, so it goes in as a separate ADD COLUMN IF NOT EXISTS —
-  // existing rows keep a NULL code and are still reachable via /track.
+  // existing rows keep a NULL code (they have no order page).
   await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS order_code TEXT`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS orders_order_code_idx ON orders (order_code)`;
 }
@@ -58,7 +58,9 @@ export interface OrderRecord {
 }
 
 export async function getOrderByCode(code: string): Promise<OrderRecord | null> {
-  const clean = String(code).trim().toUpperCase();
+  // Accept the grouped form shown on the order page (K7M4-PQX9-RTVB) as well
+  // as the plain one: drop dashes, spaces and anything else non-alphanumeric.
+  const clean = String(code).replace(/[^A-Za-z0-9]/g, "").toUpperCase();
   if (!/^[A-Z0-9]{6,32}$/.test(clean)) return null;
   const rows = (await sql`
     SELECT order_code, provider, from_asset, to_asset, amount,
