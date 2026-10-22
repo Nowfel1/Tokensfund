@@ -20,7 +20,15 @@ export default function OrderLookup() {
       return;
     }
     if (!CODE_RE.test(code)) {
-      setError("That doesn't look like an order code. It's 12 letters and numbers, like K7M4-PQX9-RTVB.");
+      // Our codes never contain 0, O, 1, I or L. A code that does is almost
+      // always a provider's own reference, e.g. CCE.Cash's order number.
+      if (/^[A-Z0-9]{6,32}$/.test(code) && /[01ILO]/.test(code)) {
+        setError(
+          "That looks like a provider's own reference (for example CCE.Cash's order number), not a TokensFund order code. Your TokensFund code is the one in your swap link: tokensfund.xyz/order/…"
+        );
+      } else {
+        setError("That doesn't look like an order code. It's 12 letters and numbers, like K7M4-PQX9-RTVB.");
+      }
       return;
     }
     router.push("/order/" + code);
