@@ -157,7 +157,7 @@ export async function buildSwap(
     depositAddress: data.address,
     depositAmount: req.amount,
     trackingId: [orderNo, queryCode].filter(Boolean).map(String).join("~"),
-    notes: `CCE.Cash Order #${dashCode(queryCode ?? orderId)}`,
+    notes: `CCE.Cash's own reference (only needed if you contact CCE.Cash support): ${dashCode(queryCode ?? orderId)}`,
   };
 }
 
@@ -212,7 +212,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
       state: "unknown",
       detail:
         "That looks like a deposit address, not a CCE order code. Enter the " +
-        "code shown on the swap screen as \"CCE.Cash Order #XXXX-XXXX-XXXX\".",
+        "reference shown on the swap screen as \"CCE.Cash's own reference\".",
     };
   }
 
