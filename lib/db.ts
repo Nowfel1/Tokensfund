@@ -23,6 +23,9 @@ export async function ensureOrdersTable() {
   // existing rows keep a NULL code (they have no order page).
   await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS order_code TEXT`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS orders_order_code_idx ON orders (order_code)`;
+  // Amount the user was quoted to receive when the order was created. Older
+  // rows have NULL here and the order page simply shows the asset.
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS expected_out TEXT`;
 }
 
 // ---------------------------------------------------------------------------
@@ -51,6 +54,7 @@ export interface OrderRecord {
   from_asset: string;
   to_asset: string;
   amount: string;
+  expected_out: string | null;
   destination_address: string;
   deposit_address: string | null;
   tracking_id: string | null;
@@ -63,7 +67,7 @@ export async function getOrderByCode(code: string): Promise<OrderRecord | null> 
   const clean = String(code).replace(/[^A-Za-z0-9]/g, "").toUpperCase();
   if (!/^[A-Z0-9]{6,32}$/.test(clean)) return null;
   const rows = (await sql`
-    SELECT order_code, provider, from_asset, to_asset, amount,
+    SELECT order_code, provider, from_asset, to_asset, amount, expected_out,
            destination_address, deposit_address, tracking_id, created_at
     FROM orders
     WHERE order_code = ${clean}

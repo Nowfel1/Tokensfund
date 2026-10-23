@@ -12,14 +12,14 @@ export const dynamic = "force-dynamic";
 
 // Returns the short order code so it can be handed back to the client for the
 // /order/<code> URL. Returns null if logging failed — the swap still works,
-// the user just falls back to the /track lookup.
-async function logOrder(result: any, body: any): Promise<string | null> {
+// the swap still works, there's just no order status link.
+async function logOrder(result: any, body: any, expectedOut?: number): Promise<string | null> {
   try {
     await ensureOrdersTable();
     const orderCode = generateOrderCode();
     await sql`
-      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId}, ${orderCode})
+      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code, expected_out)
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
     `;
     return orderCode;
   } catch (e) {
@@ -53,23 +53,28 @@ export async function POST(req: NextRequest) {
     }
 
     let result;
+    let expectedOut: number | undefined;
     if (body.provider === "thorchain") {
       const quote = await thorchain.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
       result = await thorchain.buildSwap(quote, body);
     } else if (body.provider === "chainflip") {
       const quote = await chainflip.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
       result = await chainflip.buildSwap(quote, body, from, to);
     } else if (body.provider === "cce") {
       const quote = await cce.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
       result = await cce.buildSwap(quote, body, from, to);
     } else if (body.provider === "changee") {
       const quote = await changee.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
       result = await changee.buildSwap(quote, body, from, to);
     } else {
       return NextResponse.json({ error: "Unknown provider." }, { status: 400 });
     }
 
-    const orderCode = await logOrder(result, body);
+    const orderCode = await logOrder(result, body, expectedOut);
     return NextResponse.json({ ...result, orderCode });
   } catch (e: any) {
     console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);

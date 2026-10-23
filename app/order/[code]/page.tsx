@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import { notFound } from "next/navigation";
 import { getOrderByCode } from "@/lib/db";
-import { getAsset } from "@/lib/assets";
+import { ASSETS, getAsset } from "@/lib/assets";
 import OrderView from "@/components/OrderView";
 
 export const dynamic = "force-dynamic";
@@ -21,6 +21,11 @@ export default async function OrderPage({ params }: { params: { code: string } }
 
   const from = getAsset(order.from_asset);
   const to = getAsset(order.to_asset);
+
+  // Name the network for coins we list on more than one chain (USDT, USDC),
+  // so "USDT" never leaves the user guessing where to look for their funds.
+  const network = (a: typeof from) =>
+    a && ASSETS.filter((x) => x.symbol === a.symbol).length > 1 ? a.chain : undefined;
   const d = new Date(order.created_at);
   const created =
     d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) +
@@ -37,6 +42,9 @@ export default async function OrderPage({ params }: { params: { code: string } }
         provider={order.provider}
         trackingId={order.tracking_id ?? ""}
         amount={order.amount}
+        expectedOut={order.expected_out}
+        fromNetwork={network(from)}
+        toNetwork={network(to)}
         fromSymbol={from?.symbol ?? order.from_asset}
         toSymbol={to?.symbol ?? order.to_asset}
         toName={to?.name ?? order.to_asset}

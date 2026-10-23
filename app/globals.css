@@ -683,3 +683,5 @@ a { color: inherit; }
 }
 .ol-btn-link { display: inline-flex; align-items: center; text-decoration: none; margin-top: 8px; }
 .ol-error { flex-basis: 100%; margin: 2px 0 0; color: #e27a7a; font-size: 13px; }
+
+.ov-pair-note { font-size: 11px; color: var(--muted-2); margin-top: 3px; }

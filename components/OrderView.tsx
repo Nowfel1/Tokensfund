@@ -30,6 +30,14 @@ function mask(v: string) {
   return v.length > 12 ? v.slice(0, 4) + "\u2026" + v.slice(-4) : v;
 }
 
+// Sensible decimals: 2 for large amounts (e.g. USDT), more for small ones.
+function fmtAmount(v: string | null | undefined): string | null {
+  const n = Number(v);
+  if (!v || !Number.isFinite(n) || n <= 0) return null;
+  const digits = n >= 100 ? 2 : n >= 1 ? 4 : 8;
+  return n.toLocaleString("en-US", { maximumFractionDigits: digits });
+}
+
 function group(code: string) {
   return code.replace(/(.{4})(?=.)/g, "$1-");
 }
@@ -39,6 +47,9 @@ interface Props {
   provider: string;
   trackingId: string;
   amount: string;
+  expectedOut?: string | null;
+  fromNetwork?: string;
+  toNetwork?: string;
   fromSymbol: string;
   toSymbol: string;
   toName: string;
@@ -114,11 +125,21 @@ export default function OrderView(p: Props) {
           <div className="ov-pair-v">
             {p.amount} {p.fromSymbol}
           </div>
+          {p.fromNetwork && <div className="ov-pair-note">on {p.fromNetwork}</div>}
         </div>
         <div className="ov-arrow" aria-hidden="true">{"\u2192"}</div>
         <div className="ov-right">
           <div className="ov-pair-k">You receive</div>
-          <div className="ov-pair-v">{p.toSymbol}</div>
+          <div className="ov-pair-v">
+            {fmtAmount(p.expectedOut) ? `\u2248 ${fmtAmount(p.expectedOut)} ${p.toSymbol}` : p.toSymbol}
+          </div>
+          {(p.toNetwork || fmtAmount(p.expectedOut)) && (
+            <div className="ov-pair-note">
+              {[p.toNetwork ? `on ${p.toNetwork}` : null, fmtAmount(p.expectedOut) ? "quoted at creation" : null]
+                .filter(Boolean)
+                .join(" \u00b7 ")}
+            </div>
+          )}
         </div>
       </div>
 
