@@ -27,7 +27,7 @@ export default function Terms() {
 
       <article className="blog-post">
         <h1>Terms of Service</h1>
-        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: June 25, 2026</p>
+        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: October 22, 2026</p>
 
         <p>
           These Terms of Service (&quot;Terms&quot;) govern your access to and use of tokensfund.xyz
@@ -143,18 +143,10 @@ export default function Terms() {
           Service after changes are posted constitutes acceptance of the updated Terms.
         </p>
 
-        <h2>13. Governing law</h2>
-        <p>
-          These Terms are governed by the laws of [GOVERNING JURISDICTION], without regard to
-          conflict-of-laws principles. Any dispute will be subject to the exclusive jurisdiction of
-          the courts of [JURISDICTION]. [Confirm with counsel.]
-        </p>
-
-        <h2>14. Contact</h2>
+        <h2>13. Contact</h2>
         <p>
           Questions about these Terms? Reach us on Telegram at{" "}
-          <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>{" "}
-          or at [CONTACT EMAIL].
+          <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>.
         </p>
       </article>
     </main>
