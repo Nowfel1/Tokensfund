@@ -27,7 +27,7 @@ export default function Privacy() {
 
       <article className="blog-post">
         <h1>Privacy Policy</h1>
-        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: June 25, 2026</p>
+        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: October 22, 2026</p>
 
         <p>
           TokensFund is built to need as little of your data as possible. There&apos;s no account,
@@ -51,12 +51,20 @@ export default function Privacy() {
           protocol that executes the transaction (see below).
         </p>
         <p>
-          Like most websites, our hosting and infrastructure may automatically log standard technical
-          data such as IP address, browser type, device information, and timestamps, for security,
-          abuse prevention, and reliability. [Confirm what your host/logging actually retains.] We
-          [do / do not] use analytics; if we do, it is [ANALYTICS PROVIDER, e.g. a privacy-friendly
-          analytics tool], configured to [describe — e.g. not set cookies and not collect personal
-          data]. [Edit this section to match your real setup before publishing.]
+          When you create a swap, we store an order record: the provider, the assets and amount, the
+          amount you were quoted to receive, your destination and refund addresses, the deposit
+          address, the provider&apos;s tracking reference, and a random order code. We keep it so you
+          can check your swap through your private order link and so we can help if something goes
+          wrong. Order records do not contain your name, email address, IP address, or any account
+          details.
+        </p>
+        <p>
+          Our hosting provider, Vercel, receives standard technical data with every request — such as
+          IP address, browser type, and timestamps — to deliver and protect the site, and keeps it in
+          short-lived logs under its own retention settings. We use Vercel Web Analytics to count page
+          views. It sets no cookies and stores only anonymized data: visitors are identified by a hash
+          created from the request, which resets every day, so they can&apos;t be tracked across days
+          or across websites.
         </p>
 
         <h2>On-chain transactions are public</h2>
@@ -78,24 +86,27 @@ export default function Privacy() {
         <p>
           We share swap details with the third-party protocol that executes your swap — THORChain, Chainflip, Changee or CCE.Cash — because they need your destination and
           refund addresses to complete the transaction. Each operates independently and under its own
-          privacy practices, which we do not control. We also rely on infrastructure providers such
-          as our hosting platform [e.g. Vercel] and [any analytics or error-monitoring provider] to
-          run the Service. [Keep this list accurate.] We may disclose information if required by law
+          privacy practices, which we do not control. We also rely on Vercel (hosting and
+          analytics) and Neon (database hosting) to run the Service. Prices come from CoinGecko,
+          which receives no information about you. We may disclose information if required by law
           or valid legal process.
         </p>
 
         <h2>Cookies</h2>
         <p>
-          The Service uses only the cookies or local storage strictly necessary for it to function.
-          [If you add analytics, advertising, or other non-essential cookies, disclose them here and
-          provide a consent mechanism where required by law.]
+          TokensFund sets no cookies and stores nothing in your browser, and Vercel Web Analytics is
+          cookieless. Our homepage shows a review widget from Trustpilot and a badge image from
+          Monerica, which load from their own servers — your browser contacts those services when you
+          view the homepage, and Trustpilot&apos;s widget operates under Trustpilot&apos;s own privacy
+          and cookie practices.
         </p>
 
         <h2>Data retention</h2>
         <p>
-          We keep technical logs only as long as needed for the purposes above, then delete or
-          anonymize them. [State your actual retention period, e.g. &quot;server logs are retained
-          for X days.&quot;]
+          Order records are kept until you ask us to delete them — send us your order code and
+          we&apos;ll remove the record. Vercel keeps request logs only for a short period under its
+          own retention settings. The analytics visitor hash resets every day; only aggregate page
+          counts remain.
         </p>
 
         <h2>Your rights</h2>
@@ -103,8 +114,9 @@ export default function Privacy() {
           Depending on where you live, you may have rights to access, correct, or delete personal
           data we hold about you, or to object to certain processing. Because we don&apos;t maintain
           accounts and hold very little personal data, there is often little for us to act on — but
-          you can contact us with any request. [Adjust this section to reflect GDPR, UK GDPR, CCPA or
-          other regimes that apply to your users, and your jurisdiction.]
+          you can ask us at any time for a copy of an order record we hold, or ask us to delete it.
+          Because records aren&apos;t linked to your identity, we&apos;ll need the order code or the
+          deposit address to find yours.
         </p>
 
         <h2>Security</h2>
@@ -129,8 +141,7 @@ export default function Privacy() {
         <h2>Contact</h2>
         <p>
           Questions or requests? Reach us on Telegram at{" "}
-          <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>{" "}
-          or at [CONTACT EMAIL].
+          <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer">t.me/Tokensfund</a>.
         </p>
       </article>
     </main>
