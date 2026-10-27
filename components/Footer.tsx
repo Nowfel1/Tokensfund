@@ -76,6 +76,7 @@ export default function Footer() {
               <a href="https://x.com/Tokensfund" target="_blank" rel="noopener noreferrer" style={link}>X / Twitter</a>
               <a href="https://t.me/Tokensfund" target="_blank" rel="noopener noreferrer" style={link}>Telegram</a>
               <Link href="/marketing" style={link}>Marketing services</Link>
+              <a href="http://tokenstmefedtvgjqxvfxf22f4oxudsp3ord6yep5nzra4pgihi4cwid.onion" style={link} title="Opens in Tor Browser">Tor (.onion)</a>
             </div>
           </div>
         </div>

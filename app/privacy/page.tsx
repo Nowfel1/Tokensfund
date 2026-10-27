@@ -66,6 +66,12 @@ export default function Privacy() {
           created from the request, which resets every day, so they can&apos;t be tracked across days
           or across websites.
         </p>
+        <p>
+          TokensFund is also available as a Tor onion service at{" "}
+          <code>tokenstmefedtvgjqxvfxf22f4oxudsp3ord6yep5nzra4pgihi4cwid.onion</code>. Requests to the onion address are passed to our site through our own
+          server, which keeps no access logs for them, so our hosting provider sees our server rather
+          than you.
+        </p>
 
         <h2>On-chain transactions are public</h2>
         <p>

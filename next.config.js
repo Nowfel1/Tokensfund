@@ -41,6 +41,15 @@ const nextConfig = {
           },
         ],
       },
+      // Tor: tells Tor Browser this page is also available as an onion
+      // service, so it can offer the ".onion available" button. The onion
+      // proxy strips this header from onion responses.
+      {
+        source: "/:path*",
+        headers: [
+          { key: "Onion-Location", value: "http://tokenstmefedtvgjqxvfxf22f4oxudsp3ord6yep5nzra4pgihi4cwid.onion/:path*" },
+        ],
+      },
       // 3. Security Headers (Improves Core Web Vitals Trust Scores with Google)
       {
         source: "/(.*)",
