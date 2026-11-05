@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState, useEffect, useRef } from "react";
-import { ASSETS } from "@/lib/assets";
+import { ASSETS, providersForPair } from "@/lib/assets";
 import { AggregatedQuotes, ProviderId, SwapInstruction, SwapStatus } from "@/lib/types";
 
 const PROVIDER_INITIAL: Record<ProviderId, string> = {
@@ -86,15 +86,9 @@ function addrCheck(assetId: string, value: string): "ok" | "warn" | null {
   return re.test(v) ? "ok" : "warn";
 }
 
+// Same eligibility rules as the server (lib/assets.ts), so the two never disagree.
 function pairProviders(fromId: string, toId: string): ProviderId[] {
-  const from = ASSETS.find((a) => a.id === fromId);
-  const to = ASSETS.find((a) => a.id === toId);
-  if (!from || !to) return [];
-  // NEAR Intents deliberately excluded — see the note in lib/assets.ts.
-  // Its refs are also commented out there, so this is belt-and-braces.
-  return (["thorchain", "chainflip", "cce", "changee", "wagyu"] as ProviderId[]).filter(
-    (p) => from.providerIds[p] && to.providerIds[p]
-  );
+  return providersForPair(fromId, toId);
 }
 
 function label(p?: ProviderId) {
