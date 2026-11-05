@@ -132,10 +132,16 @@ export async function buildSwap(
   if (!req.destinationAddress) throw new Error("Wagyu needs a destination address.");
 
   const { body, f } = swapBody(from, to, req);
-  if (REFUND_REQUIRED_CHAINS.has(f.chainId) && !req.refundAddress) {
-    throw new Error(`Wagyu needs a refund address for ${from.symbol} deposits.`);
+  // Only send a refund address where Wagyu asks for one: deposits in coins
+  // like XMR and ZEC, which have no visible sender to refund to. For other
+  // deposits (e.g. BTC) Wagyu's own app sends none, and including one makes
+  // order creation fail with invalid_request.
+  if (REFUND_REQUIRED_CHAINS.has(f.chainId)) {
+    if (!req.refundAddress) {
+      throw new Error(`Wagyu needs a refund address for ${from.symbol} deposits.`);
+    }
+    body.refundAddress = req.refundAddress;
   }
-  if (req.refundAddress) body.refundAddress = req.refundAddress;
 
   // IMPORTANT: no automatic retries. This call has no idempotency key, so a
   // retry after a timeout could create a second real order.
@@ -173,7 +179,7 @@ export async function buildSwap(
     trackingId: String(data.orderId),
     privateTrackingId: `${data.orderId}~${data.sessionId}`,
     notes:
-      "Send the exact amount shown. Wagyu screens deposits before swapping; a deposit that fails screening is refunded to your refund address.",
+      "Send the exact amount shown. Wagyu screens deposits before swapping, and a deposit that fails screening is refunded.",
   };
 }
 
