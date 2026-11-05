@@ -37,7 +37,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Monero",
     title: "Swap BTC to XMR — No Account, No KYC",
     description:
-      "Compare live BTC to XMR rates across THORChain, NEAR Intents, Changee and CCE.Cash in one place. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
+      "Compare live BTC to XMR rates across THORChain, Changee, CCE.Cash and Wagyu in one place. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
       "Bitcoin in, Monero out, wallet to wallet. We quote every route that supports the pair and send your swap to the best one — no account, no KYC for standard swaps, and our 1% fee is already inside the number you see.",
     notes: [
@@ -111,11 +111,11 @@ export const PAIRS: PairPage[] = [
     toLabel: "Ethereum",
     title: "Swap BTC to ETH — No Account, No KYC",
     description:
-      "Compare live BTC to ETH rates across THORChain, Chainflip, NEAR Intents, Changee and CCE.Cash. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
+      "Compare live BTC to ETH rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu. Non-custodial, no account, no KYC for standard swaps, flat 1% already in the quote.",
     intro:
       "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and our 1% is already in the number.",
     notes: [
-      "All four providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
+      "All five providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
       "Your ETH address is the standard 0x format. Double-check it: the same format is used by several other EVM chains, and funds sent to the wrong network are unrecoverable.",
       "Bitcoin confirmation time dominates the wait; the Ethereum payout is usually fast once the deposit clears.",
     ],
@@ -165,7 +165,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "Which routes support ZEC?",
-        a: "THORChain and Changee. THORChain's native Zcash pool means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian. The terminal quotes both and highlights whichever gives you more ZEC.",
+        a: "THORChain and Changee. THORChain's native Zcash support means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian. The terminal quotes both and highlights whichever gives you more ZEC.",
       },
       {
         q: "What does it cost?",

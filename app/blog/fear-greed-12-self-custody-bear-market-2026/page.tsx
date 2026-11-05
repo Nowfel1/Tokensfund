@@ -94,15 +94,14 @@ export default function Post() {
         <p>
           Whatever you decide — wait, rotate into stablecoins, or accumulate — you can do it without
           parking your funds on a custodial platform. That&apos;s where a non-custodial swap comes
-          in. TokensFund compares rates across THORChain, Chainflip, Changee and
-          CCE.Cash and routes your swap to the best one, wallet to wallet. It never holds your funds,
+          in. TokensFund compares rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes your swap to the best one, wallet to wallet. It never holds your funds,
           there&apos;s no account, and no KYC for standard swaps — so you can move between assets
           while staying entirely in self-custody.
         </p>
         <ul>
           <li>✅ Rotate to stables or majors without depositing to an exchange</li>
           <li>✅ Non-custodial — your keys, the whole way through</li>
-          <li>✅ Best rate across four protocols in one click</li>
+          <li>✅ Best rate across five routes in one click</li>
           <li>✅ Automatic refund to your own address if a swap can&apos;t fill</li>
         </ul>
 

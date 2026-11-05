@@ -222,7 +222,7 @@ export default function Post() {
           Whatever Q4 brings, the advice that held all summer still holds: keys in your own
           custody, backed up offline; a fresh address for every receive; and a test amount before
           anything that matters. When you need to move between assets, TokensFund compares
-          THORChain, Chainflip, Changee and CCE.Cash on every swap and routes wallet to wallet —
+          THORChain, Chainflip, Changee, CCE.Cash and Wagyu on every swap and routes wallet to wallet —
           no account, no KYC for standard swaps, flat 1% inside the quote.
         </p>
 

@@ -135,8 +135,7 @@ export default function Post() {
           <Link href="/blog/bitcoin-exchange-outflows-custody-migration-2026">outflows
           piece</Link> ended on: once withdrawn, how do you manage a portfolio without depositing
           onto the <em>next</em> venue that will someday publish its own closure notice? That&apos;s
-          the gap non-custodial swaps close. TokensFund compares THORChain, Chainflip, NEAR
-          Intents, Changee and CCE.Cash and routes each swap to the best rate, wallet to wallet —
+          the gap non-custodial swaps close. TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes each swap to the best rate, wallet to wallet —
           no account, no KYC for standard swaps, flat 1% in the quote, automatic refund to your own
           address if a swap can&apos;t fill. Your BTC, ETH, stables and privacy assets rotate
           without ever sitting on a balance sheet with a closure date. Our{" "}

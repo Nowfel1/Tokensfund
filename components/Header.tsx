@@ -19,7 +19,7 @@ export default function Header({ showRoutes = false }: { showRoutes?: boolean })
           <Link href="/faq" className="nav-link">FAQ</Link>
           {showRoutes && (
             <span className="routes-pill">
-              <span className="routes-pill-dot" />4 routes live
+              <span className="routes-pill-dot" />5 routes live
             </span>
           )}
         </nav>

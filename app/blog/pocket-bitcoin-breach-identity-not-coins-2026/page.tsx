@@ -171,8 +171,7 @@ export default function Post() {
           transaction that never required it.
         </p>
         <p>
-          That is the gap TokensFund fills. Swaps run wallet to wallet across THORChain, Chainflip,
-          Changee and CCE.Cash, routed to the best rate, with no account and no KYC for standard
+          That is the gap TokensFund fills. Swaps run wallet to wallet across THORChain, Chainflip, Changee, CCE.Cash and Wagyu, routed to the best rate, with no account and no KYC for standard
           swaps and a flat 1% inside the quote. We collect no identity documents, so there is no
           file to lose. It is not a substitute for a fiat on-ramp; it is a reason not to use one
           more often than you need to.

@@ -170,6 +170,10 @@ export default function Post() {
           quote.
         </p>
         <p>
+          <strong>Update, October 2026:</strong> Zcash is available on TokensFund again — through
+          THORChain, Changee and Wagyu, which pays ZEC to shielded addresses by default.
+        </p>
+        <p>
           The broader point is one worth sitting with. A blockchain found a flaw that could have
           quietly broken its own money supply, disclosed it, and shipped a mechanism that
           quarantines the damage using nothing but the chain&apos;s own arithmetic — no bailout, no

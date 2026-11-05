@@ -127,9 +127,9 @@ export default function Post() {
 
         <h2>What about Zcash (ZEC)?</h2>
         <p>
-          TokensFund does not currently route ZEC: its only route was NEAR Intents, which we have suspended (see our incident report). We expect to restore Zcash when THORChain's ZEC pool goes live. For XMR the flow is: choose
-          your send asset, select ZEC to receive, enter your Zcash address, then compare routes and
-          swap — no account required.
+          TokensFund routes ZEC through THORChain, Changee and Wagyu, and Wagyu pays to shielded
+          addresses by default. The flow is the same as for XMR: choose your send asset, select ZEC
+          to receive, enter your Zcash address, then compare routes and swap — no account required.
         </p>
         <p>
           One thing worth knowing: unlike Monero, where privacy is automatic, Zcash has a transparent

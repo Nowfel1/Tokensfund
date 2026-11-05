@@ -2,20 +2,20 @@ import Header from "@/components/Header";
 
 export const metadata = {
   title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-  description: "Learn how to buy XRP, Litecoin, Hyperliquid and Bittensor without KYC in 2026. No account, no verification - best rates across multiple protocols.",
+  description: "How to buy XRP and Litecoin without KYC in 2026, with no account. Updated: HYPE and TAO are no longer offered on TokensFund.",
   keywords: ["buy XRP without KYC", "buy LTC without KYC", "buy HYPE without KYC", "buy TAO without KYC", "no KYC crypto 2026"],
   alternates: { canonical: "/blog/buy-xrp-ltc-hype-tao-without-kyc-2026" },
   openGraph: {
     type: "article",
     url: "/blog/buy-xrp-ltc-hype-tao-without-kyc-2026",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, Changee and CCE.Cash.",
+    description: "Swap XRP and Litecoin without KYC, no account required. Updated: HYPE and TAO are no longer offered on TokensFund.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png", width: 1200, height: 400 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "How to Buy XRP LTC HYPE TAO Without KYC in 2026",
-    description: "Swap XRP, Litecoin, Hyperliquid and Bittensor without KYC. No account required. Best rates across THORChain, Chainflip, Changee and CCE.Cash.",
+    description: "Swap XRP and Litecoin without KYC, no account required. Updated: HYPE and TAO are no longer offered on TokensFund.",
     images: ["https://tokensfund.xyz/blog/banner_xrp_ltc_hype_tao.png"],
   },
 };
@@ -63,6 +63,12 @@ export default function Post() {
           style={bannerStyle}
         />
 
+        <p className="warn" style={{ marginBottom: "1.75rem" }}>
+          <strong>Update, November 2026:</strong> HYPE and TAO are no longer available on
+          TokensFund. Their only route was NEAR Intents, which we removed in August after a
+          user&apos;s swap stalled without settling or refunding. XRP and Litecoin are still
+          available, and the sections on them below remain current.
+        </p>
         <p>
           Buying XRP, Litecoin, Hyperliquid and Bittensor without KYC is completely possible in 2026.
           You do not need to create an account, verify your identity, or submit personal documents.
@@ -71,7 +77,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you how to swap into XRP, LTC, HYPE and TAO without KYC
-          using <strong>THORChain, Chainflip, Changee and CCE.Cash</strong> through TokensFund.
+          using <strong>THORChain, Chainflip, Changee, CCE.Cash and Wagyu</strong> through TokensFund.
         </p>
 
         <h2>Why Buy These Assets Without KYC?</h2>
@@ -83,7 +89,7 @@ export default function Post() {
 
         <h2>How to Buy XRP Without KYC</h2>
         <p>
-          XRP runs on the XRP Ledger and is supported via Changee and CCE.Cash on TokensFund.
+          XRP runs on the XRP Ledger and is supported via Changee on TokensFund.
           To receive XRP you need an XRP wallet address. Popular options include Trust Wallet,
           Exodus, or any wallet that supports the XRP Ledger.
         </p>
@@ -100,7 +106,7 @@ export default function Post() {
         <h2>How to Buy Litecoin (LTC) Without KYC</h2>
         <p>
           Litecoin is one of the most widely supported assets across decentralized protocols.
-          On TokensFund it is available via THORChain, Chainflip, Changee and CCE.Cash,
+          On TokensFund it is available via THORChain, Chainflip, Changee, CCE.Cash and Wagyu,
           giving you the most routes and best rates of any asset on the platform.
         </p>
         <ol>
@@ -108,7 +114,7 @@ export default function Post() {
           <li>Select your source asset</li>
           <li>Select <strong>LTC</strong> as the destination</li>
           <li>Enter your Litecoin wallet address</li>
-          <li>Compare routes across all four protocols</li>
+          <li>Compare quotes from every route that supports your pair</li>
           <li>Send and receive LTC automatically</li>
         </ol>
 
@@ -143,7 +149,7 @@ export default function Post() {
 
         <h2>Why Use TokensFund?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, Changee and CCE.Cash in one click</li>
+          <li>Compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>

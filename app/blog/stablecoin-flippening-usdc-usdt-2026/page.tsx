@@ -120,7 +120,7 @@ export default function Post() {
         <p>
           Whichever way you rotate — USDT to USDC, stables into BTC or ETH, or back — you don&apos;t
           need a licensed venue or an account to do it. TokensFund swaps between them
-          non-custodially: it compares THORChain, Chainflip, Changee and CCE.Cash and
+          non-custodially: it compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and
           routes to the best rate, wallet to wallet, no KYC for standard swaps, flat 1% shown in the
           quote, automatic refund to your own address if a swap can&apos;t fill. The venue chokepoint
           is exactly the thing a wallet-to-wallet swap doesn&apos;t have.

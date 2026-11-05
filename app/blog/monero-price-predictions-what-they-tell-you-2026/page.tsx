@@ -149,7 +149,7 @@ export default function Post() {
           <li><strong>Compare routes when you do buy.</strong> Because of the liquidity fragmentation described above, quotes for the same XMR trade differ more between services than for almost any other pair — often by more than a percentage point. That gap is real money and it is the one thing you can actually control.</li>
         </ul>
         <p>
-          Which is what we built: TokensFund compares THORChain, Chainflip, Changee and CCE.Cash on
+          Which is what we built: TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu on
           every swap and routes to the best rate, wallet to wallet — no account, no KYC for
           standard swaps, flat 1% already inside the quote. Our{" "}
           <Link href="/blog/best-btc-to-xmr-rate-2026">BTC→XMR rate guide</Link> explains what

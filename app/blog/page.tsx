@@ -4,7 +4,7 @@ import { POSTS } from "@/lib/posts";
 
 export const metadata = {
   title: "Blog - Crypto Swap Guides",
-  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, Changee and CCE.Cash.",
+  description: "Guides and tutorials on how to swap crypto without KYC using THORChain, Chainflip, Changee, CCE.Cash and Wagyu.",
   alternates: { canonical: "/blog" },
 };
 

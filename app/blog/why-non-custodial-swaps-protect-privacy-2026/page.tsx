@@ -165,8 +165,7 @@ export default function Post() {
 
         <h2>How to Swap Without an Account</h2>
         <p>
-          TokensFund compares live rates across THORChain, Chainflip, Changee
-          and CCE.Cash, all non-custodial or near-custodial routing protocols that do not require
+          TokensFund compares live rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu, all non-custodial or near-custodial routing protocols that do not require
           identity verification for crypto-to-crypto swaps.
         </p>
         <ol>

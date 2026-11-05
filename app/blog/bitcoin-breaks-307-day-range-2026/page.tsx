@@ -131,7 +131,7 @@ export default function Post() {
           A move like this makes people want to rebalance — take profit, rotate into something
           else, move stablecoins around. The practical note we keep making applies double when
           markets are fast: <em>you don&apos;t have to go back to an exchange to do it</em>.
-          TokensFund compares THORChain, Chainflip, Changee and CCE.Cash on every swap and routes
+          TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu on every swap and routes
           to the best rate, wallet to wallet — no account, no KYC for standard swaps, flat 1%
           already inside the quote, refunds to your own address if a route can&apos;t fill.
         </p>

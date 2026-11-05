@@ -149,7 +149,7 @@ export default function Post() {
         </p>
         <p>
           Which is the practical takeaway, and it doesn&apos;t depend on who wins the correlation
-          argument: hold the keys. TokensFund compares THORChain, Chainflip, Changee and CCE.Cash
+          argument: hold the keys. TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu
           on every swap and routes to the best rate, wallet to wallet — no account, no KYC for
           standard swaps, flat 1% already in the quote. Rotate between assets without your hedge
           ever sitting on someone else&apos;s balance sheet.

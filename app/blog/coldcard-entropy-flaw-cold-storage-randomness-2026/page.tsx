@@ -142,7 +142,7 @@ export default function Post() {
         </p>
         <p>
           For what it&apos;s worth on our side of it: TokensFund never holds your funds or touches
-          your keys — swaps route from your wallet through THORChain, Chainflip, Changee or CCE.Cash to an address you control, no account, no KYC for standard swaps.
+          your keys — swaps route from your wallet through THORChain, Chainflip, Changee, CCE.Cash or Wagyu to an address you control, no account, no KYC for standard swaps.
           That architecture removes a custodian from the picture. It cannot generate entropy for
           you, verify your firmware, or undo a predictable seed. Nothing can. Rotate first, swap
           later.

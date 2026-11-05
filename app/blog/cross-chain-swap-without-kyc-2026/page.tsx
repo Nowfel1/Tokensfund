@@ -3,20 +3,20 @@ import Link from "next/link";
 
 export const metadata = {
   title: "Cross Chain Swap Without KYC in 2026",
-  description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, Changee and CCE.Cash. No account, no KYC, best rates.",
+  description: "Learn how to do cross-chain swaps without KYC in 2026 using THORChain, Chainflip, Changee, CCE.Cash and Wagyu. No account, no KYC, best rates.",
   keywords: ["cross chain swap without KYC", "swap crypto no KYC 2026", "THORChain Chainflip Changee", "non custodial cross chain swap"],
   alternates: { canonical: "/blog/cross-chain-swap-without-kyc-2026" },
   openGraph: {
     type: "article",
     url: "/blog/cross-chain-swap-without-kyc-2026",
     title: "Cross Chain Swap Without KYC in 2026",
-    description: "Swap between any chains without KYC using THORChain, Chainflip, Changee and CCE.Cash — no account required.",
+    description: "Swap between any chains without KYC using THORChain, Chainflip, Changee, CCE.Cash and Wagyu — no account required.",
     images: [{ url: "https://tokensfund.xyz/blog/cross-chain-swap.png", width: 1200, height: 400 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Cross Chain Swap Without KYC in 2026",
-    description: "Swap between any chains without KYC using THORChain, Chainflip, Changee and CCE.Cash — no account required.",
+    description: "Swap between any chains without KYC using THORChain, Chainflip, Changee, CCE.Cash and Wagyu — no account required.",
     images: ["https://tokensfund.xyz/blog/cross-chain-swap.png"],
   },
 };
@@ -50,7 +50,7 @@ export default function Post() {
 
         <p>
           In this guide, we’ll show you how to perform cross-chain swaps in 2026 using 
-          <strong> THORChain, Chainflip, Changee and CCE.Cash</strong> through TokensFund.
+          <strong> THORChain, Chainflip, Changee, CCE.Cash and Wagyu</strong> through TokensFund.
         </p>
 
         <h2>Best Protocols for Cross-Chain Swaps (No KYC)</h2>
@@ -59,6 +59,7 @@ export default function Post() {
           <li><strong>THORChain</strong> — Mature decentralized liquidity protocol with strong BTC and multi-chain support.</li>
           <li><strong>Chainflip</strong> — Fast execution and very competitive fees.</li>
           <li><strong>Changee and CCE.Cash</strong> — Instant exchangers covering assets the protocols don&apos;t reach.</li>
+          <li><strong>Wagyu</strong> — Monero and Zcash swaps through Hyperliquid&apos;s decentralized orderbook, with Zcash paid to shielded addresses.</li>
         </ul>
 
         <h2>Step-by-Step: Cross Chain Swap on TokensFund</h2>
@@ -69,7 +70,7 @@ export default function Post() {
           <li>Enter the amount you want to swap</li>
           <li>Enter your destination wallet address</li>
           <li>Enter a refund address (used only if the swap fails)</li>
-          <li>Click <strong>"Compare routes"</strong> to see live quotes from THORChain, Chainflip, Changee and CCE.Cash</li>
+          <li>Click <strong>"Compare routes"</strong> to see live quotes from THORChain, Chainflip, Changee, CCE.Cash and Wagyu</li>
           <li>Choose the best rate and click <strong>"Swap"</strong></li>
           <li>Send the exact amount to the one-time deposit address</li>
           <li>Receive the swapped crypto directly in your wallet</li>
@@ -98,6 +99,7 @@ export default function Post() {
           <li><strong>THORChain:</strong> Usually 0.1% – 0.3% liquidity fee</li>
           <li><strong>Chainflip:</strong> Generally very competitive</li>
           <li><strong>Changee / CCE.Cash:</strong> Broad coverage, fast execution</li>
+          <li><strong>Wagyu:</strong> Fees vary by direction — for example 2% into XMR, 0% out of it</li>
         </ul>
         <p>TokensFund shows you all available quotes so you can choose the cheapest and fastest option.</p>
 

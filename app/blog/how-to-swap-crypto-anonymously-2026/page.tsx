@@ -113,7 +113,7 @@ export default function Post() {
 
         <h2>How to Swap Crypto Privately, Step by Step</h2>
         <p>
-          TokensFund is a non-custodial swap aggregator. It compares live rates across THORChain, Chainflip, Changee and CCE.Cash, then routes your swap to the best
+          TokensFund is a non-custodial swap aggregator. It compares live rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu, then routes your swap to the best
           available price, all without an account or KYC.
         </p>
         <ol>

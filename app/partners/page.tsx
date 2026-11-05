@@ -3,7 +3,7 @@ import Header from "@/components/Header";
 export const metadata = {
   title: "Powered By",
   description:
-    "TokensFund is a non-custodial aggregator. Every swap is executed by established providers — THORChain, Chainflip, Changee and CCE.Cash — and routed to the best rate.",
+    "TokensFund is a non-custodial aggregator. Every swap is executed by established providers — THORChain, Chainflip, Changee, CCE.Cash and Wagyu — and routed to the best rate.",
   keywords: [
     "tokensfund powered by",
     "THORChain aggregator",
@@ -16,7 +16,7 @@ export const metadata = {
     url: "/partners",
     title: "Powered By — The Protocols Behind TokensFund",
     description:
-      "Every TokensFund swap runs on established, non-custodial routes: THORChain, Chainflip, Changee and CCE.Cash.",
+      "Every TokensFund swap runs on established, non-custodial routes: THORChain, Chainflip, Changee, CCE.Cash and Wagyu.",
     images: [
       {
         url: "https://tokensfund.xyz/og-image.png",
@@ -30,7 +30,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "Powered By — The Protocols Behind TokensFund",
     description:
-      "Every TokensFund swap runs on established, non-custodial routes: THORChain, Chainflip, Changee and CCE.Cash.",
+      "Every TokensFund swap runs on established, non-custodial routes: THORChain, Chainflip, Changee, CCE.Cash and Wagyu.",
     images: ["https://tokensfund.xyz/og-image.png"],
   },
 };
@@ -51,6 +51,14 @@ const protocols = [
     bg: "linear-gradient(135deg,#2775ca,#46a3ff)",
     blurb:
       "A decentralized cross-chain protocol that swaps native assets directly using its own on-chain just-in-time liquidity.",
+  },
+  {
+    mark: "WG",
+    name: "Wagyu",
+    url: "https://wagyu.xyz",
+    bg: "linear-gradient(135deg,#c2410c,#f97316)",
+    blurb:
+      "Monero and Zcash swaps executed on Hyperliquid's decentralized orderbook, with cross-chain legs through a bridge aggregator and Zcash paid to shielded addresses.",
   },
 ];
 

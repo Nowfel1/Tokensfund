@@ -99,7 +99,7 @@ export default function Post() {
           A non-custodial swap is one way to reduce that exposure. TokensFund doesn&apos;t hold your
           funds and doesn&apos;t ask for an account, an email, or KYC for standard swaps — so there
           is no identity file and no central trade history for it to store, leak, or be compelled to
-          share. It compares rates across THORChain, Chainflip, Changee and CCE.Cash
+          share. It compares rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu
           and routes your swap wallet-to-wallet, with an automatic refund to your own address if a
           swap can&apos;t complete.
         </p>

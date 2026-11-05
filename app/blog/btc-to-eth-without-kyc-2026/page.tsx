@@ -2,20 +2,20 @@ import Header from "@/components/Header";
 
 export const metadata = {
   title: "How to Swap BTC to ETH Without KYC in 2026",
-  description: "Learn how to swap BTC to ETH without KYC in 2026. No account, no verification - best rates across THORChain, Chainflip, Changee and CCE.Cash.",
+  description: "Learn how to swap BTC to ETH without KYC in 2026. No account, no verification - best rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu.",
   keywords: ["swap BTC to ETH without KYC", "BTC to ETH no KYC 2026", "bitcoin to ethereum swap", "non custodial BTC ETH swap"],
   alternates: { canonical: "/blog/btc-to-eth-without-kyc-2026" },
   openGraph: {
     type: "article",
     url: "/blog/btc-to-eth-without-kyc-2026",
     title: "How to Swap BTC to ETH Without KYC in 2026",
-    description: "Compare THORChain, Chainflip, Changee and CCE.Cash in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
+    description: "Compare THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
     images: [{ url: "https://tokensfund.xyz/blog/banner_btc_eth.png", width: 1200, height: 400 }],
   },
   twitter: {
     card: "summary_large_image",
     title: "How to Swap BTC to ETH Without KYC in 2026",
-    description: "Compare THORChain, Chainflip, Changee and CCE.Cash in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
+    description: "Compare THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click. Swap BTC to ETH at the best rate. No account. No KYC.",
     images: ["https://tokensfund.xyz/blog/banner_btc_eth.png"],
   },
 };
@@ -72,7 +72,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you exactly how to swap BTC to ETH without KYC using
-          <strong> THORChain, Chainflip, Changee and CCE.Cash</strong> through TokensFund.
+          <strong> THORChain, Chainflip, Changee, CCE.Cash and Wagyu</strong> through TokensFund.
         </p>
 
         <h2>Why Swap BTC to ETH Without KYC?</h2>
@@ -85,12 +85,13 @@ export default function Post() {
         </p>
 
         <h2>Best Protocols for BTC to ETH Swaps (No KYC)</h2>
-        <p>TokensFund aggregates four protocols that all support BTC to ETH without KYC:</p>
+        <p>TokensFund compares five routes that all support BTC to ETH without KYC:</p>
         <ul>
           <li><strong>THORChain</strong> - The most established decentralized cross-chain protocol. Native BTC support, strong liquidity, and a long track record.</li>
           <li><strong>Chainflip</strong> - Built specifically for cross-chain swaps with fast settlement and competitive rates.</li>
           <li><strong>CCE.Cash</strong> - Instant exchanger with broad asset coverage and no account requirement.</li>
           <li><strong>Changee</strong> - Instant non-custodial swap service with no account required and broad asset support.</li>
+          <li><strong>Wagyu</strong> - Cross-chain swaps through a decentralized bridge aggregator and Hyperliquid&apos;s orderbook, with no account required.</li>
         </ul>
 
         <h2>Step-by-Step: Swap BTC to ETH on TokensFund</h2>
@@ -101,7 +102,7 @@ export default function Post() {
           <li>Enter the amount of BTC you want to swap</li>
           <li>Enter your <strong>ETH destination address</strong></li>
           <li>Enter a <strong>BTC refund address</strong> (your own Bitcoin address, used only if the swap fails)</li>
-          <li>Click <strong>Compare routes</strong> to see live quotes from all four protocols</li>
+          <li>Click <strong>Compare routes</strong> to see live quotes from every available route</li>
           <li>Select the best rate and click <strong>Swap via Protocol</strong></li>
           <li>Send the exact BTC amount shown to the one-time deposit address</li>
           <li>Your ETH arrives automatically in your destination wallet</li>
@@ -111,7 +112,7 @@ export default function Post() {
 
         <h2>Why Use TokensFund for BTC to ETH?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, Changee and CCE.Cash in one click</li>
+          <li>Compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>

@@ -121,8 +121,7 @@ export default function Post() {
           <li><strong>If you&apos;re keeping USDT</strong>, that&apos;s your call and it&apos;s lawful — just know the licensed off-ramps have narrowed, so plan your eventual exit route accordingly.</li>
         </ol>
         <p>
-          TokensFund handles the swap step non-custodially: it compares THORChain, Chainflip, NEAR
-          Intents, Changee and CCE.Cash and routes your swap to the best rate, wallet to wallet. No
+          TokensFund handles the swap step non-custodially: it compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes your swap to the best rate, wallet to wallet. No
           account, no KYC for standard swaps, flat 1% fee shown in the quote, automatic refund to
           your own address if a swap can&apos;t complete. Your funds never sit on a platform that a
           licensing deadline can freeze.

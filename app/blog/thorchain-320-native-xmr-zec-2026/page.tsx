@@ -51,7 +51,7 @@ export default function Post() {
         />
 
         <p className="warn" style={{ marginBottom: "1.75rem" }}>
-          <strong>Disclosure:</strong> TokensFund integrates THORChain as one of four swap routes
+          <strong>Disclosure:</strong> TokensFund integrates THORChain as one of five swap routes
           and earns an affiliate fee on swaps routed through it. Read this with that in mind — and
           note that we spend most of the piece on what hasn&apos;t shipped yet.
         </p>
@@ -162,7 +162,7 @@ export default function Post() {
         </p>
 
         <div className="blog-cta">
-          <p>Four routes compared, wallet to wallet</p>
+          <p>Five routes compared, wallet to wallet</p>
           <Link
             href="/swap/btc-to-xmr"
             style={{

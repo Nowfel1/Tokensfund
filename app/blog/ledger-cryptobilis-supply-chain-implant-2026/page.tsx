@@ -153,8 +153,7 @@ export default function Post() {
         <h2>Where TokensFund fits</h2>
         <p>
           Nothing here is solved by a swap service, and we won&apos;t pretend otherwise.
-          TokensFund never holds your funds — swaps go from your wallet through THORChain,
-          Chainflip, Changee or CCE.Cash to an address you control — but we can&apos;t verify that
+          TokensFund never holds your funds — swaps go from your wallet through THORChain, Chainflip, Changee, CCE.Cash or Wagyu to an address you control — but we can&apos;t verify that
           the device holding that address is genuine. If you&apos;re moving funds off a device you
           no longer trust, move them first to a fresh wallet on hardware you bought directly, and
           swap later.

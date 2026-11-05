@@ -42,7 +42,7 @@ const faqs = [
   {
     section: "The basics",
     q: "What is TokensFund?",
-    a: "TokensFund is a non-custodial cross-chain swap aggregator. Instead of giving you a single exchange's price, it compares live quotes from four independent swap routes and sends your swap through whichever offers the best rate. There's no account, no sign-up, and no KYC, and your funds never pass through us.",
+    a: "TokensFund is a non-custodial cross-chain swap aggregator. Instead of giving you a single exchange's price, it compares live quotes from five independent swap routes and sends your swap through whichever offers the best rate. There's no account, no sign-up, and no KYC, and your funds never pass through us.",
   },
   {
     section: "The basics",
@@ -57,7 +57,7 @@ const faqs = [
   {
     section: "The basics",
     q: "Which protocols does TokensFund route through?",
-    a: "TokensFund compares and routes across four protocols: THORChain, Chainflip, Changee and CCE.Cash. You always see which route a quote comes from before you confirm. The swap itself is executed by the underlying protocol — TokensFund is the comparison and routing layer on top.",
+    a: "TokensFund compares and routes across five routes: THORChain, Chainflip, Changee, CCE.Cash and Wagyu. You always see which route a quote comes from before you confirm. The swap itself is executed by the underlying protocol — TokensFund is the comparison and routing layer on top.",
   },
   {
     section: "Using TokensFund",

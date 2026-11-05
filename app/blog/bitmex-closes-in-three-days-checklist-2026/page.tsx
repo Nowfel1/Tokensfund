@@ -135,7 +135,7 @@ export default function Post() {
         </p>
         <p>
           Once your coins are out, moving between assets doesn&apos;t require going back to a
-          venue with a closure date. TokensFund compares THORChain, Chainflip, Changee and CCE.Cash
+          venue with a closure date. TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu
           and routes wallet to wallet — no account, no KYC for standard swaps, flat 1% inside the
           quote, refunds to your own address if a route can&apos;t fill.
         </p>

@@ -10,7 +10,7 @@ export const metadata = {
 };
 
 const SECTIONS = [
-  { href: "/", label: "Swap — compare 4 protocols, best rate wins" },
+  { href: "/", label: "Swap — compare 5 routes, best rate wins" },
   { href: "/order", label: "Order status — look up a swap by its order code" },
   { href: "/blog", label: "Blog — guides, market analysis and regulation coverage" },
   { href: "/faq", label: "FAQ — how TokensFund works, fees, and privacy" },

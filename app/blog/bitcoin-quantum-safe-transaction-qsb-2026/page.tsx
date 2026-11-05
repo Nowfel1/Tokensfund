@@ -168,7 +168,7 @@ export default function Post() {
           be around</Link> for it.
         </p>
         <p>
-          TokensFund compares THORChain, Chainflip, Changee and CCE.Cash on every swap and routes
+          TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu on every swap and routes
           wallet to wallet — no account, no KYC for standard swaps, flat 1% inside the quote. Every
           swap lands at an address you generated, which is the version of this that stays true
           regardless of what breaks next.

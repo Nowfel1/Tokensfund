@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     template: "%s | TokensFund",
   },
   description:
-    "Swap Bitcoin, Ethereum, Monero, USDC, USDT, SOL and more at the best rates. TokensFund compares THORChain, Chainflip, Changee and CCE.Cash in one click. No account. No KYC. Non-custodial.",
+    "Swap Bitcoin, Ethereum, Monero, USDC, USDT, SOL and more at the best rates. TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click. No account. No KYC. Non-custodial.",
   keywords: [
     "crypto swap",
     "cross-chain swap",
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     siteName: "TokensFund",
     title: "TokensFund — Best Cross-Chain Crypto Swap Rates",
     description:
-      "Compare THORChain, Chainflip, Changee and CCE.Cash in one click. Swap BTC, ETH, XMR, USDC and more at the best price. No account. No KYC.",
+      "Compare THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click. Swap BTC, ETH, XMR, USDC and more at the best price. No account. No KYC.",
     images: [
       {
         url: "/og-image.png",
@@ -70,7 +70,7 @@ export const metadata: Metadata = {
     creator: "@Tokensfund",
     title: "TokensFund — Best Cross-Chain Crypto Swap Rates",
     description:
-      "Compare THORChain, Chainflip, Changee and CCE.Cash in one click. Swap BTC, ETH, XMR, USDC and more at the best price. No account. No KYC.",
+      "Compare THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click. Swap BTC, ETH, XMR, USDC and more at the best price. No account. No KYC.",
     images: ["/og-image.png"],
   },
   verification: {

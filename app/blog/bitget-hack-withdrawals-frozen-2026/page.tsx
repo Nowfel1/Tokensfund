@@ -140,7 +140,7 @@ export default function Post() {
         </p>
         <p>
           The reason this site exists is the other arrangement. TokensFund never holds your funds:
-          swaps route from your wallet, through THORChain, Chainflip, Changee or CCE.Cash, to an
+          swaps route from your wallet, through THORChain, Chainflip, Changee, CCE.Cash or Wagyu, to an
           address you control — no account, no KYC for standard swaps, flat 1% inside the quote.
           There is no balance of yours for us to freeze, because there is never a balance of yours
           here at all. That design doesn&apos;t make you safe from everything. It makes you safe

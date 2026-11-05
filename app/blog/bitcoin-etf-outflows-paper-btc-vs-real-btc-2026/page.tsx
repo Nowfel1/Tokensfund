@@ -111,7 +111,7 @@ export default function Post() {
         <p>
           TokensFund is a non-custodial swap aggregator: if you hold any crypto — stablecoins, ETH,
           anything else — you can swap it directly into BTC (or out of it) from your own wallet. It
-          compares rates across THORChain, Chainflip, Changee and CCE.Cash and routes
+          compares rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes
           your swap to the best one. No account, no email, no KYC for standard swaps; the flat 1%
           fee is already shown in the quote, and funds go wallet-to-wallet with an automatic refund
           to your own address if a swap can&apos;t complete.

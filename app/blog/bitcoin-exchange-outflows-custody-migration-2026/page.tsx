@@ -123,7 +123,7 @@ export default function Post() {
           every time you want to rebalance.
         </p>
         <p>
-          That&apos;s the gap non-custodial swaps exist to close. TokensFund compares THORChain, Chainflip, Changee and CCE.Cash and routes your swap to the best rate,
+          That&apos;s the gap non-custodial swaps exist to close. TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes your swap to the best rate,
           wallet to wallet — rotate BTC, ETH, stables, XMR and more without an account, without
           KYC for standard swaps, with a flat 1% already in the quote and automatic refund to your
           own address if a swap can&apos;t fill. The coins never touch an exchange balance sheet

@@ -147,7 +147,7 @@ export default function Post() {
         </p>
 
         <div className="blog-cta">
-          <p>Four routes, compared — so you can choose</p>
+          <p>Five routes, compared — so you can choose</p>
           <Link
             href="/"
             style={{

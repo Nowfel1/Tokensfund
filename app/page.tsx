@@ -14,6 +14,7 @@ const PROTOCOLS = [
   { mark: "CF", name: "Chainflip" },
   { mark: "CG", name: "Changee" },
   { mark: "CC", name: "CCE.Cash" },
+  { mark: "WG", name: "Wagyu" },
 ];
 
 // Auto-derived from lib/posts.ts — the homepage always links the two newest
@@ -51,7 +52,7 @@ export default function Home() {
             <span className="accent">Best rate.</span>
           </h1>
           <p className="sub">
-            TokensFund compares THORChain, Chainflip, Changee and CCE.Cash live, then routes your
+            TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu live, then routes your
             swap to the best price. No account. No KYC. Funds never touch our hands.
           </p>
           <div className="hero-ctas">
@@ -59,7 +60,7 @@ export default function Home() {
             <a href="#how" className="btn-ghost">How it works</a>
           </div>
           <div className="hero-2col-stats">
-            <div className="h2c-stat"><span className="num">4</span><span className="lbl">routes</span></div>
+            <div className="h2c-stat"><span className="num">5</span><span className="lbl">routes</span></div>
             <div className="h2c-div" />
             <div className="h2c-stat"><span className="num">15+</span><span className="lbl">assets</span></div>
             <div className="h2c-div" />
@@ -94,7 +95,7 @@ export default function Home() {
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 02</span>
             <h3>Compare routes</h3>
-            <p>Four routes quoted at once. The best rate wins, with our fee already included in the number you see.</p>
+            <p>Five routes quoted at once. The best rate wins, with our fee already included in the number you see.</p>
           </div>
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 03</span>

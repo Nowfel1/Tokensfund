@@ -168,7 +168,7 @@ export default function Post() {
         <p>
           All ten assets above are swappable on TokensFund without creating an account or
           submitting any identity verification. TokensFund compares live rates across
-          THORChain, Chainflip, Changee and CCE.Cash, so you always get routed
+          THORChain, Chainflip, Changee, CCE.Cash and Wagyu, so you always get routed
           to the best available price for your specific pair and amount.
         </p>
         <ol>
