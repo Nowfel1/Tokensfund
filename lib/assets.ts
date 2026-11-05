@@ -208,10 +208,12 @@ export function getAsset(id: string): CanonicalAsset | undefined {
   return ASSET_BY_ID.get(id);
 }
 
+// Shared by the server and the swap screen, so both always agree on which
+// routes to ask for a pair.
 export function providersForPair(fromId: string, toId: string) {
   const from = getAsset(fromId);
   const to = getAsset(toId);
   if (!from || !to) return [];
   const ids: ProviderId[] = ["thorchain", "chainflip", "cce", "changee", "wagyu"];
-  return ids.filter((p) => from.providerIds[p] && to.providerIds[p]);
+  return ids.filter((p) => Boolean(from.providerIds[p] && to.providerIds[p]));
 }
