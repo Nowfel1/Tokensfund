@@ -65,7 +65,11 @@ async function readJson(res: Response, label: string): Promise<any> {
   }
   if (!res.ok) {
     const min = data?.minAmountUsd ? ` (minimum about $${data.minAmountUsd})` : "";
-    throw new Error(`Wagyu: ${data?.error ?? `HTTP ${res.status}`}${min}`);
+    // Include the error code and any extra fields Wagyu sends, so a generic
+    // "Invalid request." still says which field it objected to.
+    const { code, error, minAmountUsd, ...rest } = data ?? {};
+    const extra = Object.keys(rest).length ? ` ${JSON.stringify(rest).slice(0, 300)}` : "";
+    throw new Error(`Wagyu ${label}: ${error ?? `HTTP ${res.status}`}${code ? ` [${code}]` : ""}${min}${extra}`);
   }
   return data;
 }
