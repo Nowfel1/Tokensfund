@@ -4,6 +4,7 @@ import * as thorchain from "./providers/thorchain";
 import * as chainflip from "./providers/chainflip";
 import * as cce from "./providers/cce";
 import * as changee from "./providers/changee";
+import * as wagyu from "./providers/wagyu";
 
 // NOTE: NEAR Intents was removed 2026-08-17 (see the header note in
 // lib/assets.ts for why). Its provider module has been deleted, so there is
@@ -15,6 +16,7 @@ const LABELS: Record<ProviderId, string> = {
   near_intents: "NEAR Intents",
   cce: "CCE.Cash",
   changee: "Changee",
+  wagyu: "Wagyu",
 };
 
 export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuotes> {
@@ -35,6 +37,7 @@ export async function aggregateQuotes(req: QuoteRequest): Promise<AggregatedQuot
       if (p === "thorchain") return thorchain.getQuote(fromAsset, toAsset, req);
       if (p === "chainflip") return chainflip.getQuote(fromAsset, toAsset, req);
       if (p === "cce") return cce.getQuote(fromAsset, toAsset, req);
+      if (p === "wagyu") return wagyu.getQuote(fromAsset, toAsset, req);
       return changee.getQuote(fromAsset, toAsset, req);
     })
   );

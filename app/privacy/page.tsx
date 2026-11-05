@@ -90,7 +90,7 @@ export default function Privacy() {
 
         <h2>Who we share with</h2>
         <p>
-          We share swap details with the third-party protocol that executes your swap — THORChain, Chainflip, Changee or CCE.Cash — because they need your destination and
+          We share swap details with the third-party protocol that executes your swap — THORChain, Chainflip, Changee, CCE.Cash or Wagyu — because they need your destination and
           refund addresses to complete the transaction. Each operates independently and under its own
           privacy practices, which we do not control. We also rely on Vercel (hosting and
           analytics) and Neon (database hosting) to run the Service. Prices come from CoinGecko,

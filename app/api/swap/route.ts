@@ -5,6 +5,7 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
+import * as wagyu from "@/lib/providers/wagyu";
 import { sql, ensureOrdersTable, generateOrderCode } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -19,7 +20,7 @@ async function logOrder(result: any, body: any, expectedOut?: number): Promise<s
     const orderCode = generateOrderCode();
     await sql`
       INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code, expected_out)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.privateTrackingId ?? result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
     `;
     return orderCode;
   } catch (e) {
@@ -66,6 +67,10 @@ export async function POST(req: NextRequest) {
       const quote = await cce.getQuote(from, to, body);
       expectedOut = quote.expectedOut;
       result = await cce.buildSwap(quote, body, from, to);
+    } else if (body.provider === "wagyu") {
+      const quote = await wagyu.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
+      result = await wagyu.buildSwap(quote, body, from, to);
     } else if (body.provider === "changee") {
       const quote = await changee.getQuote(from, to, body);
       expectedOut = quote.expectedOut;
@@ -75,7 +80,9 @@ export async function POST(req: NextRequest) {
     }
 
     const orderCode = await logOrder(result, body, expectedOut);
-    return NextResponse.json({ ...result, orderCode });
+    // Never send server-only tracking details (e.g. Wagyu's session) to the browser.
+    const { privateTrackingId: _private, ...publicResult } = result as any;
+    return NextResponse.json({ ...publicResult, orderCode });
   } catch (e: any) {
     console.error("SWAP ERROR:", JSON.stringify(e, null, 2), e.message);
     return NextResponse.json(

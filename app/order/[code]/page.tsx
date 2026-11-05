@@ -40,7 +40,7 @@ export default async function OrderPage({ params }: { params: { code: string } }
       <OrderView
         code={order.order_code}
         provider={order.provider}
-        trackingId={order.tracking_id ?? ""}
+        canTrack={Boolean(order.tracking_id)}
         amount={order.amount}
         expectedOut={order.expected_out}
         fromNetwork={network(from)}

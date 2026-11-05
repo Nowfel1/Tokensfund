@@ -10,6 +10,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   near_intents: "NI",
   cce: "CC",
   changee: "CG",
+  wagyu: "WG",
 };
 
 const COIN_LETTER: Record<string, string> = {
@@ -73,7 +74,7 @@ const ADDR_PATTERNS: Record<string, RegExp> = {
   BNB: /^0x[a-fA-F0-9]{40}$/, // EVM format — indistinguishable from an ETH address
   USDC_SOL: /^[1-9A-HJ-NP-Za-km-z]{32,44}$/, // Solana base58
   TON: /^(EQ|UQ|kQ|0Q)[A-Za-z0-9_-]{40,60}$/,
-  ZEC: /^(t1|t3|u1|zs)[a-zA-Z0-9]{20,90}$/,
+  ZEC: /^(t1|t3|u1|zs)[a-zA-Z0-9]{20,500}$/,
   NEAR: /^([a-z0-9_-]+\.near|[a-f0-9]{64})$/,
 };
 
@@ -91,7 +92,7 @@ function pairProviders(fromId: string, toId: string): ProviderId[] {
   if (!from || !to) return [];
   // NEAR Intents deliberately excluded — see the note in lib/assets.ts.
   // Its refs are also commented out there, so this is belt-and-braces.
-  return (["thorchain", "chainflip", "cce", "changee"] as ProviderId[]).filter(
+  return (["thorchain", "chainflip", "cce", "changee", "wagyu"] as ProviderId[]).filter(
     (p) => from.providerIds[p] && to.providerIds[p]
   );
 }
@@ -102,6 +103,7 @@ function label(p?: ProviderId) {
   if (p === "chainflip") return "Chainflip";
   if (p === "cce") return "CCE.Cash";
   if (p === "changee") return "Changee";
+  if (p === "wagyu") return "Wagyu";
   return "NEAR Intents";
 }
 
@@ -247,7 +249,11 @@ export default function SwapTerminal({
     let stop = false;
     async function check() {
       try {
-        const res = await fetch("/api/status?provider=" + selected + "&id=" + encodeURIComponent(deposit!.trackingId));
+        const res = await fetch(
+          deposit!.orderCode
+            ? "/api/order-status?code=" + deposit!.orderCode
+            : "/api/status?provider=" + selected + "&id=" + encodeURIComponent(deposit!.trackingId)
+        );
         const text = await res.text();
         const data = text ? JSON.parse(text) : null;
         if (!stop && data) setStatus(data);
@@ -258,7 +264,7 @@ export default function SwapTerminal({
       }
     }
     check();
-    statusTimer.current = setInterval(check, 15000);
+    statusTimer.current = setInterval(check, 30000);
     return () => { stop = true; if (statusTimer.current) clearInterval(statusTimer.current); };
   }, [deposit, selected]);
 
@@ -709,7 +715,7 @@ function StatusTracker({ status, provider }: { status: SwapStatus | null; provid
           </a>
         </p>
       ) : (
-        <p className="status-hint">Status updates automatically every 15s.</p>
+        <p className="status-hint">Status updates automatically every 30s.</p>
       )}
     </div>
   );

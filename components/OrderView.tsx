@@ -22,6 +22,7 @@ function providerLabel(p: string) {
   if (p === "chainflip") return "Chainflip";
   if (p === "cce") return "CCE.Cash";
   if (p === "changee") return "Changee";
+  if (p === "wagyu") return "Wagyu";
   if (p === "near_intents") return "NEAR Intents";
   return p;
 }
@@ -45,7 +46,7 @@ function group(code: string) {
 interface Props {
   code: string;
   provider: string;
-  trackingId: string;
+  canTrack: boolean;
   amount: string;
   expectedOut?: string | null;
   fromNetwork?: string;
@@ -65,16 +66,15 @@ export default function OrderView(p: Props) {
   const [showDep, setShowDep] = useState(false);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
 
-  // Live status for the customer, polled from the provider every 15s.
+  // Live status, checked through our server by order code every 30s, so the
+  // provider's tracking details never reach the browser.
   // Stops once the swap reaches a terminal state.
   useEffect(() => {
-    if (!p.trackingId) return;
+    if (!p.canTrack) return;
     let stop = false;
     async function check() {
       try {
-        const res = await fetch(
-          "/api/status?provider=" + p.provider + "&id=" + encodeURIComponent(p.trackingId)
-        );
+        const res = await fetch("/api/order-status?code=" + encodeURIComponent(p.code));
         const text = await res.text();
         const data = text ? JSON.parse(text) : null;
         if (!stop && data) setStatus(data);
@@ -86,12 +86,12 @@ export default function OrderView(p: Props) {
       }
     }
     check();
-    timer.current = setInterval(check, 15000);
+    timer.current = setInterval(check, 30000);
     return () => {
       stop = true;
       if (timer.current) clearInterval(timer.current);
     };
-  }, [p.provider, p.trackingId]);
+  }, [p.code, p.canTrack]);
 
   const meta = STATE_META[status?.state ?? "awaiting_deposit"] ?? STATE_META.unknown;
 
@@ -159,10 +159,10 @@ export default function OrderView(p: Props) {
         })}
       </div>
       <p className="ov-hint">
-        {p.trackingId
+        {p.canTrack
           ? meta.step >= 3
             ? "This swap is finished."
-            : "Updates automatically every 15 seconds"
+            : "Updates automatically every 30 seconds"
           : "Live status isn't available for this route. Check your destination wallet."}
       </p>
 

@@ -3,7 +3,8 @@ export type ProviderId =
   | "chainflip"
   | "near_intents"
   | "cce"
-  | "changee";
+  | "changee"
+  | "wagyu";
 
 export interface ProviderAssetRef {
   asset?: string;
@@ -13,6 +14,8 @@ export interface ProviderAssetRef {
   network?: string;
   abbr?: string;     // Used by CCE.Cash
   ticker?: string;   // Used by Changee (and future providers)
+  chainId?: number;  // Used by Wagyu (its own chain ids, e.g. 0 = Monero)
+  token?: string;    // Used by Wagyu (token value from its catalog)
 }
 
 export interface CanonicalAsset {
@@ -82,6 +85,9 @@ export interface SwapInstruction {
   // seconds, so only timestamp-based providers get a meaningful countdown.
   expiresAt?: number;
   trackingId: string;
+  /** Server-only tracking value (e.g. Wagyu's orderId plus private session).
+   *  Stored in the database and stripped before the response reaches the browser. */
+  privateTrackingId?: string;
   /** Short shareable code for the /order/<code> URL. Set by /api/swap when
    *  the order is logged; absent if logging failed. */
   orderCode?: string | null;
