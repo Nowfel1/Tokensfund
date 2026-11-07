@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "zcash-nu7-faster-blocks-sprout-freeze-2026",
+    title: "Zcash NU7: Blocks Three Times Faster, Same Supply — and 12,000 ZEC Frozen",
+    date: "November 7, 2026",
+    description: "Zcash's NU7 upgrade went live on 6 November 2026. Blocks now arrive every 25 seconds instead of 75, issuance is unchanged, and 60% of fees go to a reserve. It also retired the original Sprout pool, leaving about 12,200 ZEC unable to move. What changed and what ZEC holders should check.",
+    tag: "Privacy",
+  },
+    {
     slug: "ledger-cryptobilis-supply-chain-implant-2026",
     title: "Ledger Wasn't Hacked. The Box Was",
     date: "October 12, 2026",
