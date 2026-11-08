@@ -4,6 +4,8 @@ import Header from "@/components/Header";
 import { POSTS } from "@/lib/posts";
 import SwapTerminal from "@/components/SwapTerminal";
 import RateTicker from "@/components/RateTicker";
+import RouteCosts from "@/components/RouteCosts";
+import { FEE_PROMO_ACTIVE, FEE_PROMO_LINE, FEE_STEP } from "@/lib/fees";
 
 export const metadata = {
   alternates: { canonical: "/" },
@@ -55,6 +57,7 @@ export default function Home() {
             TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu live, then routes your
             swap to the best price. No account. No KYC. Funds never touch our hands.
           </p>
+          {FEE_PROMO_ACTIVE && <div className="fee-promo">{FEE_PROMO_LINE}</div>}
           <div className="hero-ctas">
             <a href="#swap" className="btn-gold">Start swapping</a>
             <a href="#how" className="btn-ghost">How it works</a>
@@ -83,6 +86,8 @@ export default function Home() {
         ))}
       </div>
 
+      <RouteCosts />
+
       <section className="hiw2" id="how">
         <p className="hiw2-label">HOW IT WORKS</p>
         <h2 className="hiw2-title">Three steps. Zero accounts.</h2>
@@ -95,7 +100,7 @@ export default function Home() {
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 02</span>
             <h3>Compare routes</h3>
-            <p>Five routes quoted at once. The best rate wins, with our fee already included in the number you see.</p>
+            <p>{FEE_STEP}</p>
           </div>
           <div className="hiw2-card">
             <span className="hiw2-step">STEP 03</span>
