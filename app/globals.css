@@ -716,3 +716,8 @@ a { color: inherit; }
   .rc-coins-col { display: none; }
 }
 .rc-row-head .rc-num { color: var(--muted-2); font-size: 12px; font-weight: 400; }
+.rc-has-g .rc-row { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.4fr) 88px 88px 88px 88px; }
+.rc-guarantee { color: var(--green); font-weight: 700; cursor: default; }
+@media (max-width: 640px) {
+  .rc-has-g .rc-row { grid-template-columns: minmax(0, 1.2fr) 62px 62px 56px 56px; }
+}

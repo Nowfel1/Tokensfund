@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { ProviderId } from "@/lib/types";
+import { activeGuarantees, formatUsd } from "@/lib/guarantees";
 
 type Costs = Record<string, Record<string, number | null>>;
 
@@ -59,6 +60,10 @@ export default function RouteCosts() {
       .catch(() => setFailed(true));
   }, []);
 
+  // Guarantee column only appears once at least one deposit is configured.
+  const guarantees = activeGuarantees();
+  const showGuarantee = Object.keys(guarantees).length > 0;
+
   // Cheapest route per column, for the green highlight.
   const best: Record<string, number | undefined> = {};
   if (costs) {
@@ -77,7 +82,7 @@ export default function RouteCosts() {
         </span>
       </div>
 
-      <div className="rc-table">
+      <div className={"rc-table" + (showGuarantee ? " rc-has-g" : "")}>
         <div className="rc-row rc-row-head">
           <span>Route</span>
           <span className="rc-coins-col">Coins</span>
@@ -85,6 +90,7 @@ export default function RouteCosts() {
             <span key={p.key} className="rc-num">{p.label}</span>
           ))}
           <span className="rc-num">Holds funds</span>
+          {showGuarantee && <span className="rc-num">Guarantee</span>}
         </div>
 
         {ROUTES.map((r) => {
@@ -113,6 +119,20 @@ export default function RouteCosts() {
                 );
               })}
               <span className="rc-num rc-holds">{r.holds}</span>
+              {showGuarantee && (
+                <span className="rc-num">
+                  {guarantees[r.id] ? (
+                    <span
+                      className="rc-guarantee"
+                      title={`${guarantees[r.id]!.usd.toLocaleString("en-US")} ${guarantees[r.id]!.asset} deposited with TokensFund by ${r.name}`}
+                    >
+                      {formatUsd(guarantees[r.id]!.usd)}
+                    </span>
+                  ) : (
+                    <span className="rc-holds">—</span>
+                  )}
+                </span>
+              )}
             </div>
           );
         })}
@@ -121,6 +141,8 @@ export default function RouteCosts() {
       <p className="rc-note">
         Cost is what you pay versus the market price for a 0.01 BTC swap, with every fee included.
         Green marks the cheapest route; a dash means that route couldn&apos;t give a quote just now.
+        {showGuarantee &&
+          " Guarantee is collateral the provider has deposited with TokensFund: if it fails to complete a swap made here, the affected user is compensated from that deposit. Protocols need no guarantee, as no company holds funds."}
       </p>
     </section>
   );
