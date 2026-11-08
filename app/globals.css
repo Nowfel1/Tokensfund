@@ -715,3 +715,4 @@ a { color: inherit; }
   .rc-row { grid-template-columns: minmax(0, 1.3fr) 70px 70px 64px; padding: 11px 12px; }
   .rc-coins-col { display: none; }
 }
+.rc-row-head .rc-num { color: var(--muted-2); font-size: 12px; font-weight: 400; }

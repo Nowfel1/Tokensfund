@@ -38,11 +38,14 @@ async function getPrices(): Promise<Record<string, number>> {
   return out;
 }
 
-export async function GET() {
+export async function GET(req: Request) {
+  const debug = new URL(req.url).searchParams.get("debug") === "1";
   try {
     const prices = await getPrices();
     // costs[route][pairKey] = all-in cost in percent, or null if unavailable
     const costs: Record<string, Record<string, number | null>> = {};
+    // Why a route has no number for a pair (only returned with ?debug=1).
+    const errors: Record<string, Record<string, string>> = {};
 
     await Promise.all(
       PAIRS.map(async (pair) => {
@@ -60,6 +63,8 @@ export async function GET() {
           costs[q.provider] ??= {};
           if (q.error || !q.expectedOut) {
             costs[q.provider][pair.key] = null;
+            errors[q.provider] ??= {};
+            errors[q.provider][pair.key] = q.error ?? "No amount returned";
             continue;
           }
           const cost = (1 - (q.expectedOut * pTo) / valueIn) * 100;
@@ -71,7 +76,7 @@ export async function GET() {
     );
 
     return NextResponse.json(
-      { updatedAt: new Date().toISOString(), amount: AMOUNT, costs },
+      { updatedAt: new Date().toISOString(), amount: AMOUNT, costs, ...(debug ? { prices, errors } : {}) },
       { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } }
     );
   } catch {

@@ -84,7 +84,7 @@ export default function RouteCosts() {
           {PAIRS.map((p) => (
             <span key={p.key} className="rc-num">{p.label}</span>
           ))}
-          <span className="rc-num">Held mid-swap</span>
+          <span className="rc-num">Holds funds</span>
         </div>
 
         {ROUTES.map((r) => {
@@ -120,7 +120,7 @@ export default function RouteCosts() {
 
       <p className="rc-note">
         Cost is what you pay versus the market price for a 0.01 BTC swap, with every fee included.
-        Green marks the cheapest route; a dash means the route doesn&apos;t offer that pair right now.
+        Green marks the cheapest route; a dash means that route couldn&apos;t give a quote just now.
       </p>
     </section>
   );
