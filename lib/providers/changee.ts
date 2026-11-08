@@ -3,6 +3,13 @@ import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapSta
 const API_KEY = process.env.CHANGEE_API_KEY ?? "";
 const BASE = "https://changee.com/v1/api";
 
+// Identify ourselves honestly on every request. Requests with no user agent or
+// accept header are a common trigger for Cloudflare bot checks.
+const HEADERS = {
+  accept: "application/json",
+  "user-agent": "TokensFund/1.0 (+https://tokensfund.xyz)",
+};
+
 // Changee identifies coins by a simple ticker (e.g. BTC, ETH, XMR).
 function ticker(asset: CanonicalAsset): string {
   return asset.providerIds.changee?.ticker ?? asset.symbol;
@@ -37,7 +44,7 @@ export async function getQuote(
     amount: req.amount,
     fix: "0",
   });
-  const res = await fetch(`${BASE}/rate?${params.toString()}`, { cache: "no-store" });
+  const res = await fetch(`${BASE}/rate?${params.toString()}`, { cache: "no-store", headers: HEADERS });
   const data = await readJson(res, "rate");
   if (!res.ok || data.result !== true || typeof data.rate !== "number") {
     throw new Error(
@@ -84,7 +91,7 @@ export async function buildSwap(
     destinationAddress: req.destinationAddress,
   });
   if (req.refundAddress) params.set("refundAddress", req.refundAddress);
-  const res = await fetch(`${BASE}/exchange-create?${params.toString()}`, { cache: "no-store" });
+  const res = await fetch(`${BASE}/exchange-create?${params.toString()}`, { cache: "no-store", headers: HEADERS });
   const data = await readJson(res, "create");
 
   // TEMPORARY DEBUG: log the raw create response so the actual id field (if
@@ -120,7 +127,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
 
   try {
     const params = new URLSearchParams({ key: API_KEY, id });
-    const res = await fetch(`${BASE}/exchange-status?${params.toString()}`, { cache: "no-store" });
+    const res = await fetch(`${BASE}/exchange-status?${params.toString()}`, { cache: "no-store", headers: HEADERS });
     const data = await readJson(res, "status");
 
     // TEMPORARY DEBUG: log the raw response so failures name themselves.
