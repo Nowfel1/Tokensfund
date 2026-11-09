@@ -51,7 +51,9 @@ export const ASSETS: CanonicalAsset[] = [
     decimals: 12,
     providerIds: {
       wagyu: { chainId: 0, token: "XMR", decimals: 12 },
-      thorchain: { asset: "XMR.XMR", decimals: 8 },
+      // thorchain: { asset: "XMR.XMR", decimals: 8 },
+      // ^ THORChain answered "pool does not exist" for XMR (Nov 2026). Re-enable
+      //   once its Monero pool is open, checked with a live BTC -> XMR quote.
       cce: { abbr: "XMR", chain: "Monero" },
       changee: { ticker: "XMR" },
     },
@@ -98,6 +100,9 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "XRP Ledger",
     decimals: 6,
     providerIds: {
+      // THORChain added Nov 2026 as a second XRP route. Its deposits need the
+      // memo in the XRP payment's Memo field (a destination tag won't work).
+      thorchain: { asset: "XRP.XRP", decimals: 8 },
       changee: { ticker: "XRP" },
     },
   },
