@@ -10,6 +10,18 @@ const HEADERS = {
   "user-agent": "TokensFund/1.0 (+https://tokensfund.xyz)",
 };
 
+// Cloudflare in front of Changee intermittently challenges our server's requests
+// (HTTP 403 with an HTML "Just a moment..." page). A challenged request never
+// reaches Changee, so retrying once is safe — even for exchange-create, since no
+// exchange was created. Only that specific case is retried.
+async function changeeFetch(url: string): Promise<Response> {
+  const res = await fetch(url, { cache: "no-store", headers: HEADERS });
+  const isChallenge = res.status === 403 && (res.headers.get("content-type") ?? "").includes("text/html");
+  if (!isChallenge) return res;
+  await new Promise((r) => setTimeout(r, 700));
+  return fetch(url, { cache: "no-store", headers: HEADERS });
+}
+
 // Changee identifies coins by a simple ticker (e.g. BTC, ETH, XMR).
 function ticker(asset: CanonicalAsset): string {
   return asset.providerIds.changee?.ticker ?? asset.symbol;
@@ -44,7 +56,7 @@ export async function getQuote(
     amount: req.amount,
     fix: "0",
   });
-  const res = await fetch(`${BASE}/rate?${params.toString()}`, { cache: "no-store", headers: HEADERS });
+  const res = await changeeFetch(`${BASE}/rate?${params.toString()}`);
   const data = await readJson(res, "rate");
   if (!res.ok || data.result !== true || typeof data.rate !== "number") {
     throw new Error(
@@ -91,7 +103,7 @@ export async function buildSwap(
     destinationAddress: req.destinationAddress,
   });
   if (req.refundAddress) params.set("refundAddress", req.refundAddress);
-  const res = await fetch(`${BASE}/exchange-create?${params.toString()}`, { cache: "no-store", headers: HEADERS });
+  const res = await changeeFetch(`${BASE}/exchange-create?${params.toString()}`);
   const data = await readJson(res, "create");
 
   // TEMPORARY DEBUG: log the raw create response so the actual id field (if
@@ -127,7 +139,7 @@ export async function getStatus(trackingId: string): Promise<SwapStatus> {
 
   try {
     const params = new URLSearchParams({ key: API_KEY, id });
-    const res = await fetch(`${BASE}/exchange-status?${params.toString()}`, { cache: "no-store", headers: HEADERS });
+    const res = await changeeFetch(`${BASE}/exchange-status?${params.toString()}`);
     const data = await readJson(res, "status");
 
     // TEMPORARY DEBUG: log the raw response so failures name themselves.
