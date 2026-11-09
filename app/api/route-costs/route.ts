@@ -46,6 +46,8 @@ export async function GET(req: Request) {
     const costs: Record<string, Record<string, number | null>> = {};
     // Why a route has no number for a pair (only returned with ?debug=1).
     const errors: Record<string, Record<string, string>> = {};
+    // Each route's own fee breakdown, where its quote includes one (?debug=1 only).
+    const breakdown: Record<string, Record<string, unknown>> = {};
 
     await Promise.all(
       PAIRS.map(async (pair) => {
@@ -67,6 +69,12 @@ export async function GET(req: Request) {
             errors[q.provider][pair.key] = q.error ?? "No amount returned";
             continue;
           }
+          const raw: any = q.raw;
+          const fees = raw?.fees ?? raw?.feeBreakdown;
+          if (fees) {
+            breakdown[q.provider] ??= {};
+            breakdown[q.provider][pair.key] = fees;
+          }
           const cost = (1 - (q.expectedOut * pTo) / valueIn) * 100;
           // A slightly negative cost just means the market price lagged the
           // quote; anything absurd is bad data and is hidden.
@@ -76,7 +84,7 @@ export async function GET(req: Request) {
     );
 
     return NextResponse.json(
-      { updatedAt: new Date().toISOString(), amount: AMOUNT, costs, ...(debug ? { prices, errors } : {}) },
+      { updatedAt: new Date().toISOString(), amount: AMOUNT, costs, ...(debug ? { prices, errors, breakdown } : {}) },
       { headers: { "Cache-Control": "public, s-maxage=300, stale-while-revalidate=600" } }
     );
   } catch {
