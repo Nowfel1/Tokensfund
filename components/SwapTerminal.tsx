@@ -637,7 +637,14 @@ export default function SwapTerminal({
             </div>
           )}
           {deposit.memo && !deposit.execution && (
-            <p className="warn">You must include this exact memo. THORChain refunds deposits sent without the correct memo. On Bitcoin it goes in an OP_RETURN output.</p>
+            <p className="warn">
+              You must include this exact memo. THORChain refunds deposits sent without the correct memo.
+              {fromId === "XRP"
+                ? " On the XRP Ledger it goes in the payment's Memo field — a destination tag is not the same thing and won't work."
+                : ["BTC", "LTC", "DOGE"].includes(fromId)
+                ? " It goes in an OP_RETURN output, which your wallet may call a memo or message field."
+                : " Use your wallet's memo field."}
+            </p>
           )}
           {deposit.notes && <p className="warn">{deposit.notes}</p>}
           {expiryStr && (
