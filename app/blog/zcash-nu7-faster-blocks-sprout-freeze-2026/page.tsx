@@ -131,8 +131,7 @@ export default function Post() {
         <h2>Swapping ZEC on TokensFund</h2>
         <p>
           ZEC is available on TokensFund, compared across every route that supports it, wallet to
-          wallet — no account and no KYC for standard swaps, with our fee of at most 1% already
-          inside the quote. On supported routes, ZEC is paid straight to your shielded address. Faster
+          wallet — no account and no KYC for standard swaps, with every fee already inside the quote. On supported routes, ZEC is paid straight to your shielded address. Faster
           blocks mean less waiting on the Zcash side of every swap. Our{" "}
           <Link href="/blog/we-removed-zcash-and-it-4x-2026">story of removing and restoring
           Zcash</Link> explains how we got here.

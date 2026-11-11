@@ -1,4 +1,5 @@
 import Header from "@/components/Header";
+import { FEE_TERMS } from "@/lib/fees";
 
 export const metadata = {
   title: "Terms of Service",
@@ -27,7 +28,7 @@ export default function Terms() {
 
       <article className="blog-post">
         <h1>Terms of Service</h1>
-        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: October 22, 2026</p>
+        <p style={{ color: "#8a93a8", fontSize: "14px" }}>Last updated: November 10, 2026</p>
 
         <p>
           These Terms of Service (&quot;Terms&quot;) govern your access to and use of tokensfund.xyz
@@ -78,7 +79,7 @@ export default function Terms() {
 
         <h2>5. Fees and quotes</h2>
         <p>
-          TokensFund charges a flat 1% fee, which is already reflected in the quote shown to you.
+          {FEE_TERMS}
           Network (gas) fees and any spread charged by the underlying protocol are separate and
           outside our control. All quotes are estimates based on live conditions and are not
           guaranteed until a swap is executed; the amount you ultimately receive may differ due to

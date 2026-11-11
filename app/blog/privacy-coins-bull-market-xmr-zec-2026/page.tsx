@@ -112,7 +112,7 @@ export default function Post() {
           TokensFund exists for exactly this corner of the market: it compares the non-custodial
           routes that still serve privacy coins — XMR and ZEC both route through our providers
           today — and sends your swap to the best rate, wallet to wallet. No account, no KYC for
-          standard swaps, flat 1% already in the quote, automatic refund to your own address if a
+          standard swaps, no hidden fees in the quote, automatic refund to your own address if a
           swap can&apos;t fill. The coins whose whole point is that nobody keeps a file on you,
           bought in a way that doesn&apos;t create one.
         </p>

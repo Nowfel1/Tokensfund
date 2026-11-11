@@ -151,7 +151,7 @@ export default function Post() {
         <p>
           Which is what we built: TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu on
           every swap and routes to the best rate, wallet to wallet — no account, no KYC for
-          standard swaps, flat 1% already inside the quote. Our{" "}
+          standard swaps, no hidden fees in the quote. Our{" "}
           <Link href="/blog/best-btc-to-xmr-rate-2026">BTC→XMR rate guide</Link> explains what
           actually moves a quote, and the{" "}
           <Link href="/blog/swap-btc-to-xmr-zec-without-kyc-2026">step-by-step walkthrough</Link>{" "}

@@ -144,7 +144,7 @@ export default function Post() {
           <em>withdrawn to your own wallet — how do you keep managing a portfolio without
           depositing onto the next venue that will someday publish one of these notices?</em>{" "}
           That&apos;s the gap TokensFund closes: swaps compared across THORChain, Chainflip, Changee, CCE.Cash and Wagyu, executed wallet to wallet — no account, no KYC for
-          standard swaps, flat 1% in the quote, automatic refund to your own address if a swap
+          standard swaps, no hidden fees in the quote, automatic refund to your own address if a swap
           can&apos;t fill. No balance sitting anywhere that can schedule a closure, gate your
           exit, or ask for papers to release what&apos;s yours. Start with the{" "}
           <Link href="/blog/move-crypto-off-exchange-without-kyc-2026">self-custody guide</Link>{" "}

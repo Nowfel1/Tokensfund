@@ -120,8 +120,7 @@ export default function Post() {
         <p>
           Which is also why we build the way we do. TokensFund never holds your funds — swaps route
           from your wallet through THORChain, Chainflip, Changee, CCE.Cash or Wagyu to your
-          own destination address, no account, no KYC for standard swaps, flat 1% shown in the
-          quote. That design removes the custodian from the equation. It cannot verify that the
+          own destination address, no account, no KYC for standard swaps, no hidden fees in the quote. That design removes the custodian from the equation. It cannot verify that the
           wallet you&apos;re swapping into is genuine, and it can&apos;t undo a payment sent to an
           address that malware rewrote. Non-custodial infrastructure and careful software habits
           are two halves of the same protection; neither substitutes for the other. Our{" "}

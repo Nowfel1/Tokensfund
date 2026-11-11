@@ -142,7 +142,7 @@ export default function Post() {
           ability to move between assets without asking permission. Our{" "}
           <Link href="/blog/move-crypto-off-exchange-without-kyc-2026">self-custody guide</Link>{" "}
           covers the first. The second is what we build: TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes your swap to the best rate, wallet to
-          wallet — no account, no KYC for standard swaps, flat 1% already in the quote, automatic
+          wallet — no account, no KYC for standard swaps, no hidden fees in the quote, automatic
           refund to your own address if a swap can&apos;t fill.
         </p>
         <p>

@@ -113,8 +113,7 @@ export default function Post() {
           <Link href="/blog/bitcoin-307-day-range-2026">the boredom-phase playbook</Link>: quiet
           markets are for homework — custody done properly, allocations set deliberately, and
           swaps done wallet-to-wallet. TokensFund handles that last part non-custodially: five
-          protocols compared, best rate wins, no account, no KYC for standard swaps, flat 1% in
-          the quote, automatic refund to your own address if a swap can&apos;t fill. Use the rails;
+          protocols compared, best rate wins, no account, no KYC for standard swaps, no hidden fees in the quote, automatic refund to your own address if a swap can&apos;t fill. Use the rails;
           keep the keys.
         </p>
 

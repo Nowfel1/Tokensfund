@@ -104,9 +104,9 @@ export default function Post() {
         <p>
           TokensFund is a non-custodial aggregator — it never holds your funds. It finds the best
           available route for your pair, and you swap directly wallet-to-wallet. For Monero, the live
-          route is <strong>Changee</strong>, a non-custodial instant-swap service with XMR support.
-          (THORChain&apos;s native Monero support is in progress but not yet live; Chainflip and NEAR
-          Intents don&apos;t support XMR.)
+          routes are <strong>CCE.Cash</strong>, <strong>Changee</strong> and <strong>Wagyu</strong>.
+          (THORChain has announced native Monero support, but its pool isn&apos;t open yet; Chainflip
+          doesn&apos;t support XMR.)
         </p>
         <ol>
           <li>Go to <Link href="/">tokensfund.xyz</Link></li>
@@ -157,9 +157,10 @@ export default function Post() {
 
         <h2>Fees</h2>
         <p>
-          TokensFund charges a flat <strong>1%</strong>, already built into the quote you see — no
-          separate withdrawal fee, and no minimum or maximum swap size. You compare the final receive
-          amount across routes and pick the best one, so what you see is what you get.
+          Any TokensFund fee is always built into the quote you see — never added at the end, and
+          there&apos;s no separate withdrawal fee. Minimum amounts depend on the route and the pair.
+          You compare the final receive amount across routes and pick the best one, so what you see
+          is what you get.
         </p>
 
         <h2>A note on risk</h2>

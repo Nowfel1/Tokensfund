@@ -129,8 +129,7 @@ export default function Post() {
           (our <Link href="/blog/move-crypto-off-exchange-without-kyc-2026">step-by-step
           guide</Link> covers it), and when you want to move between assets, swap wallet-to-wallet:
           TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes
-          your swap to the best rate — no account, no KYC for standard swaps, flat 1% shown in the
-          quote, automatic refund to your own address if a swap can&apos;t fill. No shares, no
+          your swap to the best rate — no account, no KYC for standard swaps, no hidden fees in the quote, automatic refund to your own address if a swap can&apos;t fill. No shares, no
           balances, no counterparty holding your position. Just the chips, in your hand.
         </p>
 

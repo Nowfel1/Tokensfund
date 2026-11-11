@@ -89,7 +89,7 @@ export default function Post() {
           several routes at once, at the same instant, with the same amount — the exact comparison
           you&apos;d otherwise do by hand across tabs. This is what TokensFund does: it quotes the
           pair across its supported protocols (for Monero pairs, the providers that actually route
-          XMR — not every protocol does) and shows you the best, with our flat 1% already included
+          XMR — not every protocol does) and shows you the best, with every fee already included
           in the number on screen. What lands in your wallet is what was quoted, or the swap refunds
           to your own address.
         </p>

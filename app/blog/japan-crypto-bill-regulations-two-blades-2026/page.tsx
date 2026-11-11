@@ -121,7 +121,7 @@ export default function Post() {
         </p>
         <p>
           TokensFund is built for that position: non-custodial swaps across THORChain, Chainflip, Changee, CCE.Cash and Wagyu, best rate wins, wallet to wallet. No account, no KYC
-          for standard swaps, flat 1% shown in the quote, automatic refund to your own address if a
+          for standard swaps, no hidden fees in the quote, automatic refund to your own address if a
           swap can&apos;t fill. Whatever your local rules are — and you&apos;re responsible for
           following them, in Tokyo or Lisbon — your keys work the same everywhere.
         </p>

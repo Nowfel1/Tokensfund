@@ -128,7 +128,7 @@ export default function Post() {
           You don&apos;t have to. A non-custodial swap lets you trade directly from your own wallet.
           TokensFund is an aggregator that compares rates across established protocols and routes
           your swap to the best one — without ever holding your funds. There&apos;s no account, no
-          email, and no KYC for standard swaps, and the fee (a flat 1%) is already shown in the quote.
+          email, and no KYC for standard swaps, and every fee is already shown in the quote.
         </p>
         <ol>
           <li>Go to <Link href="/">tokensfund.xyz</Link></li>

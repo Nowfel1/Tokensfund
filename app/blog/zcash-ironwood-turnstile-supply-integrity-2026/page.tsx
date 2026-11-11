@@ -166,8 +166,7 @@ export default function Post() {
           <Link href="/blog/near-intents-stuck-swap-incident-2026">incident report</Link>. We expect
           to restore Zcash when THORChain&apos;s ZEC pool goes live. In the meantime our terminal
           compares THORChain, Chainflip, Changee and CCE.Cash across the assets we do support —
-          Monero included — wallet to wallet, no account, no KYC for standard swaps, flat 1% in the
-          quote.
+          Monero included — wallet to wallet, no account, no KYC for standard swaps, no hidden fees in the quote.
         </p>
         <p>
           <strong>Update, October 2026:</strong> Zcash is available on TokensFund again — through

@@ -125,7 +125,7 @@ export default function Post() {
         </ol>
         <p>
           That last step is what TokensFund does: it compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu and routes your swap to the best rate, wallet to wallet. No account,
-          no KYC for standard swaps, flat 1% shown in the quote, automatic refund to your own
+          no KYC for standard swaps, no hidden fees in the quote, automatic refund to your own
           address if a swap can&apos;t fill. There is no balance to freeze because there is no
           balance — funds move from your wallet to your wallet.
         </p>

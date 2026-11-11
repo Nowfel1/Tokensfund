@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import { notFound } from "next/navigation";
 import SwapTerminal from "@/components/SwapTerminal";
 import { PAIRS, PAIR_BY_SLUG } from "@/lib/pairs";
+import { FEE_SHORT } from "@/lib/fees";
 
 // Static params so every pair page is prerendered at build time.
 export function generateStaticParams() {
@@ -86,7 +87,7 @@ export default function PairPage({ params }: { params: { pair: string } }) {
           <span>Non-custodial</span>
           <span>No account</span>
           <span>No KYC</span>
-          <span>Flat 1% in the quote</span>
+          <span>{FEE_SHORT}</span>
         </div>
       </section>
 
