@@ -18,6 +18,9 @@
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
+    "@xchainjs/xchain-thorchain": "3.1.3",
+    "@xchainjs/xchain-client": "2.0.18",
+    "@xchainjs/xchain-util": "2.0.7",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
