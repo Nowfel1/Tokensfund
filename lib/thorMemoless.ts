@@ -15,7 +15,17 @@ import { baseAmount } from "@xchainjs/xchain-util";
 // SERVER-ONLY: never import this file from a client component.
 
 const THORNODE = process.env.THORNODE_URL || "https://gateway.liquify.com/chain/thorchain_api";
-const PHRASE = process.env.THOR_MEMOLESS_MNEMONIC ?? "";
+// Clean up the usual copy-paste problems: quotes around the phrase, commas,
+// list numbers ("1. word"), capitals, line breaks and repeated spaces.
+const PHRASE = (process.env.THOR_MEMOLESS_MNEMONIC ?? "")
+  .toLowerCase()
+  .replace(/["'`,;]/g, " ")
+  .replace(/\b\d+[.)]?/g, " ")
+  .trim()
+  .split(/\s+/)
+  .filter(Boolean)
+  .join(" ");
+const PHRASE_WORDS = PHRASE ? PHRASE.split(" ").length : 0;
 
 // RUNE attached to the registration itself, in 1e8 units. The protocol's
 // registration cost is currently 0, so only the normal network fee is paid.
@@ -25,13 +35,26 @@ export const REFERENCE_DIGITS = 5;
 const REFERENCE_MOD = 100_000n;
 
 export function memolessConfigured(): boolean {
-  return PHRASE.trim().split(/\s+/).length >= 12;
+  return PHRASE_WORDS > 0;
 }
 
 let cached: Client | null = null;
 function client(): Client {
   if (!memolessConfigured()) throw new Error("THOR_MEMOLESS_MNEMONIC is not set");
-  if (!cached) cached = new Client({ network: Network.Mainnet, phrase: PHRASE.trim() });
+  if (!cached) {
+    if (![12, 15, 18, 21, 24].includes(PHRASE_WORDS)) {
+      throw new Error(
+        `Recovery phrase has ${PHRASE_WORDS} words; it must have 12 or 24. Check THOR_MEMOLESS_MNEMONIC for a missing or extra word.`
+      );
+    }
+    try {
+      cached = new Client({ network: Network.Mainnet, phrase: PHRASE });
+    } catch {
+      throw new Error(
+        `Recovery phrase has ${PHRASE_WORDS} words but is not valid: one word is misspelled, or the words are in the wrong order.`
+      );
+    }
+  }
   return cached;
 }
 
