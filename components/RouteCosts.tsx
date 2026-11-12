@@ -114,7 +114,7 @@ export default function RouteCosts() {
                 const isBest = typeof v === "number" && v === best[p.key];
                 return (
                   <span key={p.key} className={"rc-num" + (isBest ? " rc-best" : "")}>
-                    {costs ? (typeof v === "number" ? `${v.toFixed(1)}%` : "—") : <span className="rc-skel" />}
+                    {costs ? (typeof v === "number" ? (v < 0.1 ? "<0.1%" : `${v.toFixed(1)}%`) : "—") : <span className="rc-skel" />}
                   </span>
                 );
               })}
