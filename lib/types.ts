@@ -92,6 +92,8 @@ export interface SwapInstruction {
    *  the order is logged; absent if logging failed. */
   orderCode?: string | null;
   notes?: string;
+  /** THORChain memoless deposit: a plain send of EXACTLY depositAmount, no memo. */
+  memoless?: boolean;
 }
 
 export interface SwapStatus {

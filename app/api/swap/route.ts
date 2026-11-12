@@ -9,6 +9,8 @@ import * as wagyu from "@/lib/providers/wagyu";
 import { sql, ensureOrdersTable, generateOrderCode } from "@/lib/db";
 
 export const runtime = "nodejs";
+// THORChain memoless registration waits for a block, which can take ~10-25s.
+export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 // Returns the short order code so it can be handed back to the client for the
@@ -20,7 +22,7 @@ async function logOrder(result: any, body: any, expectedOut?: number): Promise<s
     const orderCode = generateOrderCode();
     await sql`
       INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code, expected_out)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.privateTrackingId ?? result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${result.depositAmount ?? body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.privateTrackingId ?? result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
     `;
     return orderCode;
   } catch (e) {

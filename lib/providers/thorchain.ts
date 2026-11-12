@@ -1,4 +1,5 @@
 import { getAsset } from "../assets";
+import { prepareMemolessDeposit } from "../thorMemoless";
 import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapStatus } from "../types";
 
 // THORChain integration via the public THORNode REST API.
@@ -122,6 +123,25 @@ export async function buildSwap(
   // stranded. Surface everything the user needs to execute correctly.
   const fromAsset = getAsset(req.fromAssetId);
   const thorRef = fromAsset?.providerIds.thorchain?.asset ?? "";
+
+  // ---- Memoless deposit: a plain send of an exact amount, from any wallet ----
+  // Only used when THORChain's own check confirms the amount (see thorMemoless.ts);
+  // otherwise we fall through to the normal memo / contract-call instructions.
+  if (fromAsset && data.memo) {
+    const memoless = await prepareMemolessDeposit(thorRef, data.memo, req.amount, fromAsset.decimals);
+    if (memoless) {
+      return {
+        provider: "thorchain",
+        depositAddress: data.inbound_address,
+        depositAmount: memoless.amountHuman,
+        memoless: true,
+        expiresAt: data.expiry,
+        trackingId: data.inbound_address,
+        notes:
+          "Send this exact amount in a single payment, from any wallet — no memo needed. Its last digits identify your swap, so don't round it, split it or send it twice. These instructions work once and expire in about 6 hours.",
+      };
+    }
+  }
   const isEvm = Boolean(data.router) && /^(ETH|AVAX|BSC)\./i.test(thorRef);
 
   let execution: SwapInstruction["execution"];

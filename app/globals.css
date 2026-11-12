@@ -721,3 +721,9 @@ a { color: inherit; }
 @media (max-width: 640px) {
   .rc-has-g .rc-row { grid-template-columns: minmax(0, 1.2fr) 62px 62px 56px 56px; }
 }
+
+/* ==== THORChain memoless deposit notice ==== */
+.exact-amount { display: flex; flex-direction: column; gap: 4px; margin: 4px 0 14px; padding: 12px 14px;
+  border: 1px solid var(--gold); border-radius: 10px; background: rgba(244, 198, 78, 0.08); }
+.exact-amount strong { color: var(--gold); font-size: 15px; }
+.exact-amount span { color: var(--muted); font-size: 13px; line-height: 1.5; }

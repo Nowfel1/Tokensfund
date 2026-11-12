@@ -601,6 +601,12 @@ export default function SwapTerminal({
             <span className="deposit-provider">{PROVIDER_INITIAL[deposit.provider]} {label(deposit.provider)}</span>
           </div>
           <p className="sub">{"One-time address from " + label(deposit.provider) + ". The swap starts automatically once your deposit confirms."}</p>
+          {deposit.memoless && (
+            <div className="exact-amount">
+              <strong>Send exactly {deposit.depositAmount} {fromSym}</strong>
+              <span>No memo needed — any wallet works. The last digits identify your swap, so don&apos;t round or split it.</span>
+            </div>
+          )}
           {deposit.execution ? (
             <ContractCallPanel exec={deposit.execution} />
           ) : (
