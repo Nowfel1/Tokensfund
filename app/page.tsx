@@ -16,7 +16,6 @@ const PROTOCOLS = [
   { mark: "CF", name: "Chainflip" },
   { mark: "CG", name: "Changee" },
   { mark: "CC", name: "CCE.Cash" },
-  { mark: "WG", name: "Wagyu" },
 ];
 
 // Auto-derived from lib/posts.ts — the homepage always links the two newest
@@ -54,7 +53,7 @@ export default function Home() {
             <span className="accent">Best rate.</span>
           </h1>
           <p className="sub">
-            TokensFund compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu live, then routes your
+            TokensFund compares THORChain, Chainflip, Changee and CCE.Cash live, then routes your
             swap to the best price. No account. No KYC. Funds never touch our hands.
           </p>
           {FEE_PROMO_ACTIVE && <div className="fee-promo">{FEE_PROMO_LINE}</div>}

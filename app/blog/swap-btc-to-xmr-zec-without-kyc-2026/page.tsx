@@ -75,7 +75,7 @@ export default function Post() {
           <li><strong>2. Enter your amount</strong> — the estimated output updates live, with every fee already inside the number. What you see is what arrives, minus only network fees.</li>
           <li><strong>3. Paste your destination address.</strong> The field checks the format and shows a green tick when it looks right — advisory, not a guarantee, so eyeball the first and last characters yourself. Always.</li>
           <li><strong>4. Add a refund address (your BTC address).</strong> Optional for most routes but genuinely recommended: if a swap can&apos;t fill, funds return there automatically instead of needing support intervention.</li>
-          <li><strong>5. Compare routes.</strong> One click quotes every provider that serves your pair, best rate first. XMR routes through up to three of our five providers — CCE.Cash, Changee and Wagyu — and ZEC through THORChain, Changee and Wagyu. Wagyu pays ZEC to shielded addresses by default.</li>
+          <li><strong>5. Compare routes.</strong> One click quotes every provider that serves your pair, best rate first. XMR routes through CCE.Cash and Changee, and ZEC through THORChain and Changee.</li>
           <li><strong>6. Send the deposit.</strong> You get a one-time BTC deposit address and an exact amount. Send precisely that amount, once. Bitcoin confirmations take time — plan for up to an hour on a busy day — and the tracker moves through Deposit → Detected → Processing → Done automatically.</li>
           <li><strong>7. Funds arrive at your address.</strong> XMR typically lands within minutes of the BTC leg confirming. Done — no account was created, nothing to log out of, nothing holding a balance for you.</li>
         </ul>

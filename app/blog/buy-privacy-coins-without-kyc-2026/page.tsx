@@ -104,7 +104,7 @@ export default function Post() {
         <p>
           TokensFund is a non-custodial aggregator — it never holds your funds. It finds the best
           available route for your pair, and you swap directly wallet-to-wallet. For Monero, the live
-          routes are <strong>CCE.Cash</strong>, <strong>Changee</strong> and <strong>Wagyu</strong>.
+          routes are <strong>CCE.Cash</strong> and <strong>Changee</strong>.
           (THORChain has announced native Monero support, but its pool isn&apos;t open yet; Chainflip
           doesn&apos;t support XMR.)
         </p>
@@ -127,8 +127,8 @@ export default function Post() {
 
         <h2>What about Zcash (ZEC)?</h2>
         <p>
-          TokensFund routes ZEC through THORChain, Changee and Wagyu, and Wagyu pays to shielded
-          addresses by default. The flow is the same as for XMR: choose your send asset, select ZEC
+          TokensFund routes ZEC through THORChain and Changee, which pay to a transparent (t1)
+          address — move the coins to a shielded address yourself afterwards. The flow is the same as for XMR: choose your send asset, select ZEC
           to receive, enter your Zcash address, then compare routes and swap — no account required.
         </p>
         <p>

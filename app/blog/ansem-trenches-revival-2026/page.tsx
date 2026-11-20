@@ -122,8 +122,8 @@ export default function Post() {
           <li><strong>Take profits into something that isn&apos;t a story.</strong> A 261x is only real once it&apos;s out.</li>
         </ul>
         <p>
-          Straight talk on where we fit: TokensFund doesn&apos;t route pump.fun tokens — our five
-          protocols handle the majors and privacy coins, not the trenches. Where we come in is the
+          Straight talk on where we fit: TokensFund doesn&apos;t route pump.fun tokens — our
+          routes handle the majors and privacy coins, not the trenches. Where we come in is the
           before and after: getting your stack into self-custody in the first place, and swapping
           wins back into BTC, ETH or stables wallet-to-wallet — no account, no KYC, no hidden fees in the quote, refund to your own address if a swap can&apos;t fill.
         </p>

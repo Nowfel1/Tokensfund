@@ -5,7 +5,6 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
-import * as wagyu from "@/lib/providers/wagyu";
 import { sql, ensureOrdersTable, generateOrderCode } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -14,15 +13,20 @@ export const maxDuration = 60;
 export const dynamic = "force-dynamic";
 
 // Returns the short order code so it can be handed back to the client for the
-// /order/<code> URL. Returns null if logging failed — the swap still works,
-// the swap still works, there's just no order status link.
+// /order/<code> URL, where the user pays and tracks the swap. Returns null if
+// logging failed — the swap still works and the instructions are shown inline.
 async function logOrder(result: any, body: any, expectedOut?: number): Promise<string | null> {
   try {
     await ensureOrdersTable();
     const orderCode = generateOrderCode();
+    // Only a real clock time is a usable deadline (Chainflip reports a block number).
+    const exp = Number(result.expiresAt);
+    const expiresAt = Number.isFinite(exp) && exp > 1_000_000_000 ? Math.floor(exp) : null;
     await sql`
-      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code, expected_out)
-      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${result.depositAmount ?? body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.privateTrackingId ?? result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null})
+      INSERT INTO orders (provider, from_asset, to_asset, amount, destination_address, refund_address, deposit_address, tracking_id, order_code, expected_out,
+                          details_saved, memoless, deposit_memo, expires_at, execution, notes)
+      VALUES (${result.provider}, ${body.fromAssetId}, ${body.toAssetId}, ${result.depositAmount ?? body.amount}, ${body.destinationAddress}, ${body.refundAddress ?? null}, ${result.depositAddress}, ${result.privateTrackingId ?? result.trackingId}, ${orderCode}, ${expectedOut ? String(expectedOut) : null},
+              ${true}, ${Boolean(result.memoless)}, ${result.memo ?? null}, ${expiresAt}, ${result.execution ? JSON.stringify(result.execution) : null}, ${result.notes ?? null})
     `;
     return orderCode;
   } catch (e) {
@@ -55,6 +59,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    if (body.provider === "wagyu") {
+      return NextResponse.json(
+        { error: "Wagyu is no longer available on TokensFund. Please choose another route." },
+        { status: 400 }
+      );
+    }
+
     let result;
     let expectedOut: number | undefined;
     if (body.provider === "thorchain") {
@@ -69,10 +80,6 @@ export async function POST(req: NextRequest) {
       const quote = await cce.getQuote(from, to, body);
       expectedOut = quote.expectedOut;
       result = await cce.buildSwap(quote, body, from, to);
-    } else if (body.provider === "wagyu") {
-      const quote = await wagyu.getQuote(from, to, body);
-      expectedOut = quote.expectedOut;
-      result = await wagyu.buildSwap(quote, body, from, to);
     } else if (body.provider === "changee") {
       const quote = await changee.getQuote(from, to, body);
       expectedOut = quote.expectedOut;

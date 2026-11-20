@@ -77,7 +77,7 @@ export default function Post() {
 
         <p>
           In this guide we will show you how to swap into XRP, LTC, HYPE and TAO without KYC
-          using <strong>THORChain, Chainflip, Changee, CCE.Cash and Wagyu</strong> through TokensFund.
+          using <strong>THORChain, Chainflip, Changee and CCE.Cash</strong> through TokensFund.
         </p>
 
         <h2>Why Buy These Assets Without KYC?</h2>
@@ -106,7 +106,7 @@ export default function Post() {
         <h2>How to Buy Litecoin (LTC) Without KYC</h2>
         <p>
           Litecoin is one of the most widely supported assets across decentralized protocols.
-          On TokensFund it is available via THORChain, Chainflip, Changee, CCE.Cash and Wagyu,
+          On TokensFund it is available via THORChain, Chainflip, Changee and CCE.Cash,
           giving you the most routes and best rates of any asset on the platform.
         </p>
         <ol>
@@ -149,7 +149,7 @@ export default function Post() {
 
         <h2>Why Use TokensFund?</h2>
         <ul>
-          <li>Compares THORChain, Chainflip, Changee, CCE.Cash and Wagyu in one click</li>
+          <li>Compares THORChain, Chainflip, Changee and CCE.Cash in one click</li>
           <li>Always shows the best available rate</li>
           <li>Fully non-custodial - funds go directly between wallets</li>
           <li>No KYC, no account, no email required</li>

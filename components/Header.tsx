@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import { LIVE_PROVIDERS } from "@/lib/assets";
 
 // The site header, shared by every page. Change the menu here — once — and
 // it updates everywhere. (Before this existed, each page carried its own copy
@@ -19,7 +20,7 @@ export default function Header({ showRoutes = false }: { showRoutes?: boolean })
           <Link href="/faq" className="nav-link">FAQ</Link>
           {showRoutes && (
             <span className="routes-pill">
-              <span className="routes-pill-dot" />5 routes live
+              <span className="routes-pill-dot" />{LIVE_PROVIDERS.length} routes live
             </span>
           )}
         </nav>

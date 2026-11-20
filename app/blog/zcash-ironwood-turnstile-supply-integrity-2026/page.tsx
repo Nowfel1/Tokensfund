@@ -170,7 +170,7 @@ export default function Post() {
         </p>
         <p>
           <strong>Update, October 2026:</strong> Zcash is available on TokensFund again — through
-          THORChain, Changee and Wagyu, which pays ZEC to shielded addresses by default.
+          THORChain and Changee.
         </p>
         <p>
           The broader point is one worth sitting with. A blockchain found a flaw that could have

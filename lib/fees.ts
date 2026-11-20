@@ -6,8 +6,8 @@
 // TO CHARGE A FEE AGAIN:
 //   1. set FEE_FREE to false (the wording below switches back to "at most 1%"),
 //   2. restore the fee settings: in Vercel set THOR_AFFILIATE_BPS=100,
-//      CHAINFLIP_COMMISSION_BPS=100 and WAGYU_FEE_PERCENT=1, then set the
-//      partner fee back to 1% in the Changee and Wagyu dashboards, and redeploy.
+//      CHAINFLIP_COMMISSION_BPS=100, then set the
+//      partner fee back to 1% in the Changee dashboard, and redeploy.
 
 export const FEE_FREE = true;
 
@@ -26,8 +26,8 @@ export const FEE_PHRASE = FEE_FREE ? "no TokensFund fee" : "fee of at most 1% al
 
 // Homepage "how it works" step.
 export const FEE_STEP = FEE_FREE
-  ? "Five routes quoted at once. The best rate wins — and TokensFund adds no fee on top."
-  : "Five routes quoted at once. The best rate wins, with our fee already included in the number you see.";
+  ? "Every route quoted at once. The best rate wins — and TokensFund adds no fee on top."
+  : "Every route quoted at once. The best rate wins, with our fee already included in the number you see.";
 
 // "What does it cost?" answers on pair pages.
 export const FEE_ANSWER = FEE_FREE

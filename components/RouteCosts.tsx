@@ -12,7 +12,6 @@ const ROUTES: { id: ProviderId; name: string; type: string; holds: string }[] = 
   { id: "chainflip", name: "Chainflip", type: "Protocol", holds: "No" },
   { id: "cce", name: "CCE.Cash", type: "Instant exchanger", holds: "Briefly" },
   { id: "changee", name: "Changee", type: "Instant exchanger", holds: "Briefly" },
-  { id: "wagyu", name: "Wagyu", type: "Orderbook", holds: "Briefly" },
 ];
 
 const PAIRS = [

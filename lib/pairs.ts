@@ -39,7 +39,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Monero",
     title: "Swap BTC to XMR — No Account, No KYC",
     description:
-      `Compare live BTC to XMR rates across CCE.Cash, Changee and Wagyu in one place. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
+      `Compare live BTC to XMR rates across CCE.Cash and Changee in one place. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
     intro:
       "Bitcoin in, Monero out, wallet to wallet. We quote every route that supports the pair and send your swap to the best one — no account, no KYC for standard swaps, and the number you see is what you receive.",
     notes: [
@@ -113,11 +113,11 @@ export const PAIRS: PairPage[] = [
     toLabel: "Ethereum",
     title: "Swap BTC to ETH — No Account, No KYC",
     description:
-      `Compare live BTC to ETH rates across THORChain, Chainflip, Changee, CCE.Cash and Wagyu. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
+      `Compare live BTC to ETH rates across THORChain, Chainflip, Changee and CCE.Cash. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
     intro:
       "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and every fee is already in the number.",
     notes: [
-      "All five providers typically quote this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
+      "Every provider typically quotes this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
       "Your ETH address is the standard 0x format. Double-check it: the same format is used by several other EVM chains, and funds sent to the wrong network are unrecoverable.",
       "Bitcoin confirmation time dominates the wait; the Ethereum payout is usually fast once the deposit clears.",
     ],
@@ -152,7 +152,7 @@ export const PAIRS: PairPage[] = [
     intro:
       "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show every one that genuinely does, and send your swap to the best rate.",
     notes: [
-      "ZEC routes through THORChain, Changee and Wagyu. THORChain is a decentralised protocol, so on that route no company holds your funds mid-swap, and Wagyu pays to shielded addresses by default.",
+      "ZEC routes through THORChain and Changee. THORChain is a decentralised protocol, so on that route no company holds your funds mid-swap.",
       "Zcash addresses come in transparent (t1...), shielded (zs...) and unified (u1...) forms. Swap routes usually deliver to transparent addresses.",
       "If privacy is your reason for holding ZEC, move the funds into your own shielded address after they arrive — that final hop is where the privacy actually begins.",
     ],
@@ -167,7 +167,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "Which routes support ZEC?",
-        a: "THORChain, Changee and Wagyu. THORChain's native Zcash support means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian, and Wagyu pays ZEC to shielded addresses by default. The terminal quotes every route and highlights whichever gives you more ZEC.",
+        a: "THORChain and Changee. THORChain's native Zcash support means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian. The terminal quotes every route and highlights whichever gives you more ZEC.",
       },
       {
         q: "What does it cost?",

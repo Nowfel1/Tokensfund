@@ -17,8 +17,6 @@ export interface Guarantee {
 
 export const GUARANTEES: Partial<Record<ProviderId, Guarantee>> = {
   cce: { usd: 5000, asset: "USDT" },
-  
-  wagyu: { usd: 5000, asset: "USDT" },
 };
 
 export function activeGuarantees(): Partial<Record<ProviderId, Guarantee>> {
