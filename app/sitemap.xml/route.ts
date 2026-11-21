@@ -53,7 +53,7 @@ export async function GET() {
 
   // Transactional pair pages — high priority: these target buying intent.
   const pairXml = PAIRS.map((p) =>
-    urlEntry(`${SITE}/swap/${p.slug}`, "2026-08-10", "weekly", "0.9")
+    urlEntry(`${SITE}/swap/${p.slug}`, "2026-11-21", "weekly", "0.9")
   );
 
   const xml = `<?xml version="1.0" encoding="UTF-8"?>

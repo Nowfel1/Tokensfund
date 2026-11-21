@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { PAIRS } from "@/lib/pairs";
+import { PAIRS, displaySym } from "@/lib/pairs";
 
 const head: React.CSSProperties = {
   fontSize: "12px",
@@ -59,9 +59,9 @@ export default function Footer() {
                 there surfaces it here automatically. */}
             <div>
               <div style={head}>Popular pairs</div>
-              {PAIRS.map((p) => (
+              {PAIRS.filter((p) => p.featured).map((p) => (
                 <Link key={p.slug} href={"/swap/" + p.slug} style={link}>
-                  {p.fromId} {"\u2192"} {p.toId}
+                  {displaySym(p.fromId)} {"\u2192"} {displaySym(p.toId)}
                 </Link>
               ))}
             </div>

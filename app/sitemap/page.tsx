@@ -1,7 +1,7 @@
 import Header from "@/components/Header";
 import Link from "next/link";
 import { POSTS } from "@/lib/posts";
-import { PAIRS } from "@/lib/pairs";
+import { PAIRS, displaySym } from "@/lib/pairs";
 
 export const metadata = {
   title: "Sitemap",
@@ -41,7 +41,7 @@ export default function SitemapPage() {
           {PAIRS.map((p) => (
             <li key={p.slug}>
               <Link href={"/swap/" + p.slug}>
-                {"Swap " + p.fromId + " to " + p.toId + " (" + p.fromLabel + " to " + p.toLabel + ")"}
+                {"Swap " + displaySym(p.fromId) + " to " + displaySym(p.toId) + " (" + p.fromLabel + " to " + p.toLabel + ")"}
               </Link>
             </li>
           ))}

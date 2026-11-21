@@ -9,6 +9,7 @@
 // FAQPage structured data.
 
 import { FEE_PHRASE, FEE_ANSWER } from "./fees";
+import { providersForPair } from "./assets";
 
 export interface PairFaq {
   q: string;
@@ -28,9 +29,11 @@ export interface PairPage {
   /** 2-4 bullets on what's specific about this route. */
   notes: string[];
   faqs: PairFaq[];
+  /** Shown in the footer's "Popular pairs". */
+  featured?: boolean;
 }
 
-export const PAIRS: PairPage[] = [
+const HAND_PAIRS: PairPage[] = [
   {
     slug: "btc-to-xmr",
     fromId: "BTC",
@@ -39,7 +42,7 @@ export const PAIRS: PairPage[] = [
     toLabel: "Monero",
     title: "Swap BTC to XMR — No Account, No KYC",
     description:
-      `Compare live BTC to XMR rates across CCE.Cash and Changee in one place. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
+      `Compare live BTC to XMR rates from every route that supports the pair. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
     intro:
       "Bitcoin in, Monero out, wallet to wallet. We quote every route that supports the pair and send your swap to the best one — no account, no KYC for standard swaps, and the number you see is what you receive.",
     notes: [
@@ -113,9 +116,9 @@ export const PAIRS: PairPage[] = [
     toLabel: "Ethereum",
     title: "Swap BTC to ETH — No Account, No KYC",
     description:
-      `Compare live BTC to ETH rates across THORChain, Chainflip, Changee and CCE.Cash. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
+      `Compare live BTC to ETH rates from every route that supports the pair. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
     intro:
-      "Bitcoin in, Ethereum out, wallet to wallet. This pair is supported by every route we integrate, so the comparison is at its widest — the best rate wins and every fee is already in the number.",
+      "Bitcoin in, Ethereum out, wallet to wallet. This is one of the most widely supported pairs, so the comparison is at its widest — the best rate wins and every fee is already in the number.",
     notes: [
       "Every provider typically quotes this pair, so spreads between routes are usually tighter than on privacy pairs — comparing still routinely finds 1% or more.",
       "Your ETH address is the standard 0x format. Double-check it: the same format is used by several other EVM chains, and funds sent to the wrong network are unrecoverable.",
@@ -152,7 +155,7 @@ export const PAIRS: PairPage[] = [
     intro:
       "Bitcoin in, Zcash out, wallet to wallet. Zcash is delisted from many custodial venues, so the routes that serve it are fewer than for major pairs — we show every one that genuinely does, and send your swap to the best rate.",
     notes: [
-      "ZEC routes through THORChain and Changee. THORChain is a decentralised protocol, so on that route no company holds your funds mid-swap.",
+      "Fewer routes serve Zcash than major coins. Where one of them is a decentralised protocol, no company holds your funds mid-swap on that route.",
       "Zcash addresses come in transparent (t1...), shielded (zs...) and unified (u1...) forms. Swap routes usually deliver to transparent addresses.",
       "If privacy is your reason for holding ZEC, move the funds into your own shielded address after they arrive — that final hop is where the privacy actually begins.",
     ],
@@ -167,7 +170,7 @@ export const PAIRS: PairPage[] = [
       },
       {
         q: "Which routes support ZEC?",
-        a: "THORChain and Changee. THORChain's native Zcash support means you can swap BTC for real ZEC on a decentralised protocol, with no wrapped tokens and no custodian. The terminal quotes every route and highlights whichever gives you more ZEC.",
+        a: "The terminal asks every route that currently supports Zcash and shows the quotes side by side, highlighting whichever gives you more ZEC. You receive native ZEC, not a wrapped token.",
       },
       {
         q: "What does it cost?",
@@ -282,4 +285,232 @@ export const PAIRS: PairPage[] = [
   },
 ];
 
+// ---------------------------------------------------------------------------
+// Generated pair pages
+//
+// Each page is assembled from facts about the two coins (how deposits confirm,
+// what a receiving address looks like, what goes wrong most often) plus one
+// hand-written line about why people make that particular swap. That keeps
+// every page specific rather than 30 copies of the same text.
+//
+// Pages never name providers, because routes change. A pair only gets a page
+// while at least one live route supports it (see the filter at the bottom), so
+// removing a provider can never leave a page that shows no quotes.
+// ---------------------------------------------------------------------------
+
+interface CoinFacts {
+  /** Ticker shown on the page (USDT on Tron is still "USDT" to users). */
+  sym: string;
+  /** Plain name used in sentences. */
+  label: string;
+  /** Slug fragment: usdt-trc20, ton, ... */
+  slug: string;
+  /** Typical time for a deposit of this coin to be accepted. */
+  confirm: string;
+  /** Advice for SENDING this coin to a deposit address. */
+  sendTip: string;
+  /** What the receiving address looks like, and what to check. */
+  addressTip: string;
+  /** Short phrase for the FAQ about the receiving address. */
+  addressShort: string;
+}
+
+const COINS: Record<string, CoinFacts> = {
+  BTC: {
+    sym: "BTC", label: "Bitcoin", slug: "btc",
+    confirm: "10 to 60 minutes, depending on the fee you pay and how busy the network is",
+    sendTip: "Bitcoin deposits need on-chain confirmations. Pay a normal network fee so the deposit isn't stuck waiting for a block.",
+    addressTip: "Bitcoin addresses start with bc1, 1 or 3. All three work; copy and paste rather than typing, and check the first and last few characters.",
+    addressShort: "a Bitcoin address starting with bc1, 1 or 3",
+  },
+  ETH: {
+    sym: "ETH", label: "Ethereum", slug: "eth",
+    confirm: "a minute or two",
+    sendTip: "Ethereum gas is paid on top of the quote and changes with network demand, so check it in your wallet before sending.",
+    addressTip: "Your ETH address is the 0x format (42 characters). Other EVM networks use the same format, so make sure it's an address you control on Ethereum mainnet.",
+    addressShort: "an Ethereum address starting with 0x",
+  },
+  USDT: {
+    sym: "USDT", label: "Tether (ERC-20)", slug: "usdt",
+    confirm: "a minute or two once the Ethereum transaction is mined",
+    sendTip: "This page is for USDT on Ethereum (ERC-20). You need a little ETH in the same wallet to pay gas. USDT on Tron or BNB Smart Chain is listed separately — sending the wrong network can't be undone.",
+    addressTip: "ERC-20 USDT is received at a normal 0x Ethereum address. Don't use a Tron (T…) address.",
+    addressShort: "an Ethereum (0x) address — ERC-20 network",
+  },
+  USDT_TRC20: {
+    sym: "USDT", label: "Tether (TRC-20)", slug: "usdt-trc20",
+    confirm: "about a minute",
+    sendTip: "This page is for USDT on Tron (TRC-20). Sending from a Tron wallet needs some TRX for network resources. Ethereum USDT is a different token and must not be sent here.",
+    addressTip: "TRC-20 USDT is received at a Tron address starting with T.",
+    addressShort: "a Tron address starting with T",
+  },
+  USDC: {
+    sym: "USDC", label: "USD Coin (ERC-20)", slug: "usdc",
+    confirm: "a minute or two once the Ethereum transaction is mined",
+    sendTip: "This page is for USDC on Ethereum. You need a little ETH in the same wallet to pay gas, and USDC on Solana is listed separately.",
+    addressTip: "ERC-20 USDC is received at a normal 0x Ethereum address.",
+    addressShort: "an Ethereum (0x) address",
+  },
+  XMR: {
+    sym: "XMR", label: "Monero", slug: "xmr",
+    confirm: "around 20 minutes (Monero deposits are usually accepted after 10 confirmations)",
+    sendTip: "Monero transactions can't be reversed or traced back by anyone else, including support, so check the deposit address and amount before you send.",
+    addressTip: "Monero addresses are about 95 characters and start with 4 (main address) or 8 (subaddress). A fresh subaddress for each swap keeps your payouts unlinked.",
+    addressShort: "a Monero address starting with 4 or 8 (a subaddress is fine)",
+  },
+  ZEC: {
+    sym: "ZEC", label: "Zcash", slug: "zec",
+    confirm: "a few minutes to around 20, depending on how many confirmations the route asks for",
+    sendTip: "The deposit address is transparent. Shielded wallets can still send to it — the wallet handles that for you.",
+    addressTip: "Swap routes usually pay to a transparent Zcash address (t1…). If you want privacy, move the ZEC into your own shielded address after it arrives.",
+    addressShort: "a transparent Zcash address starting with t1",
+  },
+  SOL: {
+    sym: "SOL", label: "Solana", slug: "sol",
+    confirm: "under a minute",
+    sendTip: "Solana transfers are fast and cheap. Keep a small amount of SOL in your wallet for the transaction fee.",
+    addressTip: "Solana addresses are 32–44 characters of letters and numbers (no 0x prefix).",
+    addressShort: "a Solana address",
+  },
+  XRP: {
+    sym: "XRP", label: "XRP", slug: "xrp",
+    confirm: "a few seconds once sent",
+    sendTip: "If the deposit screen shows a destination tag or memo, include it. Exchange withdrawals often can't, so send from a wallet you control.",
+    addressTip: "XRP addresses start with r. A brand-new address needs the ledger's minimum reserve before it activates, so very small payouts to a new address can fail.",
+    addressShort: "an XRP address starting with r",
+  },
+  DOGE: {
+    sym: "DOGE", label: "Dogecoin", slug: "doge",
+    confirm: "a few minutes",
+    sendTip: "Dogecoin blocks come roughly every minute, so deposits are usually accepted quickly.",
+    addressTip: "Dogecoin addresses start with D.",
+    addressShort: "a Dogecoin address starting with D",
+  },
+  LTC: {
+    sym: "LTC", label: "Litecoin", slug: "ltc",
+    confirm: "around 10 to 15 minutes",
+    sendTip: "Send from a standard Litecoin address. MWEB (confidential) balances should be moved back to a normal address in your wallet first.",
+    addressTip: "Litecoin addresses start with ltc1, L or M. Use a standard address; MWEB addresses may not be accepted.",
+    addressShort: "a Litecoin address starting with ltc1, L or M",
+  },
+  TON: {
+    sym: "TON", label: "Gram (TON)", slug: "ton",
+    confirm: "under a minute",
+    sendTip: "TON transfers are fast. If you send from an exchange, make sure it sends to the exact deposit address shown, with nothing added.",
+    addressTip: "TON addresses start with UQ or EQ. If you're receiving to an exchange account, it will need a comment/memo — sending to your own wallet avoids that problem.",
+    addressShort: "a TON address starting with UQ or EQ",
+  },
+  BNB: {
+    sym: "BNB", label: "BNB (BNB Smart Chain)", slug: "bnb",
+    confirm: "under a minute",
+    sendTip: "This page is for BNB on BNB Smart Chain. Make sure your wallet is sending on BSC, not another network.",
+    addressTip: "BNB Smart Chain uses 0x addresses, the same format as Ethereum.",
+    addressShort: "a BNB Smart Chain (0x) address",
+  },
+};
+
+/** Ticker for display — USDT_TRC20 shows as "USDT". */
+export function displaySym(id: string): string {
+  return COINS[id]?.sym ?? id;
+}
+
+// One hand-written line per pair: why people make this swap.
+const GENERATED: Array<[from: string, to: string, why: string]> = [
+  ["ETH", "XMR", "A common way to move Ethereum holdings into Monero without passing through an exchange that may have delisted it."],
+  ["XMR", "ETH", "Useful when you need Ethereum for a payment, a fee or DeFi and your savings sit in Monero."],
+  ["USDT", "XMR", "Turns dollar tokens that an issuer can freeze into Monero, which nobody can freeze or trace."],
+  ["XMR", "USDT", "Gives you a stable dollar balance on Ethereum without opening an exchange account."],
+  ["USDT_TRC20", "XMR", "Tron USDT is how many people get paid. This route turns it into Monero in one step."],
+  ["USDC", "XMR", "Moves a USDC balance into Monero, wallet to wallet."],
+  ["LTC", "XMR", "Litecoin's fast blocks make this one of the quicker ways into Monero."],
+  ["XMR", "LTC", "Litecoin is cheap to send and widely accepted, which makes it a practical way to spend from Monero."],
+  ["SOL", "XMR", "Moves Solana holdings into Monero without bridging or an exchange account."],
+  ["XMR", "SOL", "Gets you SOL for the Solana ecosystem straight from a Monero wallet."],
+  ["DOGE", "XMR", "Turns Dogecoin into Monero in a single swap."],
+  ["TON", "XMR", "Moves TON into Monero, wallet to wallet."],
+  ["ZEC", "XMR", "Swaps between the two main privacy coins. Fewer routes serve this pair than most, so check the quote before sending."],
+  ["XMR", "ZEC", "Swaps between the two main privacy coins. Fewer routes serve this pair than most, so check the quote before sending."],
+  ["ZEC", "BTC", "Zcash is delisted from many exchanges; this is how holders move back into Bitcoin without one."],
+  ["ETH", "ZEC", "Buys native Zcash with Ethereum, no exchange account and no wrapped token."],
+  ["USDT", "ZEC", "Buys Zcash with dollar tokens, wallet to wallet."],
+  ["LTC", "ZEC", "Moves Litecoin into Zcash in one step."],
+  ["BTC", "USDT", "Locks in a dollar value without selling on an exchange: Bitcoin in, ERC-20 USDT out."],
+  ["BTC", "USDC", "Moves Bitcoin into USDC on Ethereum without an exchange account."],
+  ["BTC", "SOL", "Gets you SOL straight from a Bitcoin wallet, with no bridge to manage."],
+  ["SOL", "BTC", "Takes Solana profits back into Bitcoin, wallet to wallet."],
+  ["LTC", "BTC", "Litecoin is often used to receive payments; this moves it into Bitcoin for saving."],
+  ["BTC", "DOGE", "Gets you Dogecoin for tipping or payments straight from a Bitcoin wallet."],
+  ["DOGE", "BTC", "Moves Dogecoin into Bitcoin without an exchange."],
+  ["XRP", "BTC", "Moves XRP into Bitcoin, wallet to wallet."],
+  ["BTC", "XRP", "Gets you XRP for fast, cheap transfers straight from a Bitcoin wallet."],
+  ["USDT_TRC20", "BTC", "Tron USDT is how many people get paid. This route turns it into Bitcoin in one step."],
+  ["BTC", "TON", "Gets you TON for the Telegram ecosystem straight from a Bitcoin wallet."],
+  ["TON", "BTC", "Moves TON into Bitcoin without an exchange."],
+  ["BNB", "BTC", "Moves BNB off BNB Smart Chain and into Bitcoin."],
+  ["ETH", "SOL", "Moves between Ethereum and Solana without using a bridge."],
+  ["SOL", "ETH", "Moves between Solana and Ethereum without using a bridge."],
+];
+
+function makePair(fromId: string, toId: string, why: string): PairPage | null {
+  const f = COINS[fromId];
+  const t = COINS[toId];
+  if (!f || !t) return null;
+  const ticker = (c: CoinFacts) => (c.sym === "USDT" && c.slug === "usdt-trc20" ? "USDT (TRC-20)" : c.sym);
+  return {
+    slug: `${f.slug}-to-${t.slug}`,
+    fromId,
+    toId,
+    fromLabel: f.label,
+    toLabel: t.label,
+    title: `Swap ${ticker(f)} to ${ticker(t)} — No Account, No KYC`,
+    description:
+      `Swap ${f.label} to ${t.label} with live rates from every route that supports the pair. Non-custodial, no account, no KYC for standard swaps, ${FEE_PHRASE}.`,
+    intro: `${f.label} in, ${t.label} out, wallet to wallet. ${why}`,
+    notes: [f.sendTip, t.addressTip],
+    faqs: [
+      {
+        q: `Can I swap ${f.sym} to ${t.sym} without an account?`,
+        a: `Yes. Enter the amount and your ${t.label} address, compare the quotes, then send one ${f.label} deposit from your own wallet. The ${t.label} arrives at your address — no registration, and no KYC for standard swaps.`,
+      },
+      {
+        q: `How long does a ${f.sym} to ${t.sym} swap take?`,
+        a: `The ${f.label} deposit usually takes ${f.confirm}. After that, the ${t.label} payout is normally sent within minutes.`,
+      },
+      {
+        q: `What address do I need to receive ${t.sym}?`,
+        a: `${t.addressShort[0].toUpperCase()}${t.addressShort.slice(1)}. Use an address in a wallet you control, and check it before you confirm.`,
+      },
+      { q: `What does the ${f.sym} to ${t.sym} swap cost?`, a: FEE_ANSWER },
+      {
+        q: "What happens if the swap can't be completed?",
+        a: "The funds are returned automatically to your refund address, which is why we recommend entering one even when a route doesn't require it.",
+      },
+    ],
+  };
+}
+
+const ALL_PAIRS: PairPage[] = [
+  ...HAND_PAIRS.map((p) => ({ ...p, featured: true })),
+  ...GENERATED.map(([f, t, why]) => makePair(f, t, why)).filter((p): p is PairPage => p !== null),
+];
+
+/** Every pair page that currently has at least one live route. */
+export const PAIRS: PairPage[] = ALL_PAIRS.filter(
+  (p) => providersForPair(p.fromId, p.toId).length > 0
+);
+
 export const PAIR_BY_SLUG = new Map(PAIRS.map((p) => [p.slug, p]));
+
+/** Related pairs for internal links: same coin in or out, featured ones first. */
+export function relatedPairs(pair: PairPage, limit = 10): PairPage[] {
+  const coins = [pair.fromId, pair.toId];
+  return PAIRS.filter((p) => p.slug !== pair.slug)
+    .map((p) => ({
+      p,
+      score: (coins.includes(p.fromId) ? 2 : 0) + (coins.includes(p.toId) ? 2 : 0) + (p.featured ? 1 : 0),
+    }))
+    .filter((x) => x.score > 1)
+    .sort((a, b) => b.score - a.score)
+    .slice(0, limit)
+    .map((x) => x.p);
+}
