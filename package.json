@@ -21,6 +21,7 @@
     "@xchainjs/xchain-thorchain": "3.1.3",
     "@xchainjs/xchain-client": "2.0.18",
     "@xchainjs/xchain-util": "2.0.7",
+    "qrcode.react": "4.2.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
