@@ -6,7 +6,6 @@ import * as chainflip from "@/lib/providers/chainflip";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
 import * as anonchange from "@/lib/providers/anonchange";
-import * as wagyu from "@/lib/providers/wagyu";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,11 +13,11 @@ export const dynamic = "force-dynamic";
 // Status by TokensFund order code. The provider's tracking details (which,
 // for Wagyu, include a private session credential) are looked up on the
 // server and never sent to the browser or placed in a URL.
+// Wagyu was removed (Nov 2026); old Wagyu orders show their last saved state.
 const PROVIDERS: Record<string, { getStatus: (id: string) => Promise<any> }> = {
   chainflip,
   cce,
   changee,
-  wagyu,
   anonchange,
 };
 
