@@ -26,6 +26,17 @@ export async function ensureOrdersTable() {
   // Amount the user was quoted to receive when the order was created. Older
   // rows have NULL here and the order page simply shows the asset.
   await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS expected_out TEXT`;
+  // Everything the order page needs to show full payment instructions, so the
+  // page works as the one place to pay, track and come back to. Orders created
+  // before these columns existed have details_saved = NULL and get a simpler page.
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS details_saved BOOLEAN`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS memoless BOOLEAN`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS deposit_memo TEXT`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS expires_at BIGINT`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS execution TEXT`;
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS notes TEXT`;
+  // The user's own deposit transaction ID. THORChain tracks a swap by this.
+  await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS deposit_tx TEXT`;
 }
 
 // ---------------------------------------------------------------------------
@@ -59,6 +70,13 @@ export interface OrderRecord {
   deposit_address: string | null;
   tracking_id: string | null;
   created_at: string;
+  details_saved: boolean | null;
+  memoless: boolean | null;
+  deposit_memo: string | null;
+  expires_at: string | number | null;
+  execution: string | null;
+  notes: string | null;
+  deposit_tx: string | null;
 }
 
 export async function getOrderByCode(code: string): Promise<OrderRecord | null> {
@@ -66,12 +84,26 @@ export async function getOrderByCode(code: string): Promise<OrderRecord | null> 
   // as the plain one: drop dashes, spaces and anything else non-alphanumeric.
   const clean = String(code).replace(/[^A-Za-z0-9]/g, "").toUpperCase();
   if (!/^[A-Z0-9]{6,32}$/.test(clean)) return null;
-  const rows = (await sql`
+  const query = () => sql`
     SELECT order_code, provider, from_asset, to_asset, amount, expected_out,
-           destination_address, deposit_address, tracking_id, created_at
+           destination_address, deposit_address, tracking_id, created_at,
+           details_saved, memoless, deposit_memo, expires_at, execution, notes, deposit_tx
     FROM orders
     WHERE order_code = ${clean}
     LIMIT 1
-  `) as unknown as OrderRecord[];
+  `;
+  let rows: OrderRecord[];
+  try {
+    rows = (await query()) as unknown as OrderRecord[];
+  } catch {
+    // First request after an update: the new columns may not exist yet.
+    await ensureOrdersTable();
+    rows = (await query()) as unknown as OrderRecord[];
+  }
   return rows.length ? rows[0] : null;
+}
+
+/** Save the user's deposit transaction ID against an order (used for THORChain tracking). */
+export async function setOrderDepositTx(orderCode: string, tx: string): Promise<void> {
+  await sql`UPDATE orders SET deposit_tx = ${tx} WHERE order_code = ${orderCode}`;
 }

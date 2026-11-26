@@ -102,6 +102,9 @@ export async function getQuote(
   };
 }
 
+// How long a memoless deposit is invited for (see buildSwap).
+const MEMOLESS_WINDOW_SECONDS = 60 * 60;
+
 export async function buildSwap(
   quote: NormalizedQuote,
   req: QuoteRequest
@@ -135,10 +138,14 @@ export async function buildSwap(
         depositAddress: data.inbound_address,
         depositAmount: memoless.amountHuman,
         memoless: true,
-        expiresAt: data.expiry,
+        // The reference itself lasts about 6 hours; we ask for the deposit
+        // within one hour so the rate hasn't drifted far from the quote.
+        expiresAt: Math.floor(Date.now() / 1000) + MEMOLESS_WINDOW_SECONDS,
         trackingId: data.inbound_address,
+        // Server-only: lets the order page find the deposit by its reference.
+        privateTrackingId: ["memoless", thorRef, memoless.reference, data.memo].join("~"),
         notes:
-          "Send this exact amount in a single payment, from any wallet — no memo needed. Its last digits identify your swap, so don't round it, split it or send it twice. These instructions work once and expire in about 6 hours.",
+          "Send this exact amount in a single payment, from any wallet — no memo needed. Its last digits identify your swap, so don't round it, split it or send it twice. These instructions work once — send within an hour.",
       };
     }
   }

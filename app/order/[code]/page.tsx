@@ -3,16 +3,28 @@ import { notFound } from "next/navigation";
 import { getOrderByCode } from "@/lib/db";
 import { ASSETS, getAsset } from "@/lib/assets";
 import OrderView from "@/components/OrderView";
+import type { EvmContractExecution } from "@/lib/types";
+import "./order.css";
 
 export const dynamic = "force-dynamic";
 
 export function generateMetadata({ params }: { params: { code: string } }) {
   return {
     title: `Order ${params.code.toUpperCase()}`,
-    description: "Private status link for a TokensFund swap.",
+    description: "Private payment and status link for a TokensFund swap.",
     // Order pages are private to whoever holds the link — never index them.
     robots: { index: false, follow: false },
   };
+}
+
+function parseExecution(raw: string | null): EvmContractExecution | null {
+  if (!raw) return null;
+  try {
+    const e = JSON.parse(raw);
+    return e && e.type === "evm_contract_call" ? (e as EvmContractExecution) : null;
+  } catch {
+    return null;
+  }
 }
 
 export default async function OrderPage({ params }: { params: { code: string } }) {
@@ -26,12 +38,16 @@ export default async function OrderPage({ params }: { params: { code: string } }
   // so "USDT" never leaves the user guessing where to look for their funds.
   const network = (a: typeof from) =>
     a && ASSETS.filter((x) => x.symbol === a.symbol).length > 1 ? a.chain : undefined;
+
   const d = new Date(order.created_at);
   const created =
     d.toLocaleDateString("en-GB", { day: "numeric", month: "short", timeZone: "UTC" }) +
     " · " +
     d.toISOString().slice(11, 16) +
     " UTC";
+
+  const exp = Number(order.expires_at);
+  const memoless = Boolean(order.memoless);
 
   return (
     <main className="wrap">
@@ -40,17 +56,32 @@ export default async function OrderPage({ params }: { params: { code: string } }
       <OrderView
         code={order.order_code}
         provider={order.provider}
-        canTrack={Boolean(order.tracking_id)}
+        // THORChain is followed by the deposit transaction, found by the server.
+        canTrack={order.provider === "thorchain" || Boolean(order.tracking_id)}
         amount={order.amount}
         expectedOut={order.expected_out}
-        fromNetwork={network(from)}
-        toNetwork={network(to)}
+        fromId={order.from_asset}
+        toId={order.to_asset}
         fromSymbol={from?.symbol ?? order.from_asset}
         toSymbol={to?.symbol ?? order.to_asset}
-        toName={to?.name ?? order.to_asset}
+        fromChain={from?.chain ?? ""}
+        toChain={to?.chain ?? ""}
+        fromNetwork={network(from)}
+        toNetwork={network(to)}
+        fromDecimals={from?.decimals ?? 8}
         destination={order.destination_address}
         deposit={order.deposit_address ?? ""}
         created={created}
+        createdAt={Math.floor(d.getTime() / 1000)}
+        fresh={Date.now() - d.getTime() < 15 * 60 * 1000}
+        detailsSaved={Boolean(order.details_saved)}
+        memoless={memoless}
+        // A memoless order's memo is registered on THORChain already and must
+        // not be shown: sending it as well would be wrong.
+        memo={memoless ? null : order.deposit_memo}
+        expiresAt={Number.isFinite(exp) && exp > 1_000_000_000 ? exp : null}
+        execution={parseExecution(order.execution)}
+        notes={memoless ? null : order.notes}
       />
     </main>
   );
