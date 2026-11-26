@@ -9,6 +9,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Bitcoin",
     decimals: 8,
     providerIds: {
+      anonchange: { coin: "BTC" },
       thorchain: { asset: "BTC.BTC", decimals: 8 },
       chainflip: { asset: "BTC", chain: "Bitcoin" },
       cce: { abbr: "BTC", chain: "Bitcoin" },
@@ -22,6 +23,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Ethereum",
     decimals: 18,
     providerIds: {
+      anonchange: { coin: "ETH" },
       thorchain: { asset: "ETH.ETH", decimals: 8 },
       chainflip: { asset: "ETH", chain: "Ethereum" },
       cce: { abbr: "ETH", chain: "Ethereum" },
@@ -47,6 +49,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Monero",
     decimals: 12,
     providerIds: {
+      anonchange: { coin: "XMR" },
       // thorchain: { asset: "XMR.XMR", decimals: 8 },
       // ^ THORChain answered "pool does not exist" for XMR (Nov 2026). Re-enable
       //   once its Monero pool is open, checked with a live BTC -> XMR quote.
@@ -82,6 +85,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Solana",
     decimals: 9,
     providerIds: {
+      anonchange: { coin: "SOL" },
       chainflip: { asset: "SOL", chain: "Solana" },
       cce: { abbr: "SOL", chain: "Solana" },
       changee: { ticker: "SOL" },
@@ -174,6 +178,7 @@ export const ASSETS: CanonicalAsset[] = [
     chain: "Litecoin",
     decimals: 8,
     providerIds: {
+      anonchange: { coin: "LTC" },
       thorchain: { asset: "LTC.LTC", decimals: 8 },
       chainflip: { asset: "LTC", chain: "Litecoin" },
       cce: { abbr: "LTC", chain: "Litecoin" },
@@ -206,7 +211,7 @@ export function getAsset(id: string): CanonicalAsset | undefined {
 // disappears from quoting, swapping and the header count at once.
 // Wagyu removed 20 Nov 2026 after its order-data leak. Its module stays only so
 // orders created before then can still show their status.
-export const LIVE_PROVIDERS: ProviderId[] = ["thorchain", "chainflip", "cce", "changee"];
+export const LIVE_PROVIDERS: ProviderId[] = ["thorchain", "chainflip", "cce", "changee", "anonchange"];
 
 // Shared by the server and the swap screen, so both always agree on which
 // routes to ask for a pair.

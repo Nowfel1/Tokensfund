@@ -4,7 +4,8 @@ export type ProviderId =
   | "near_intents"
   | "cce"
   | "changee"
-  | "wagyu";
+  | "wagyu"
+  | "anonchange";
 
 export interface ProviderAssetRef {
   asset?: string;
@@ -16,6 +17,7 @@ export interface ProviderAssetRef {
   ticker?: string;   // Used by Changee (and future providers)
   chainId?: number;  // Used by Wagyu (its own chain ids, e.g. 0 = Monero)
   token?: string;    // Used by Wagyu (token value from its catalog)
+  // AnonChange uses `coin` (its currency code, e.g. "BTC", "XMR").
 }
 
 export interface CanonicalAsset {

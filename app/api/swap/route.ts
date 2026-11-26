@@ -5,6 +5,7 @@ import * as thorchain from "@/lib/providers/thorchain";
 import * as chainflip from "@/lib/providers/chainflip";
 import * as cce from "@/lib/providers/cce";
 import * as changee from "@/lib/providers/changee";
+import * as anonchange from "@/lib/providers/anonchange";
 import { sql, ensureOrdersTable, generateOrderCode } from "@/lib/db";
 
 export const runtime = "nodejs";
@@ -80,6 +81,10 @@ export async function POST(req: NextRequest) {
       const quote = await cce.getQuote(from, to, body);
       expectedOut = quote.expectedOut;
       result = await cce.buildSwap(quote, body, from, to);
+    } else if (body.provider === "anonchange") {
+      const quote = await anonchange.getQuote(from, to, body);
+      expectedOut = quote.expectedOut;
+      result = await anonchange.buildSwap(quote, body, from, to);
     } else if (body.provider === "changee") {
       const quote = await changee.getQuote(from, to, body);
       expectedOut = quote.expectedOut;

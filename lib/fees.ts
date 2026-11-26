@@ -6,7 +6,7 @@
 // TO CHARGE A FEE AGAIN:
 //   1. set FEE_FREE to false (the wording below switches back to "at most 1%"),
 //   2. restore the fee settings: in Vercel set THOR_AFFILIATE_BPS=100,
-//      CHAINFLIP_COMMISSION_BPS=100, then set the
+//      CHAINFLIP_COMMISSION_BPS=100 and ANONCHANGE_MARKUP_PERCENT=1, then set the
 //      partner fee back to 1% in the Changee dashboard, and redeploy.
 
 export const FEE_FREE = true;

@@ -5,8 +5,8 @@ import type { ProviderId } from "./types";
 // the affected user is compensated from that provider's deposit. Users' own
 // funds never pass through TokensFund.
 //
-// List a provider here ONLY once its deposit has actually arrived. The
-// "Guarantee" column appears in the routes table as soon as one entry exists.
+// List a provider here ONLY once its deposit has actually arrived. Providers
+// not listed show a dash in the routes table's "Guarantee" column.
 // To remove a provider's guarantee (for example if they withdraw it), delete
 // or comment out its line.
 
@@ -15,9 +15,13 @@ export interface Guarantee {
   asset: string;  // what was deposited, e.g. "USDT"
 }
 
-export const GUARANTEES: Partial<Record<ProviderId, Guarantee>> = {
-  cce: { usd: 5000, asset: "USDT" },
-};
+// No provider has deposited yet (Nov 2026), so every route shows a dash.
+// Example once a deposit arrives:  cce: { usd: 5000, asset: "USDT" },
+export const GUARANTEES: Partial<Record<ProviderId, Guarantee>> = {};
+
+/** Keep the Guarantee column visible even while every entry is a dash.
+ *  Set to false to hide the column entirely. */
+export const SHOW_GUARANTEE_COLUMN = true;
 
 export function activeGuarantees(): Partial<Record<ProviderId, Guarantee>> {
   const out: Partial<Record<ProviderId, Guarantee>> = {};

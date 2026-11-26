@@ -11,6 +11,7 @@ const PROVIDER_INITIAL: Record<ProviderId, string> = {
   cce: "CC",
   changee: "CG",
   wagyu: "WG",
+  anonchange: "AC",
 };
 
 const COIN_LETTER: Record<string, string> = {
@@ -98,6 +99,7 @@ function label(p?: ProviderId) {
   if (p === "cce") return "CCE.Cash";
   if (p === "changee") return "Changee";
   if (p === "wagyu") return "Wagyu";
+  if (p === "anonchange") return "AnonChange";
   return "NEAR Intents";
 }
 
@@ -187,24 +189,6 @@ export default function SwapTerminal({
       .then((t) => { if (t) setPrices(JSON.parse(t)); })
       .catch(() => {});
   }, []);
-
-  // As soon as a deposit address exists, put the swap's tracking URL in the
-  // address bar. This is what makes the order recoverable: the URL enters
-  // browser history automatically, so a user who closes the tab (or needs
-  // evidence in a dispute) can find it again without having copied anything.
-  // pushState is used rather than a navigation so the terminal keeps its state.
-  useEffect(() => {
-    if (typeof window === "undefined" || !deposit) return;
-    // Only push a URL when the order was logged and has a code. If the
-    // database write failed there's no status page to point at.
-    if (!deposit.orderCode) return;
-    const url = "/order/" + deposit.orderCode;
-    try {
-      window.history.pushState({ tokensfundSwap: true }, "", url);
-    } catch {
-      // history API unavailable — the copyable link below still works
-    }
-  }, [deposit]);
 
   // ticking clock only while a quote-expiry countdown is on screen
   useEffect(() => {
@@ -339,10 +323,19 @@ export default function SwapTerminal({
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Could not open deposit address");
+      if (data.orderCode) {
+        // The order page is the one place to pay, track and come back to.
+        // A full navigation (not pushState) so the page loads from the saved
+        // order; the button stays in its busy state until the page changes.
+        window.location.assign("/order/" + data.orderCode);
+        return;
+      }
+      // The order couldn't be saved, so there is no order page: show the
+      // payment instructions right here instead.
       setDeposit(data);
+      setOpening(false);
     } catch (e: any) {
       setError(e.message);
-    } finally {
       setOpening(false);
     }
   }
@@ -579,7 +572,7 @@ export default function SwapTerminal({
         )}
         {result && selected && !deposit && (
           <button className="btn-primary" disabled={opening} onClick={openDeposit}>
-            {opening ? "Opening deposit address..." : "Swap via " + label(selected)}
+            {opening ? "Creating your order..." : "Swap via " + label(selected)}
           </button>
         )}
       </div>

@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { ASSETS } from "@/lib/assets";
 import type { ProviderId } from "@/lib/types";
-import { activeGuarantees, formatUsd } from "@/lib/guarantees";
+import { activeGuarantees, formatUsd, SHOW_GUARANTEE_COLUMN } from "@/lib/guarantees";
 
 type Costs = Record<string, Record<string, number | null>>;
 
@@ -12,6 +12,7 @@ const ROUTES: { id: ProviderId; name: string; type: string; holds: string }[] = 
   { id: "chainflip", name: "Chainflip", type: "Protocol", holds: "No" },
   { id: "cce", name: "CCE.Cash", type: "Instant exchanger", holds: "Briefly" },
   { id: "changee", name: "Changee", type: "Instant exchanger", holds: "Briefly" },
+  { id: "anonchange", name: "AnonChange", type: "Instant exchanger", holds: "Briefly" },
 ];
 
 const PAIRS = [
@@ -59,9 +60,10 @@ export default function RouteCosts() {
       .catch(() => setFailed(true));
   }, []);
 
-  // Guarantee column only appears once at least one deposit is configured.
+  // Guarantee column: shown when switched on in lib/guarantees.ts, or as soon
+  // as any deposit is configured. Routes without a deposit show a dash.
   const guarantees = activeGuarantees();
-  const showGuarantee = Object.keys(guarantees).length > 0;
+  const showGuarantee = SHOW_GUARANTEE_COLUMN || Object.keys(guarantees).length > 0;
 
   // Cheapest route per column, for the green highlight.
   const best: Record<string, number | undefined> = {};
@@ -141,7 +143,7 @@ export default function RouteCosts() {
         Cost is what you pay versus the market price for a 0.01 BTC swap, with every fee included.
         Green marks the cheapest route; a dash means that route couldn&apos;t give a quote just now.
         {showGuarantee &&
-          " Guarantee is collateral the provider has deposited with TokensFund: if it fails to complete a swap made here, the affected user is compensated from that deposit. Protocols need no guarantee, as no company holds funds."}
+          " Guarantee is collateral a provider has deposited with TokensFund: if it fails to complete a swap made here, the affected user is compensated from that deposit. A dash in that column means no deposit has been made. Protocols need no guarantee, as no company holds funds."}
       </p>
     </section>
   );
