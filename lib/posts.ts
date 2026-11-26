@@ -12,6 +12,13 @@ export interface PostMeta {
 
 export const POSTS: PostMeta[] = [
     {
+    slug: "monero-cex-delisting-kucoin-2026",
+    title: "KuCoin Delists Monero on November 30. The Exchange Era of XMR Is Almost Over",
+    date: "November 26, 2026",
+    description: "KuCoin ends XMR trading on November 30, two weeks after MEXC. What KuCoin holders need to do before December 31, why exchanges are leaving, and where Monero is actually traded now.",
+    tag: "Privacy",
+  },
+    {
     slug: "zcash-nu7-faster-blocks-sprout-freeze-2026",
     title: "Zcash NU7: Blocks Three Times Faster, Same Supply — and 12,000 ZEC Frozen",
     date: "November 7, 2026",
