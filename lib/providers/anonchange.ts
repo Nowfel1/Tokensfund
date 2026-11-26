@@ -6,13 +6,16 @@ import { CanonicalAsset, NormalizedQuote, QuoteRequest, SwapInstruction, SwapSta
 // dashboard and must only live in Vercel environment variables.
 const ORIGIN = "https://anonchange.com";
 const PREFIX = "/api/partner/v1";
-const API_KEY = process.env.ANONCHANGE_API_KEY ?? "";
-const API_SECRET = process.env.ANONCHANGE_API_SECRET ?? "";
+// Trimmed, because a pasted value often carries a stray space or line break,
+// which makes AnonChange reject the signature.
+const API_KEY = (process.env.ANONCHANGE_API_KEY ?? "").trim();
+const API_SECRET = (process.env.ANONCHANGE_API_SECRET ?? "").trim();
 
 // TokensFund's markup on top of AnonChange's own fee, in percent. 0 while
 // TokensFund charges no fee (see lib/fees.ts). Must stay within the cap shown
 // in the AnonChange partner dashboard.
-const MARKUP_PERCENT = Number(process.env.ANONCHANGE_MARKUP_PERCENT ?? "0");
+const MARKUP_RAW = Number((process.env.ANONCHANGE_MARKUP_PERCENT ?? "0").trim());
+const MARKUP_PERCENT = Number.isFinite(MARKUP_RAW) && MARKUP_RAW > 0 ? MARKUP_RAW : 0;
 
 // Floating rate, like the other exchanger routes. Fixed rates lock for only
 // 10 minutes, which a Bitcoin deposit often outlasts.
@@ -72,7 +75,12 @@ async function call(
     throw new Error(`AnonChange ${endpoint}: HTTP ${res.status} ${text.slice(0, 80).replace(/\s+/g, " ")}`);
   }
   if (!res.ok) {
-    throw new Error(`AnonChange: ${data?.error ?? `HTTP ${res.status}`}`);
+    let msg = `AnonChange: ${data?.error ?? `HTTP ${res.status}`}`;
+    if (res.status === 401 || /api key|signature/i.test(String(data?.error))) {
+      // Safe hints only: never the key or secret themselves.
+      msg += ` [key starts with "${API_KEY.slice(0, 3)}", ${API_KEY.length} chars; secret ${API_SECRET.length} chars]`;
+    }
+    throw new Error(msg);
   }
   return data;
 }
