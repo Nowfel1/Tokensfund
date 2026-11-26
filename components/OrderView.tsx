@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { QRCodeSVG } from "qrcode.react";
+import { QRCodeSVG } from "@/lib/vendor/qrcode-react";
 import type { EvmContractExecution } from "@/lib/types";
 
 // What /api/order-status sends back. Provider tracking details stay on the server.
