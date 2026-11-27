@@ -48,7 +48,8 @@ export interface SignedRequest {
 export function buildSignedRequest(
   endpoint: string,
   payload: Record<string, unknown>,
-  extraHeaders: Record<string, string> = {}
+  extraHeaders: Record<string, string> = {},
+  fixed?: { timestamp: string; nonce: string }
 ): SignedRequest {
   if (!API_KEY || !API_SECRET) {
     throw new Error("AnonChange is not configured (ANONCHANGE_API_KEY / ANONCHANGE_API_SECRET missing)");
@@ -56,10 +57,14 @@ export function buildSignedRequest(
   const path = `${PREFIX}/${endpoint}`;
   // Serialize once and sign exactly these bytes.
   const body = JSON.stringify(payload);
-  const timestamp = Math.floor(Date.now() / 1000).toString();
-  const nonce = randomBytes(16).toString("hex");
+  const timestamp = fixed?.timestamp ?? Math.floor(Date.now() / 1000).toString();
+  const nonce = fixed?.nonce ?? randomBytes(16).toString("hex");
   const bodyHash = createHash("sha256").update(body, "utf8").digest("hex");
-  const signedString = `${timestamp}\nPOST\n${path}\n${bodyHash}`;
+  // Six lines joined by \n, no trailing newline (confirmed by AnonChange
+  // support, Nov 2026): timestamp, nonce, POST, path, Idempotency-Key value
+  // (empty line when the header isn't sent), sha256(body).
+  const idempotencyKey = extraHeaders["Idempotency-Key"] ?? "";
+  const signedString = `${timestamp}\n${nonce}\nPOST\n${path}\n${idempotencyKey}\n${bodyHash}`;
   const sign = createHmac("sha256", API_SECRET).update(signedString, "utf8").digest("hex");
   return {
     url: ORIGIN + path,
