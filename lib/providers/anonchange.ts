@@ -35,11 +35,21 @@ function amountString(raw: string): string {
   return f ? `${whole || "0"}.${f}` : whole || "0";
 }
 
-async function call(
+export interface SignedRequest {
+  url: string;
+  path: string;
+  body: string;
+  signedString: string;
+  headers: Record<string, string>;
+}
+
+/** Builds one signed request exactly as it is sent. Exported so the locked
+ *  diagnostics endpoint can show AnonChange support what we send. */
+export function buildSignedRequest(
   endpoint: string,
   payload: Record<string, unknown>,
   extraHeaders: Record<string, string> = {}
-): Promise<any> {
+): SignedRequest {
   if (!API_KEY || !API_SECRET) {
     throw new Error("AnonChange is not configured (ANONCHANGE_API_KEY / ANONCHANGE_API_SECRET missing)");
   }
@@ -48,14 +58,14 @@ async function call(
   const body = JSON.stringify(payload);
   const timestamp = Math.floor(Date.now() / 1000).toString();
   const nonce = randomBytes(16).toString("hex");
-  const bodyHash = createHash("sha256").update(body).digest("hex");
-  const sign = createHmac("sha256", API_SECRET)
-    .update(`${timestamp}\nPOST\n${path}\n${bodyHash}`)
-    .digest("hex");
-
-  const res = await fetch(ORIGIN + path, {
-    method: "POST",
-    cache: "no-store",
+  const bodyHash = createHash("sha256").update(body, "utf8").digest("hex");
+  const signedString = `${timestamp}\nPOST\n${path}\n${bodyHash}`;
+  const sign = createHmac("sha256", API_SECRET).update(signedString, "utf8").digest("hex");
+  return {
+    url: ORIGIN + path,
+    path,
+    body,
+    signedString,
     headers: {
       "Content-Type": "application/json",
       "X-API-KEY": API_KEY,
@@ -64,7 +74,26 @@ async function call(
       "X-API-SIGN": sign,
       ...extraHeaders,
     },
-    body,
+  };
+}
+
+/** SHA-256 of the secret in use — safe to share, lets support confirm which
+ *  secret the server holds without revealing it. */
+export function secretFingerprint(): string {
+  return createHash("sha256").update(API_SECRET, "utf8").digest("hex");
+}
+
+async function call(
+  endpoint: string,
+  payload: Record<string, unknown>,
+  extraHeaders: Record<string, string> = {}
+): Promise<any> {
+  const req = buildSignedRequest(endpoint, payload, extraHeaders);
+  const res = await fetch(req.url, {
+    method: "POST",
+    cache: "no-store",
+    headers: req.headers,
+    body: req.body,
   });
 
   const text = await res.text();
