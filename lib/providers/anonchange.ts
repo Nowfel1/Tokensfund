@@ -132,6 +132,18 @@ export async function getQuote(
     markupPercent: MARKUP_PERCENT,
   });
 
+  // AnonChange quotes amounts outside its limits, but deposits outside them
+  // are refunded rather than swapped, so treat those as "no quote" here.
+  const amt = Number(amountString(req.amount));
+  const minDep = Number(data.minDeposit);
+  const maxDep = Number(data.maxDeposit);
+  if (minDep > 0 && amt < minDep) {
+    throw new Error(`AnonChange minimum for this pair is ${data.minDeposit} ${coin(from)}.`);
+  }
+  if (maxDep > 0 && amt > maxDep) {
+    throw new Error(`AnonChange maximum for this pair is ${data.maxDeposit} ${coin(from)} right now.`);
+  }
+
   const out = Number(data.amountOut);
   if (!out) {
     const min = data.minDeposit ? ` Minimum deposit is ${data.minDeposit} ${coin(from)}.` : "";
