@@ -192,6 +192,25 @@ interface Props {
   notes?: string | null;
 }
 
+// Provider notes can contain a long URL (e.g. AnonChange's private order
+// link). Show it as a short labelled link instead of a raw, wrapping URL.
+function renderNote(text: string) {
+  const parts = text.split(/(https?:\/\/[^\s]+)/g);
+  return parts.map((part, i) => {
+    if (!/^https?:\/\//.test(part)) return part.replace(/:\s*$/, ".");
+    let label = "Open link";
+    try {
+      const host = new URL(part).hostname.replace(/^www\./, "");
+      label = host.includes("anonchange") ? "AnonChange order page" : host;
+    } catch {}
+    return (
+      <a key={i} className="op-note-link" href={part} target="_blank" rel="noreferrer noopener">
+        {label} ↗
+      </a>
+    );
+  });
+}
+
 export default function OrderView(p: Props) {
   const [status, setStatus] = useState<LiveStatus | null>(null);
   const [now, setNow] = useState<number | null>(null);
@@ -569,7 +588,7 @@ export default function OrderView(p: Props) {
               start a new swap instead of paying this one.
             </p>
           )}
-          {p.notes && <p className="op-note">{p.notes}</p>}
+          {p.notes && <p className="op-note">{renderNote(p.notes)}</p>}
           {expired && (
             <p className="op-note"><a className="op-btn ghost" href="/">Start a new swap</a></p>
           )}

@@ -84,6 +84,8 @@
 .op-note { font-size: 12.5px; line-height: 1.55; color: var(--mu); margin: 12px 0 0; }
 .op-note.w { color: var(--gd); }
 .op-note strong { color: var(--tx); font-weight: 500; }
+.op-note-link { display: inline-block; margin-left: 4px; color: var(--gd); text-decoration: none; border: 1px solid rgba(244, 198, 78, 0.35); border-radius: 999px; padding: 1px 10px; font-size: 12px; white-space: nowrap; }
+.op-note-link:hover { background: rgba(244, 198, 78, 0.1); }
 .op a.x { color: var(--bl); text-decoration: none; }
 .op a.x:hover { text-decoration: underline; }
 

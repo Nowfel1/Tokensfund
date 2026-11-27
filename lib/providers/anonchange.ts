@@ -198,7 +198,7 @@ export async function buildSwap(
     expiresAt: Number.isFinite(expires) ? expires : undefined,
     trackingId: String(data.id),
     notes: data.url
-      ? `If this order ever needs your decision (for example after a large price move), use AnonChange's own order page: ${data.url}`
+      ? `If AnonChange ever needs your decision on this order (for example after a large price move), use its own page: ${data.url}`
       : undefined,
   };
 }
